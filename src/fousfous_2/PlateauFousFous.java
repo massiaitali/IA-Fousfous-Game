@@ -1,16 +1,24 @@
 package fousfous_2;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class PlateauFousFous implements Partie1 {
     // Initialisation du plateau avce un tableau de cellule 
     public Cellule[][] Plateau;
+    public final int TAILLE = 8;
     
     // Génere le plateau avec les pions blanc et noir
 	public PlateauFousFous() {
 
 		this.Plateau = new Cellule[8][8];
 
-		for (int w = 0; w < 8; w++) {
-			for (int i = 0; i < 8; i++) {
+		for (int w = 0; w < TAILLE; w++) {
+			for (int i = 0; i < TAILLE; i++) {
 				if ((w % 2) == 0 && (i % 2) == 1) {
 					this.Plateau[w][i] = new Cellule(w, i, "b");
 				} else if ((w % 2) == 1 && (i % 2) == 0) {
@@ -29,8 +37,8 @@ public class PlateauFousFous implements Partie1 {
     // Renvoie le nb de pions blanc sur le plateau
 	public int nbPionBlanc() {
 		int nb = 0;
-		for (int i = 0; i < 8; i++) {
-			for (int w = 0; w < 8; w++) {
+		for (int i = 0; i < TAILLE; i++) {
+			for (int w = 0; w < TAILLE; w++) {
 				if (this.Plateau[i][w].getColor().equals("b")) {
 					nb++;
 				}
@@ -41,8 +49,8 @@ public class PlateauFousFous implements Partie1 {
     // Renvoie le nombre de pion noir sur le plateau
 	public int nbPionNoir() {
 		int nb = 0;
-		for (int i = 0; i < 8; i++) {
-			for (int w = 0; w < 8; w++) {
+		for (int i = 0; i < TAILLE; i++) {
+			for (int w = 0; w < TAILLE; w++) {
 				if (this.Plateau[i][w].getColor().equals("n")) {
 					nb++;
 				}
@@ -54,9 +62,9 @@ public class PlateauFousFous implements Partie1 {
     public void VoirTableau() {
         System.out.println("% Etat Initial du plateau de jeu:");
 		System.out.println("% ABCDEFGH");
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < TAILLE; i++) {
 			System.out.print((i + 1) + " ");
-			for (int j = 0; j < 8; j++) {
+			for (int j = 0; j < TAILLE; j++) {
 				System.out.print(this.Plateau[i][j].getColor());
 			}
 			System.out.println(" " + (i + 1));
@@ -65,15 +73,85 @@ public class PlateauFousFous implements Partie1 {
     }
     
     public static void main(String[] args) {
-		// String fileimport = "test.txt";
+		String fileimport = "files/test.txt";
+		String fileexport = "files/test2.txt";
 		PlateauFousFous PlateauTest = new PlateauFousFous();
-        //PlateauTest.saveToFile(fileimport);
-        PlateauTest.VoirTableau();  
+        //PlateauTest.saveToFile(fileexport);
+        //PlateauTest.VoirTableau();  
 		//PlateauTest.setFromFile(fileimport);
 		//PlateauTest.VoirTableau();
+        
 		//PlateauTest.play("B1-C2", "blanc");
 		//PlateauTest.VoirTableau();
 		//PlateauTest.estValide("B2-C2", "blanc");
 		//PlateauTest.MovePossible("blanc");
+	}
+
+	@Override
+	public void setFromFile(String fileName) {
+		File file = new File(fileName);
+		if(file.isFile()) {
+			FileReader fr;
+			try {
+				fr = new FileReader(file);
+				BufferedReader br = new BufferedReader(fr);
+				String line;
+				int c = 2;
+				while ((line = br.readLine()) != null) {
+					c = 2;
+					if(!"%".equalsIgnoreCase(line.substring(0, 1))) {
+						int ligne = Integer.parseInt(line.substring(0, 1));
+						for (int j = 0; j < TAILLE; j++) {							
+							this.Plateau[ligne-1][j] = new Cellule(ligne, j, line.substring(c, c+1));
+							c++;
+						}
+					}
+				}
+				br.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}			
+		}		
+	}
+
+	@Override
+	public void saveToFile(String fileName) {
+		final File file = new File(fileName); 
+        try {
+        	file.createNewFile();
+            final FileWriter writer = new FileWriter(file);
+            try {
+            	
+            	writer.write("% Etat Initial du plateau de jeu:\n");
+            	writer.write("% ABCDEFGH\n");
+        		for (int i = 0; i < TAILLE; i++) {
+        			writer.write((i + 1) + " ");
+        			for (int j = 0; j < TAILLE; j++) {
+        				writer.write(this.Plateau[i][j].getColor());
+        			}
+        			writer.write(" " + (i + 1)+"\n");
+        		}
+        		writer.write("% ABCDEFGH");
+        		
+            } finally {
+                writer.close();
+            }
+        } catch (Exception e) {
+            System.out.println("Impossible de creer le fichier");
+        }		
+	}
+
+	@Override
+	public boolean estValide(String move, String player) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void play(String move, String player) {
+		// TODO Auto-generated method stub
+		
 	}
 }
