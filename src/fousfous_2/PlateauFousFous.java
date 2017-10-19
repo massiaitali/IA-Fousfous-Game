@@ -50,6 +50,7 @@ public class PlateauFousFous implements Partie1 {
 		}
 		return nb;
     }
+	// Afficher le tableau pour effetuer les tests
     public void VoirTableau() {
         System.out.println("% Etat Initial du plateau de jeu:");
 		System.out.println("% ABCDEFGH");
@@ -68,7 +69,6 @@ public class PlateauFousFous implements Partie1 {
 		PlateauFousFous PlateauTest = new PlateauFousFous();
         //PlateauTest.saveToFile(fileimport);
         PlateauTest.VoirTableau();  
-        System.out.print(PlateauTest.Plateau[0][0].getId());
 		//PlateauTest.setFromFile(fileimport);
 		//PlateauTest.VoirTableau();
 		//PlateauTest.play("B1-C2", "blanc");
