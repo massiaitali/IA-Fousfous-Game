@@ -83,10 +83,7 @@ public class PlateauFousFous implements Partie1 {
         fileexport = fileimport;
 		PlateauTest.setFromFile(fileimport);
 		PlateauTest.VoirTableau();
-        
-		//PlateauTest.play("B4-C5", "blanc");
-		//PlateauTest.VoirTableau();
-		//PlateauTest.estValide("B3-C1", "blanc");
+		System.out.println(PlateauTest.estValide("B1-C2", "blanc"));
 		//PlateauTest.MovePossible("blanc");
 	}
 
@@ -148,12 +145,20 @@ public class PlateauFousFous implements Partie1 {
 
 	@Override
 	public boolean estValide(String move, String player) {
-		// TODO Auto-generated method stub
+		Cellule[] cel = mvcel(move);
+		if (player.substring(0, 1).equals("b") 
+			&& cel[1].getColor().equals("n")) {
+			return true;
+		}
+		if (player.substring(0, 1).equals("n") 
+			&& cel[1].getColor().equals("b")) {
+			return true;
+		}
 		return false;
 	}
 
 	@Override
-	//Deplacement d'un pion d'une cellukle a une autre
+	//Deplacement d'un pion d'une cellule a une autre
 	public void play(String move, String player) {
 		Cellule[] dest = mvcel(move);
 		if (player.substring(0, 1).equals(dest[0].getColor())) {
