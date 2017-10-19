@@ -76,14 +76,17 @@ public class PlateauFousFous implements Partie1 {
 		String fileimport = "files/test.txt";
 		String fileexport = "files/test2.txt";
 		PlateauFousFous PlateauTest = new PlateauFousFous();
-        //PlateauTest.saveToFile(fileexport);
+		PlateauTest.VoirTableau();
+		PlateauTest.play("B1-C2", "blanc");
+        PlateauTest.saveToFile(fileexport);
         //PlateauTest.VoirTableau();  
-		//PlateauTest.setFromFile(fileimport);
-		//PlateauTest.VoirTableau();
+        fileexport = fileimport;
+		PlateauTest.setFromFile(fileimport);
+		PlateauTest.VoirTableau();
         
-		//PlateauTest.play("B1-C2", "blanc");
+		//PlateauTest.play("B4-C5", "blanc");
 		//PlateauTest.VoirTableau();
-		//PlateauTest.estValide("B2-C2", "blanc");
+		//PlateauTest.estValide("B3-C1", "blanc");
 		//PlateauTest.MovePossible("blanc");
 	}
 
@@ -150,8 +153,38 @@ public class PlateauFousFous implements Partie1 {
 	}
 
 	@Override
+	//Deplacement d'un pion d'une cellukle a une autre
 	public void play(String move, String player) {
-		// TODO Auto-generated method stub
+		Cellule[] dest = mvcel(move);
+		if (player.substring(0, 1).equals(dest[0].getColor())) {
+			dest[0].setColor("-");
+			dest[1].setColor(dest[0].getColor());
+			for (Cellule[] tab : this.Plateau) {
+				for (Cellule c : tab) {
+					if (c.getI() == dest[0].getI() && c.getJ() == dest[0].getJ()) {
+						c = dest[0];
+					}
+					if (c.getI() == dest[1].getI() && c.getJ() == dest[1].getJ()) {
+						c = dest[1];
+					}
+				}
+			}
+		} else {
+			System.out.print("Impossible");
+		}
 		
+	}
+	// Echange les position sur le plateau
+	private Cellule[] mvcel(String move) {
+		Cellule[] mv = new Cellule[2];
+			String[] data = move.split("-");
+			String dest = data[1];
+			mv[1] = this.Plateau[Integer.parseInt(dest.substring(1, 2)) - 1][dest
+				                                             					.toCharArray()[0] - 'A'];
+			String pion = data[0];
+			mv[0] = this.Plateau[Integer.parseInt(pion.substring(1, 2)) - 1][pion
+					.toCharArray()[0] - 'A'];
+		return mv;
+
 	}
 }
