@@ -15,12 +15,8 @@ public class Cellule {
 		this.id=""+(char)(j+65)+""+(i+1);
 	}
 	
-	public String getColor(){
-		return this.Color;
-	}
-	
-	public void setColor(String Color){
-		this.Color = Color;
+	public String getId(){
+		return this.id;
 	}
 	public int getI(){
 		return this.i;
@@ -29,8 +25,11 @@ public class Cellule {
 	public int getJ(){
 		return this.j;
 	}
+	public String getColor(){
+		return this.Color;
+	}
 	
-	public String getId(){
-		return this.id;
+	public void setColor(String Color){
+		this.Color = Color;
 	}
 }
