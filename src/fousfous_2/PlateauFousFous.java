@@ -146,12 +146,12 @@ public class PlateauFousFous implements Partie1 {
 	@Override
 	public boolean estValide(String move, String player) {
 		Cellule[] cel = mvcel(move);
+		if (player.substring(0, 1).equals("n") 
+				&& cel[1].getColor().equals("b")) {
+				return true;
+			}
 		if (player.substring(0, 1).equals("b") 
 			&& cel[1].getColor().equals("n")) {
-			return true;
-		}
-		if (player.substring(0, 1).equals("n") 
-			&& cel[1].getColor().equals("b")) {
 			return true;
 		}
 		return false;
