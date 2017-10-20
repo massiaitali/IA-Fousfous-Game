@@ -15,10 +15,10 @@ public class PlateauFousFous implements Partie1 {
     // Génere le plateau avec les pions blanc et noir
 	public PlateauFousFous() {
 
-		this.Plateau = new Cellule[8][8];
+		this.Plateau = new Cellule[this.TAILLE][this.TAILLE];
 
-		for (int w = 0; w < TAILLE; w++) {
-			for (int i = 0; i < TAILLE; i++) {
+		for (int w = 0; w < this.TAILLE; w++) {
+			for (int i = 0; i < this.TAILLE; i++) {
 				if ((w % 2) == 0 && (i % 2) == 1) {
 					this.Plateau[w][i] = new Cellule(w, i, "b");
 				} else if ((w % 2) == 1 && (i % 2) == 0) {
