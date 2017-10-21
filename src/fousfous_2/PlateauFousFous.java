@@ -162,8 +162,8 @@ public class PlateauFousFous implements Partie1 {
 	public void play(String move, String player) {
 		Cellule[] dest = mvcel(move);
 		if (player.substring(0, 1).equals(dest[0].getColor())) {
-			dest[0].setColor("-");
 			dest[1].setColor(dest[0].getColor());
+			dest[0].setColor("-");
 			for (Cellule[] tab : this.Plateau) {
 				for (Cellule c : tab) {
 					if (c.getI() == dest[0].getI() && c.getJ() == dest[0].getJ()) {
