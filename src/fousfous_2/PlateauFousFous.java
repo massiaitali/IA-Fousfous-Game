@@ -225,6 +225,7 @@ public class PlateauFousFous implements Partie1 {
 						for (Cellule c2 : tab2) {
 							if(estValide(pionCourant+"-"+c2.getId(), this.joueurCourant)) {
 								nb++;
+//								System.out.println(nb + " - coup :"+pionCourant+"-"+c2.getId());
 							}
 						}
 					}
