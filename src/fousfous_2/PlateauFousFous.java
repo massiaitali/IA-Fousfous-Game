@@ -83,7 +83,7 @@ public class PlateauFousFous implements Partie1 {
         fileexport = fileimport;
 		PlateauTest.setFromFile(fileimport);
 		PlateauTest.VoirTableau();
-		System.out.println(PlateauTest.estValide("B1-C2", "blanc"));
+		System.out.println(PlateauTest.estValide("A2-B3", "blanc"));
 		//PlateauTest.MovePossible("blanc");
 	}
 
