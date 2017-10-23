@@ -1,14 +1,14 @@
 package fousfous_2;
 
-// Classe cellule permet de faciliter les fonctions
-public class Cellule {
-    private int j; // Position en j 
-    private int i; // Position en i 
-    private String id; // Id de type B1 A1 ect...
-	private String Color; // Couleur donc joueur de cette cellule
+//Classe Case permet de faciliter les fonctions
+public class Case {
+ private int j; // Position en j 
+ private int i; // Position en i 
+ private String id; // Id de type B1 A1 ect...
+	private String Color; // Couleur donc joueur de cette Case
 	
 	
-	public Cellule(int i, int j, String Color){ // Initialiser une cellule
+	public Case(int i, int j, String Color){ // Initialiser une Case
 		this.i = i;
 		this.j = j;
 		this.Color = Color;
@@ -33,3 +33,4 @@ public class Cellule {
 		this.Color = Color;
 	}
 }
+

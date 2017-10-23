@@ -8,23 +8,23 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class PlateauFousFous implements Partie1 {
-    // Initialisation du plateau avce un tableau de cellule 
-    public Cellule[][] Plateau;
+    // Initialisation du plateau avce un tableau de Case 
+    public Case[][] Plateau;
     public final int TAILLE = 8;
     
     // Génere le plateau avec les pions blanc et noir
 	public PlateauFousFous() {
 
-		this.Plateau = new Cellule[this.TAILLE][this.TAILLE];
+		this.Plateau = new Case[this.TAILLE][this.TAILLE];
 
 		for (int w = 0; w < this.TAILLE; w++) {
 			for (int i = 0; i < this.TAILLE; i++) {
 				if ((w % 2) == 0 && (i % 2) == 1) {
-					this.Plateau[w][i] = new Cellule(w, i, "b");
+					this.Plateau[w][i] = new Case(w, i, "b");
 				} else if ((w % 2) == 1 && (i % 2) == 0) {
-					this.Plateau[w][i] = new Cellule(w, i, "n");
+					this.Plateau[w][i] = new Case(w, i, "n");
 				} else {
-					this.Plateau[w][i] = new Cellule(w, i, "-");
+					this.Plateau[w][i] = new Case(w, i, "-");
 				}
 			}
 		}
@@ -102,7 +102,7 @@ public class PlateauFousFous implements Partie1 {
 					if(!"%".equalsIgnoreCase(line.substring(0, 1))) {
 						int ligne = Integer.parseInt(line.substring(0, 1));
 						for (int j = 0; j < TAILLE; j++) {							
-							this.Plateau[ligne-1][j] = new Cellule(ligne, j, line.substring(c, c+1));
+							this.Plateau[ligne-1][j] = new Case(ligne, j, line.substring(c, c+1));
 							c++;
 						}
 					}
@@ -145,7 +145,7 @@ public class PlateauFousFous implements Partie1 {
 
 	@Override
 	public boolean estValide(String move, String player) {
-		Cellule[] cel = mvcel(move);
+		Case[] cel = mvcel(move);
 		if (player.substring(0, 1).equals("n") 
 				&& cel[1].getColor().equals("b")) {
 				return true;
@@ -158,14 +158,14 @@ public class PlateauFousFous implements Partie1 {
 	}
 
 	@Override
-	//Deplacement d'un pion d'une cellule a une autre
+	//Deplacement d'un pion d'une Case a une autre
 	public void play(String move, String player) {
-		Cellule[] dest = mvcel(move);
+		Case[] dest = mvcel(move);
 		if (player.substring(0, 1).equals(dest[0].getColor())) {
 			dest[0].setColor("-");
 			dest[1].setColor(dest[0].getColor());
-			for (Cellule[] tab : this.Plateau) {
-				for (Cellule c : tab) {
+			for (Case[] tab : this.Plateau) {
+				for (Case c : tab) {
 					if (c.getI() == dest[0].getI() && c.getJ() == dest[0].getJ()) {
 						c = dest[0];
 					}
@@ -180,8 +180,8 @@ public class PlateauFousFous implements Partie1 {
 		
 	}
 	// Echange les position sur le plateau
-	private Cellule[] mvcel(String move) {
-		Cellule[] mv = new Cellule[2];
+	private Case[] mvcel(String move) {
+		Case[] mv = new Case[2];
 			String[] data = move.split("-");
 			String dest = data[1];
 			mv[1] = this.Plateau[Integer.parseInt(dest.substring(1, 2)) - 1][dest
