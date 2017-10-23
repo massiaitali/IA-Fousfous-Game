@@ -83,7 +83,7 @@ public class PlateauFousFous implements Partie1 {
         fileexport = fileimport;
 		PlateauTest.setFromFile(fileimport);
 		PlateauTest.VoirTableau();
-		System.out.println(PlateauTest.estValide("A2-B3", "blanc"));
+		System.out.println(PlateauTest.estValide("B1-A8", "blanc"));
 		//PlateauTest.MovePossible("blanc");
 	}
 
@@ -144,14 +144,18 @@ public class PlateauFousFous implements Partie1 {
 	}
 
 	@Override
+	// Verifie la validé d'un coup
 	public boolean estValide(String move, String player) {
-		Case[] cel = mvcel(move);
-		if (player.substring(0, 1).equals("n") 
-				&& cel[1].getColor().equals("b")) {
+		Case[] cas = mvcel(move);
+		if ((cas[0].getColor().equals(cas[1].getColor())) || (this.men(cas[0], player))) {
+			return false;
+		}
+		if ((player.substring(0, 1).equals("n") 
+				&& cas[1].getColor().equals("b")) ||(player.substring(0, 1).equals("b") 
+			&& cas[1].getColor().equals("n")) ) {
 				return true;
-			}
-		if (player.substring(0, 1).equals("b") 
-			&& cel[1].getColor().equals("n")) {
+		}
+		if (this.men(cas[1], player)) {
 			return true;
 		}
 		return false;
@@ -178,6 +182,67 @@ public class PlateauFousFous implements Partie1 {
 			System.out.print("Impossible");
 		}
 		
+	}
+	//Gestion de la menace d'un pion 
+	public boolean men(Case cas, String player) {
+		//obtenir pion diag
+		Case[] rest = new Case[15];
+		int i = cas.getI() + 1; int j = cas.getJ() + 1; int iter = 0;
+		while (i < 8 && j < 8) {
+			rest[iter] = this.Plateau[i][j];iter++;
+			if (this.Plateau[i][j].getColor().equals("b")
+					|| this.Plateau[i][j].getColor().equals("n")) {
+				break;
+			}
+			i++;j++;
+		}
+
+		i = cas.getI() - 1; j = cas.getJ() - 1;
+		while (i >= 0 && j >= 0) {
+			rest[iter] = this.Plateau[i][j]; iter++;
+			if (this.Plateau[i][j].getColor().equals("b")
+					|| this.Plateau[i][j].getColor().equals("n")) {
+				break;
+			}
+			i--;j--;
+		}
+		i = cas.getI() - 1; j = cas.getJ() + 1;
+		while (i >= 0 && j < 8) {
+			rest[iter] = this.Plateau[i][j]; iter++;
+			if (this.Plateau[i][j].getColor().equals("b")
+					|| this.Plateau[i][j].getColor().equals("n")) {
+				break;
+			}
+			i--;j++;
+		}
+		i = cas.getI() + 1; j = cas.getJ() - 1;
+		while (i < 8 && j >= 0) {
+			rest[iter] = this.Plateau[i][j]; iter++;
+			if (this.Plateau[i][j].getColor().equals("b")
+					|| this.Plateau[i][j].getColor().equals("n")) {
+				break;
+			}
+			i++; j--;
+		}
+		//Obtenir les enemies diagonal
+		Case[] result = new Case[4]; int iter2 = 0;
+		for (Case c : rest) {
+			if (c != null) {
+				if (player.substring(0, 1).equals("b")
+						&& c.getColor().equals("n")) {
+					result[iter] = c;iter2++;
+				}
+				if (player.substring(0, 1).equals("n")
+						&& c.getColor().equals("b")) {
+					result[iter] = c;iter2++;
+				}
+			}
+		}
+		//Verification de la menace
+		for (Case c : result) {
+			if (c != null) {return true;}
+		}
+		return false;
 	}
 	// Echange les position sur le plateau
 	private Case[] mvcel(String move) {
