@@ -83,7 +83,7 @@ public class PlateauFousFous implements Partie1 {
         fileexport = fileimport;
 		PlateauTest.setFromFile(fileimport);
 		PlateauTest.VoirTableau();
-		System.out.println(PlateauTest.estValide("B1-A8", "blanc"));
+		System.out.println(PlateauTest.estValide("B1-H8", "blanc"));
 		//PlateauTest.MovePossible("blanc");
 	}
 
@@ -144,7 +144,7 @@ public class PlateauFousFous implements Partie1 {
 	}
 
 	@Override
-	// Verifie la validé d'un coup
+	// Verifier la validé d'un coup
 	public boolean estValide(String move, String player) {
 		Case[] cas = mvcel(move);
 		if ((cas[0].getColor().equals(cas[1].getColor())) || (this.men(cas[0], player))) {
@@ -162,7 +162,7 @@ public class PlateauFousFous implements Partie1 {
 	}
 
 	@Override
-	//Deplacement d'un pion d'une Case a une autre
+	//Déplacement d'un pion d'une Case a une autre
 	public void play(String move, String player) {
 		Case[] dest = mvcel(move);
 		if (player.substring(0, 1).equals(dest[0].getColor())) {
@@ -185,8 +185,8 @@ public class PlateauFousFous implements Partie1 {
 	}
 	//Gestion de la menace d'un pion 
 	public boolean men(Case cas, String player) {
-		//obtenir pion diag
-		Case[] rest = new Case[15];
+		//obtenir les pions en diago
+		Case[] rest = new Case[15]; 
 		int i = cas.getI() + 1; int j = cas.getJ() + 1; int iter = 0;
 		while (i < 8 && j < 8) {
 			rest[iter] = this.Plateau[i][j];iter++;
@@ -225,22 +225,19 @@ public class PlateauFousFous implements Partie1 {
 			i++; j--;
 		}
 		//Obtenir les enemies diagonal
-		Case[] result = new Case[4]; int iter2 = 0;
 		for (Case c : rest) {
 			if (c != null) {
+				//Verification de la menace cas joueur blanc et couleur de pion noir
 				if (player.substring(0, 1).equals("b")
 						&& c.getColor().equals("n")) {
-					result[iter] = c;iter2++;
+					return true;
 				}
+				//Verification de la menace cas joueur noir et couleur de pion blanc
 				if (player.substring(0, 1).equals("n")
 						&& c.getColor().equals("b")) {
-					result[iter] = c;iter2++;
+					return true;
 				}
 			}
-		}
-		//Verification de la menace
-		for (Case c : result) {
-			if (c != null) {return true;}
 		}
 		return false;
 	}
