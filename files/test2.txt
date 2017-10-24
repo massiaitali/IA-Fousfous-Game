@@ -1,7 +1,7 @@
 % Etat Initial du plateau de jeu:
 % ABCDEFGH
-1 ---b-b-b 1
-2 n---n-n- 2
+1 -b-b-b-b 1
+2 n-n-n-n- 2
 3 -b-b-b-b 3
 4 n-n-n-n- 4
 5 -b-b-b-b 5
