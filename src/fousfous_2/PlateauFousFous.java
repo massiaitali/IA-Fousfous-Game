@@ -12,7 +12,7 @@ public class PlateauFousFous implements Partie1 {
     public Case[][] Plateau;
     public final int TAILLE = 8;
     
-    // Génere le plateau avec les pions blanc et noir
+    // Génerer le plateau avec les pions blanc et noir
 	public PlateauFousFous() {
 
 		this.Plateau = new Case[this.TAILLE][this.TAILLE];
@@ -185,18 +185,19 @@ public class PlateauFousFous implements Partie1 {
 	}
 	//Gestion de la menace d'un pion 
 	public boolean men(Case cas, String player) {
-		//obtenir les pions en diago
+		//obtenir les pions en diagonal 
 		Case[] rest = new Case[15]; 
+		// Je boucle sur la diagonal qui vas vers le sud est
 		int i = cas.getI() + 1; int j = cas.getJ() + 1; int iter = 0;
 		while (i < 8 && j < 8) {
 			rest[iter] = this.Plateau[i][j];iter++;
-			if (this.Plateau[i][j].getColor().equals("b")
-					|| this.Plateau[i][j].getColor().equals("n")) {
+			if (this.Plateau[i][j].getColor().equals("n")||this.Plateau[i][j].getColor().equals("b")
+					) {
 				break;
 			}
 			i++;j++;
 		}
-
+		// Je boucle sur la diagonal qui vas vers le nord ouest
 		i = cas.getI() - 1; j = cas.getJ() - 1;
 		while (i >= 0 && j >= 0) {
 			rest[iter] = this.Plateau[i][j]; iter++;
@@ -206,6 +207,7 @@ public class PlateauFousFous implements Partie1 {
 			}
 			i--;j--;
 		}
+		// Je boucle sur la diagonal qui vas vers le nord est
 		i = cas.getI() - 1; j = cas.getJ() + 1;
 		while (i >= 0 && j < 8) {
 			rest[iter] = this.Plateau[i][j]; iter++;
@@ -215,6 +217,7 @@ public class PlateauFousFous implements Partie1 {
 			}
 			i--;j++;
 		}
+		// Je boucle sur la diagonal qui vas vers le sud ouest
 		i = cas.getI() + 1; j = cas.getJ() - 1;
 		while (i < 8 && j >= 0) {
 			rest[iter] = this.Plateau[i][j]; iter++;
