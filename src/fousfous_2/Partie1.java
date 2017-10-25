@@ -1,13 +1,14 @@
 package fousfous_2;
 
+import java.util.ArrayList;
 
 public interface Partie1 {
-    /** initialise un plateau à partir d’un fichier texte
+    /** Initialise un plateau à partir d’un fichier texte
     * @param fileName le nom du fichier à lire
     */
     public void setFromFile(String fileName);
     
-    /** sauve la configuration d’un plateau dans d’un fichier
+    /** Sauve la configuration d’un plateau dans un fichier
     * @param fileName le nom du fichier à sauvegarder
     *
     * Le format doit être compatible avec celui utilisé pour la lecture.
@@ -20,10 +21,12 @@ public interface Partie1 {
     */
     public boolean estValide(String move, String player);
     
-    /** calcule les coups possibles pour le joueur <player> sur le plateau courant
+    /** Calcule les coups possibles pour le joueur <player> sur le plateau courant
     * @param player le joueur qui joue (représenté par "noir" ou "blanc")
-    blanc public String[] mouvementsPossibles(String player);
-    /** modifie le plateau en jouant le coup move
+    */
+    public ArrayList<String> mouvementsPossibles(String player);
+    
+    /** Modifie le plateau en jouant le coup move
     * @param move le coup à jouer, représenté sous la forme "A1-B2"
     * @param player le joueur qui joue représenté par "noir" ou "blanc"
     */

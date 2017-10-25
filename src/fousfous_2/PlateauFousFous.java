@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -64,74 +65,93 @@ public class PlateauFousFous implements Partie1 {
 		}
 		return nb;
     }
-	// Afficher le tableau pour effetuer les tests
-    public void VoirTableau() {
-        System.out.println("% Etat Initial du plateau de jeu:");
-		System.out.println("% ABCDEFGH");
+	
+	// Affichage du plateau
+    public String toString() {
+    	String res = "";
+        res += "% Etat Initial du plateau de jeu:\n";
+		res += "% ABCDEFGH\n";
 		for (int i = 0; i < TAILLE; i++) {
-			System.out.print((i + 1) + " ");
+			res += (i + 1) + " ";
 			for (int j = 0; j < TAILLE; j++) {
-				System.out.print(this.Plateau[i][j].getColor());
+				res += this.Plateau[i][j].getColor();
 			}
-			System.out.println(" " + (i + 1));
+			res += " " + (i + 1)+"\n";
 		}
-		System.out.println("% ABCDEFGH");
+		res += "% ABCDEFGH\n";
+		
+		/*res += "% DEBUG:\n";
+		res += "% ABCDEFGH\n";
+		for (int i = 0; i < TAILLE; i++) {
+			res += (i + 1) + " ";
+			for (int j = 0; j < TAILLE; j++) {
+				res += this.Plateau[i][j].getId();
+			}
+			res += " " + (i + 1)+"\n";
+		}
+		res += "% ABCDEFGH\n";*/
+		
+		
+		return res;
     }
     
     public static void main(String[] args) {
-
-    		PlateauFousFous PlateauTest = new PlateauFousFous();
-    		PlateauTest.VoirTableau();
-//    		System.out.println(PlateauTest.estValide("B1-C2", "blanc"));
-//    		PlateauTest.play("B1-C2", "blanc");
-//    		PlateauTest.VoirTableau();
-    		//System.out.println(PlateauTest.estValide("C2-F5", "noir"));
-    		PlateauTest.play("B1-C2", "blanc");
-    		PlateauTest.VoirTableau();
-    		//System.out.println(PlateauTest.estValide("C2-B1", "blanc"));
-    		PlateauTest.play("C2-B1", "blanc");
-    		PlateauTest.VoirTableau();
-    		PlateauTest.play("E2-D3", "noir");
-    		PlateauTest.VoirTableau();
-    		PlateauTest.play("F1-G2", "blanc");
-    		PlateauTest.VoirTableau();
-    		PlateauTest.play("G2-F1", "blanc");
-    		PlateauTest.VoirTableau();
-    		PlateauTest.play("D7-E8", "blanc");
-    		PlateauTest.VoirTableau();
-    		PlateauTest.play("C6-B7", "noir");
-    		PlateauTest.VoirTableau();
-    		PlateauTest.play("C6-B7", "noir");
-    		PlateauTest.VoirTableau();
-    		PlateauTest.play("D1-E2", "blanc");
-    		PlateauTest.VoirTableau();
-    		PlateauTest.play("H3-G4", "blanc");
-    		PlateauTest.VoirTableau();
-    		/*Date today = new Date();
-    		SimpleDateFormat formater = new SimpleDateFormat("yyyyMMddHHmmss");
-		String file = "files/"+formater.format(today)+".txt";
-    		Scanner sc = new Scanner(System.in);
-		PlateauFousFous PlateauTest = new PlateauFousFous();
-		System.out.println("La partie va commencer...");
-        PlateauTest.VoirTableau();  
+//    	PlateauFousFous PlateauTest = new PlateauFousFous();
+//    	System.out.println(PlateauTest);
+//    	System.out.println(PlateauTest.estValide("B1-C2", "blanc"));
+//    	PlateauTest.play("B1-C2", "blanc");
+//    	System.out.println(PlateauTest);
+//    	System.out.println(PlateauTest.estValide("C2-F5", "noir"));
+//    	PlateauTest.play("B1-C2", "blanc");
+//    	System.out.println(PlateauTest);
+//    	System.out.println(PlateauTest.estValide("C2-B1", "blanc"));
+//    	PlateauTest.play("C2-B1", "blanc");
+//    	System.out.println(PlateauTest);
+//    	PlateauTest.play("E2-D3", "noir");
+//    	System.out.println(PlateauTest);
+//    	PlateauTest.play("F1-G2", "blanc");
+//    	System.out.println(PlateauTest);
+//    	PlateauTest.play("G2-F1", "blanc");
+//    	System.out.println(PlateauTest);
+//    	PlateauTest.play("D7-E8", "blanc");
+//    	System.out.println(PlateauTest);
+//    	PlateauTest.play("C6-B7", "noir");
+//    	System.out.println(PlateauTest);
+//    	PlateauTest.play("C6-B7", "noir");
+//    	System.out.println(PlateauTest);
+//    	PlateauTest.play("D1-E2", "blanc");
+//    	System.out.println(PlateauTest);
+//    	PlateauTest.play("H3-G4", "blanc");
+//    	System.out.println(PlateauTest);
+    	
+    	Date today = new Date();
+    	SimpleDateFormat formater = new SimpleDateFormat("yyyyMMddHHmmss");
+    	String file = "files/"+formater.format(today)+".txt";
+    	Scanner sc = new Scanner(System.in);
+    	PlateauFousFous PlateauTest = new PlateauFousFous();
+    	System.out.println("La partie va commencer...");
 		while(!PlateauTest.finDePartie()) {
+			// Affichage du plateau courant
+	        System.out.println(PlateauTest);
 			System.out.println("Joueur courant : " + PlateauTest.joueurCourant);
-			System.out.println("Il y a "+PlateauTest.getNbCoupsPossibles()+ " coups possibles sur le plateau.");
+			ArrayList<String> listeCoupsPossibles = PlateauTest.mouvementsPossibles(PlateauTest.joueurCourant);
+			System.out.println("Il y a "+listeCoupsPossibles.size()+ " coups possibles sur le plateau.");
+			System.out.println(listeCoupsPossibles);
 			
 			System.out.println("Veuillez saisir le coup à jouer (exemple : B1-C2) : ");
 			String coup = sc.nextLine();
-			// utiliser la méthode estValide dans play
-			PlateauTest.play(coup, PlateauTest.joueurCourant);
+			PlateauTest.play(coup.toUpperCase(), PlateauTest.joueurCourant);
 
 	        PlateauTest.saveToFile(file);
-	        PlateauTest.setFromFile(file);
-	        PlateauTest.VoirTableau();  
+	        //PlateauTest.setFromFile(file);
 		}
-		// score
-		// Le joueur a gagné
-        sc.close();*/
-
-    	
+        sc.close();
+		if(PlateauTest.nbPionBlanc() == 0) {
+			System.out.println("Le joueur noir a gagné !!");
+		}
+		if(PlateauTest.nbPionNoir() == 0) {
+			System.out.println("Le joueur blanc a gagné !!");			
+		}    	
 	}
 
 	@Override
@@ -149,7 +169,7 @@ public class PlateauFousFous implements Partie1 {
 					if(!"%".equalsIgnoreCase(line.substring(0, 1))) {
 						int ligne = Integer.parseInt(line.substring(0, 1));
 						for (int j = 0; j < TAILLE; j++) {							
-							this.Plateau[ligne-1][j] = new Case(ligne, j, line.substring(c, c+1));
+							this.Plateau[ligne-1][j] = new Case(ligne-1, j, line.substring(c, c+1));
 							c++;
 						}
 					}
@@ -160,17 +180,18 @@ public class PlateauFousFous implements Partie1 {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}			
-		}		
+		}
+		else {
+			System.out.println("Le fichier n'existe pas");
+		}
 	}
 
 	@Override
 	public void saveToFile(String fileName) {
 		final File file = new File(fileName); 
         try {
-        	file.createNewFile();
             final FileWriter writer = new FileWriter(file);
-            try {
-            	
+            try {            	
             	writer.write("% Etat Initial du plateau de jeu:\n");
             	writer.write("% ABCDEFGH\n");
         		for (int i = 0; i < TAILLE; i++) {
@@ -186,12 +207,12 @@ public class PlateauFousFous implements Partie1 {
                 writer.close();
             }
         } catch (Exception e) {
-            System.out.println("Impossible de creer le fichier");
+            System.out.println("Impossible de créer le fichier");
         }		
 	}
 
 	@Override
-	// Verifier la validé d'un coup
+	// Verifier la validité d'un coup
 	public boolean estValide(String move, String player) {
 		
 		Case[] cas = mvcel(move);
@@ -232,8 +253,6 @@ public class PlateauFousFous implements Partie1 {
 	public void play(String move, String player) {
 		if(estValide(move, player)) {
 			Case[] dest = mvcel(move);
-			//System.out.print(player.substring(0, 1));
-			//System.out.print(dest[0].getColor());
 			if (player.substring(0, 1).equals(dest[0].getColor())) {
 				dest[1].setColor(dest[0].getColor());
 				dest[0].setColor("-");
@@ -251,10 +270,9 @@ public class PlateauFousFous implements Partie1 {
 					} else {
 						this.joueurCourant = "blanc";
 					}
-
 				}
 			} else {
-				System.out.print("Impossible");
+				System.out.println("Impossible");
 			}
 		}
 		else {
@@ -382,7 +400,6 @@ public class PlateauFousFous implements Partie1 {
 			String[] data = move.split("-");
 			String dest = data[1];
 			String pion = data[0];
-//			System.out.println("data=["+data[0]+","+data[1]+"] || pion="+pion);
 			mv[0] = this.Plateau[Integer.parseInt(pion.substring(1, 2)) - 1][pion
 					.toCharArray()[0] - 'A'];
 			mv[1] = this.Plateau[Integer.parseInt(dest.substring(1, 2)) - 1][dest
@@ -390,36 +407,41 @@ public class PlateauFousFous implements Partie1 {
 		return mv;
 
 	}
+	
 	// retourne le nombre de coups possible pour le joueur courant
-	public int getNbCoupsPossibles() {
-		int nb = 0;
+	public ArrayList<String> mouvementsPossibles(String player) {
+//		System.out.println("player="+player);
+		ArrayList<String> coupsPossibles = new ArrayList<String>();
 		// pour chaque pion du joueur courant
-		for (Case[] tab : this.Plateau) {
-			for (Case c : tab) {
+		for(int i = 0 ; i < TAILLE ; i++) {
+			for(int j = 0 ; j < TAILLE ; j++) {
 				String pionCourant = "";
-				if("b".equalsIgnoreCase(c.getColor()) && "blanc".equalsIgnoreCase(this.joueurCourant)) {
+				Case c = this.Plateau[i][j];
+				if("b".equalsIgnoreCase(c.getColor()) && "blanc".equalsIgnoreCase(player)) {
 					pionCourant = c.getId();
 				}
-				else if("n".equalsIgnoreCase(c.getColor()) && "noir".equalsIgnoreCase(this.joueurCourant)) {
+				else if("n".equalsIgnoreCase(c.getColor()) && "noir".equalsIgnoreCase(player)) {
 					pionCourant = c.getId();
 				}
 				// Si la cellule n'est pas vide
 				if(pionCourant != "") {
+//					System.out.println("pioncourant="+pionCourant);
 					// on parcourt le plateau pour calculer le nombre de déplacement que le pion courant peut faire
-					for(Case[] tab2 : this.Plateau) {
-						for (Case c2 : tab2) {
+					for(int k = 0 ; k < TAILLE ; k++) {
+						for(int l = 0 ; l < TAILLE ; l++) {	
+							Case c2 = this.Plateau[k][l];
+//							System.out.println("c2="+c2);
 							if(!"-".equalsIgnoreCase(c2.getColor()) && !pionCourant.equalsIgnoreCase(c2.getId())) {
-								if(estValide(pionCourant+"-"+c2.getId(), this.joueurCourant)) {
-									nb++;
-									System.out.println("mouvement="+pionCourant+"-"+c2.getId());
+								if(estValide(pionCourant+"-"+c2.getId(), player)) {
+									coupsPossibles.add(pionCourant+"-"+c2.getId());
+//									System.out.println("mouvement="+pionCourant+"-"+c2.getId());
 								}
 							}							
 						}
 					}
-				}
+				}				
 			}
 		}
-		return nb;
+		return coupsPossibles;
 	}
-
 }

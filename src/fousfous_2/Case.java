@@ -32,5 +32,10 @@ private String Color; // Couleur donc joueur de cette Case
 	public void setColor(String Color){ // Definir la couleur
 		this.Color = Color;
 	}
+	
+	public String toString() {
+		String res = "tab["+i+"]["+j+"] = "+id +"("+Color+")\n";
+		return res;
+	}
 }
 
