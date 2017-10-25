@@ -58,7 +58,7 @@ public class PlateauFousFous implements Partie1 {
 		int nb = 0;
 		for (int i = 0; i < TAILLE; i++) {
 			for (int w = 0; w < TAILLE; w++) {
-				if (this.plateau[i][w].getColor().equals("n")) {
+				if ("n".equalsIgnoreCase(this.plateau[i][w].getColor())) {
 					nb++;
 				}
 			}
@@ -181,7 +181,7 @@ public class PlateauFousFous implements Partie1 {
 	public void play(String move, String player) {
 		if(estValide(move, player)) {
 			Case[] dest = mvcel(move);
-			if (player.substring(0, 1).equals(dest[0].getColor())) {
+			if (player.substring(0, 1).equalsIgnoreCase(dest[0].getColor())) {
 				dest[1].setColor(dest[0].getColor());
 				dest[0].setColor("-");
 				for (Case[] tab : this.plateau) {
@@ -218,8 +218,8 @@ public class PlateauFousFous implements Partie1 {
 		while (i < 8 && j < 8) {
 			res[iter] = this.plateau[i][j];
 			iter++;
-			if (this.plateau[i][j].getColor().equals("b")
-					|| this.plateau[i][j].getColor().equals("n")) {
+			if ("b".equalsIgnoreCase(this.plateau[i][j].getColor())
+					|| "n".equalsIgnoreCase(this.plateau[i][j].getColor())) {
 				break;
 			}
 
@@ -234,8 +234,8 @@ public class PlateauFousFous implements Partie1 {
 
 			res[iter] = this.plateau[i][j];
 			iter++;
-			if (this.plateau[i][j].getColor().equals("b")
-					|| this.plateau[i][j].getColor().equals("n")) {
+			if ("b".equalsIgnoreCase(this.plateau[i][j].getColor())
+					|| "n".equalsIgnoreCase(this.plateau[i][j].getColor())) {
 				break;
 			}
 
@@ -249,10 +249,9 @@ public class PlateauFousFous implements Partie1 {
 		while (i >= 0 && j < 8) {
 
 			res[iter] = this.plateau[i][j];
-			//System.out.print(this.Plateau[i][j].getId() +" | ");
 			iter++;
-			if (this.plateau[i][j].getColor().equals("b")
-					|| this.plateau[i][j].getColor().equals("n")) {
+			if ("b".equalsIgnoreCase(this.plateau[i][j].getColor())
+					|| "n".equalsIgnoreCase(this.plateau[i][j].getColor())) {
 				break;
 			}
 
@@ -267,8 +266,8 @@ public class PlateauFousFous implements Partie1 {
 
 			res[iter] = this.plateau[i][j];
 			iter++;
-			if (this.plateau[i][j].getColor().equals("b")
-					|| this.plateau[i][j].getColor().equals("n")) {
+			if ("b".equalsIgnoreCase(this.plateau[i][j].getColor())
+					|| "n".equalsIgnoreCase(this.plateau[i][j].getColor())) {
 				break;
 			}
 
@@ -284,13 +283,13 @@ public class PlateauFousFous implements Partie1 {
 		int iter = 0;
 		for (Case c : this.Obtdiag(C)) {
 			if (c != null) {
-				if (player.substring(0, 1).equals("b")
-						&& c.getColor().equals("n")) {
+				if ("b".equalsIgnoreCase(player.substring(0, 1))
+						&& "n".equalsIgnoreCase(c.getColor())) {
 					res[iter] = c;
 					iter++;
 				}
-				if (player.substring(0, 1).equals("n")
-						&& c.getColor().equals("b")) {
+				if ("n".equalsIgnoreCase(player.substring(0, 1))
+						&& "b".equalsIgnoreCase(c.getColor())) {
 					res[iter] = c;
 					iter++;
 				}
@@ -298,6 +297,7 @@ public class PlateauFousFous implements Partie1 {
 		}
 		return res;
 	}
+	
 	//Gestion de la menace d'un pion 
 	public boolean men(Case cas, String player) {
 		for (Case c : ObtEnemiDiag(cas, player)) {
@@ -307,6 +307,7 @@ public class PlateauFousFous implements Partie1 {
 		}
 		return false;
 	}
+	
 	// Verifie que la case choisi a attaque appartient au enemie direct en diagonal
 	public boolean verifDiagVide(Case[] cas, String player) {
 		Case origin = cas[0];
@@ -314,8 +315,7 @@ public class PlateauFousFous implements Partie1 {
 		// Gere attaque a enemie direct
 		for (Case c : Obtdiag(origin)) {
 			if (c != null) {
-				if(dest.getId().equals(c.getId()))
-				{
+				if(dest.getId().equalsIgnoreCase(c.getId())) {
 					return true;
 				}
 			}
