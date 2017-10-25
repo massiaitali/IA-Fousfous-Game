@@ -11,54 +11,53 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
-
 public class PlateauFousFous implements Partie1 {
-    // Initialisation du plateau avce un tableau de Case 
+    // Initialise le plateau avec un tableau de Case 
     public Case[][] plateau;
-    public final int TAILLE = 8;
     public String joueurCourant = "";
+    public final int TAILLE = 8;
+    public final String JOUEUR_BLANC = "blanc";
+    public final String JOUEUR_NOIR = "noir";
     
-    // Génerer le plateau avec les pions blanc et noir
+    // Génère le plateau avec les pions blanc et noir
 	public PlateauFousFous() {
-
 		this.plateau = new Case[this.TAILLE][this.TAILLE];
-
 		for (int w = 0; w < this.TAILLE; w++) {
 			for (int i = 0; i < this.TAILLE; i++) {
 				if ((w % 2) == 0 && (i % 2) == 1) {
-					this.plateau[w][i] = new Case(w, i, "b");
+					this.plateau[w][i] = new Case(w, i, Color.BLANC);
 				} else if ((w % 2) == 1 && (i % 2) == 0) {
-					this.plateau[w][i] = new Case(w, i, "n");
+					this.plateau[w][i] = new Case(w, i, Color.NOIR);
 				} else {
-					this.plateau[w][i] = new Case(w, i, "-");
+					this.plateau[w][i] = new Case(w, i, Color.VIDE);
 				}
 			}
 		}
-		this.joueurCourant = "blanc";
+		this.joueurCourant = JOUEUR_BLANC;
     }
 
     // Test la fin de partie
     public boolean finDePartie() {
 		return nbPionBlanc() == 0 || nbPionNoir() == 0;
 	}
-    // Renvoie le nb de pions blanc sur le plateau
+    // Renvoie le nombre de pions blancs sur le plateau
 	public int nbPionBlanc() {
 		int nb = 0;
 		for (int i = 0; i < TAILLE; i++) {
 			for (int w = 0; w < TAILLE; w++) {
-				if ("b".equalsIgnoreCase(this.plateau[i][w].getColor())) {
+				if (Color.BLANC == this.plateau[i][w].getColor()) {
 					nb++;
 				}
 			}
 		}
 		return nb;
 	}
-    // Renvoie le nombre de pion noir sur le plateau
+    // Renvoie le nombre de pions noirs sur le plateau
 	public int nbPionNoir() {
 		int nb = 0;
 		for (int i = 0; i < TAILLE; i++) {
 			for (int w = 0; w < TAILLE; w++) {
-				if ("n".equalsIgnoreCase(this.plateau[i][w].getColor())) {
+				if (Color.NOIR == (this.plateau[i][w].getColor())) {
 					nb++;
 				}
 			}
@@ -66,7 +65,7 @@ public class PlateauFousFous implements Partie1 {
 		return nb;
     }
 	
-	// Affichage du plateau
+	// Affiche le plateau
     public String toString() {
     	String res = "";
         res += "% Etat Initial du plateau de jeu:\n";
@@ -96,8 +95,8 @@ public class PlateauFousFous implements Partie1 {
 					c = 2;
 					if(!"%".equalsIgnoreCase(line.substring(0, 1))) {
 						int ligne = Integer.parseInt(line.substring(0, 1));
-						for (int j = 0; j < TAILLE; j++) {							
-							this.plateau[ligne-1][j] = new Case(ligne-1, j, line.substring(c, c+1));
+						for (int j = 0; j < TAILLE; j++) {				
+							this.plateau[ligne-1][j] = new Case(ligne-1, j, Color.fromString(line.substring(c, c+1)));
 							c++;
 						}
 					}
@@ -125,7 +124,7 @@ public class PlateauFousFous implements Partie1 {
         		for (int i = 0; i < TAILLE; i++) {
         			writer.write((i + 1) + " ");
         			for (int j = 0; j < TAILLE; j++) {
-        				writer.write(this.plateau[i][j].getColor());
+        				writer.write(this.plateau[i][j].getColor().toString());
         			}
         			writer.write(" " + (i + 1)+"\n");
         		}
@@ -139,34 +138,33 @@ public class PlateauFousFous implements Partie1 {
         }		
 	}
 
-	@Override
-	// Verifier la validité d'un coup
+	// Vérifie la validité d'un coup
 	public boolean estValide(String move, String player) {
 		Case[] cas = mvcel(move);
 
-		// Chemin vide et diag verif
+		// Chemin vide et diagonale vérifiée
 		if(!verifDiagVide(cas, player)) {
 			return false;
 		}
-		// vrai pion
-		if("-".equalsIgnoreCase(cas[0].getColor())) {
+		// Vrai pion -> pas vide
+		if(Color.VIDE == (cas[0].getColor())) {
 			return false;
 		}
-		//Ne pas aller sur la même couleur 
-		if(cas[1].getColor().equalsIgnoreCase(cas[0].getColor())) {
+		// Ne pas aller sur la même couleur 
+		if(cas[1].getColor() == (cas[0].getColor())) {
 			return false;
 		}
 		// On attaque un pion 
- 		if(("n".equalsIgnoreCase(cas[0].getColor()) && "b".equalsIgnoreCase(cas[1].getColor())) 
- 				|| ("b".equalsIgnoreCase(cas[0].getColor()) && "n".equalsIgnoreCase(cas[1].getColor()))) {
+ 		if((Color.NOIR == (cas[0].getColor()) && Color.BLANC == (cas[1].getColor())) 
+ 				|| (Color.BLANC == (cas[0].getColor()) && Color.NOIR == (cas[1].getColor()))) {
 			return true;
 		}
 		else {
-			// Verif que nous sommes pas en position d'attaque
+			// Vérifie que nous ne sommes pas en position d'attaque
 			if(men(cas[0], player)) {
 				return false;
 			}
-			// On peut manger avec ce deplacement
+			// On peut prendre avec ce déplacement
 			if(men(cas[1], player)) {
 				return true;
 			}
@@ -176,14 +174,13 @@ public class PlateauFousFous implements Partie1 {
 		}
 	}
 
-	@Override
-	//Déplacement d'un pion d'une Case a une autre
+	// Déplace pn pion d'une Case à une autre
 	public void play(String move, String player) {
 		if(estValide(move, player)) {
 			Case[] dest = mvcel(move);
-			if (player.substring(0, 1).equalsIgnoreCase(dest[0].getColor())) {
+			if (player.substring(0, 1).equalsIgnoreCase(dest[0].getColor().toString())) {
 				dest[1].setColor(dest[0].getColor());
-				dest[0].setColor("-");
+				dest[0].setColor(Color.VIDE);
 				for (Case[] tab : this.plateau) {
 					for (Case c : tab) {
 						if (c.getI() == dest[0].getI() && c.getJ() == dest[0].getJ()) {
@@ -193,10 +190,11 @@ public class PlateauFousFous implements Partie1 {
 							c = dest[1];
 						}
 					}
-					if("blanc".equalsIgnoreCase(player)) {
-						this.joueurCourant = "noir";
+					// On passe au joueur suivant
+					if(JOUEUR_BLANC.equalsIgnoreCase(player)) {
+						this.joueurCourant = JOUEUR_NOIR;
 					} else {
-						this.joueurCourant = "blanc";
+						this.joueurCourant = JOUEUR_BLANC;
 					}
 				}
 			} else {
@@ -207,19 +205,19 @@ public class PlateauFousFous implements Partie1 {
 			System.out.println("Le mouvement est impossible");	
 		}	
 	}
-	// Recuperer les pions en diagonal (on s'arrete une fois un pion trouvé)
-	public Case[] Obtdiag(Case C) {
+	// Récupère les pions en diagonale (on s'arrête une fois un pion trouvé)
+	public Case[] obtdiag(Case C) {
 		Case[] res = new Case[15];
 
 		int i = C.getI() + 1;
 		int j = C.getJ() + 1;
 		int iter = 0;
-		//Diagonal sud est
+		// Diagonale sud est
 		while (i < 8 && j < 8) {
 			res[iter] = this.plateau[i][j];
 			iter++;
-			if ("b".equalsIgnoreCase(this.plateau[i][j].getColor())
-					|| "n".equalsIgnoreCase(this.plateau[i][j].getColor())) {
+			if (Color.BLANC == (this.plateau[i][j].getColor())
+					|| Color.NOIR == (this.plateau[i][j].getColor())) {
 				break;
 			}
 
@@ -229,13 +227,13 @@ public class PlateauFousFous implements Partie1 {
 
 		i = C.getI() - 1;
 		j = C.getJ() - 1;
-		//Diagonal nord ouest
+		//Diagonale nord ouest
 		while (i >= 0 && j >= 0) {
 
 			res[iter] = this.plateau[i][j];
 			iter++;
-			if ("b".equalsIgnoreCase(this.plateau[i][j].getColor())
-					|| "n".equalsIgnoreCase(this.plateau[i][j].getColor())) {
+			if (Color.BLANC == (this.plateau[i][j].getColor())
+					|| Color.NOIR == (this.plateau[i][j].getColor())) {
 				break;
 			}
 
@@ -245,13 +243,13 @@ public class PlateauFousFous implements Partie1 {
 
 		i = C.getI() - 1;
 		j = C.getJ() + 1;
-		//Diagonal nord est
+		//Diagonale nord est
 		while (i >= 0 && j < 8) {
 
 			res[iter] = this.plateau[i][j];
 			iter++;
-			if ("b".equalsIgnoreCase(this.plateau[i][j].getColor())
-					|| "n".equalsIgnoreCase(this.plateau[i][j].getColor())) {
+			if (Color.BLANC == (this.plateau[i][j].getColor())
+					|| Color.NOIR == (this.plateau[i][j].getColor())) {
 				break;
 			}
 
@@ -261,13 +259,13 @@ public class PlateauFousFous implements Partie1 {
 
 		i = C.getI() + 1;
 		j = C.getJ() - 1;
-		//Diagonal sud ouest
+		//Diagonale sud ouest
 		while (i < 8 && j >= 0) {
 
 			res[iter] = this.plateau[i][j];
 			iter++;
-			if ("b".equalsIgnoreCase(this.plateau[i][j].getColor())
-					|| "n".equalsIgnoreCase(this.plateau[i][j].getColor())) {
+			if (Color.BLANC == (this.plateau[i][j].getColor())
+					|| Color.NOIR == (this.plateau[i][j].getColor())) {
 				break;
 			}
 
@@ -277,19 +275,19 @@ public class PlateauFousFous implements Partie1 {
 		return res;
 
 	}
-	// Obtenir la liste d'enemie direct en diagonal
-	public Case[] ObtEnemiDiag(Case C, String player) {
+	// Obtient la liste des ennemies directs en diagonale
+	public Case[] obtEnemiDiag(Case C, String player) {
 		Case[] res = new Case[4];
 		int iter = 0;
-		for (Case c : this.Obtdiag(C)) {
+		for (Case c : this.obtdiag(C)) {
 			if (c != null) {
-				if ("b".equalsIgnoreCase(player.substring(0, 1))
-						&& "n".equalsIgnoreCase(c.getColor())) {
+				if (Color.BLANC.toString().equalsIgnoreCase(player.substring(0, 1)) 
+						&& Color.NOIR == (c.getColor())) {
 					res[iter] = c;
 					iter++;
 				}
-				if ("n".equalsIgnoreCase(player.substring(0, 1))
-						&& "b".equalsIgnoreCase(c.getColor())) {
+				if (Color.NOIR.toString().equalsIgnoreCase(player.substring(0, 1))
+						&& Color.BLANC == (c.getColor())) {
 					res[iter] = c;
 					iter++;
 				}
@@ -298,9 +296,9 @@ public class PlateauFousFous implements Partie1 {
 		return res;
 	}
 	
-	//Gestion de la menace d'un pion 
+	// Gestion de la menace d'un pion 
 	public boolean men(Case cas, String player) {
-		for (Case c : ObtEnemiDiag(cas, player)) {
+		for (Case c : obtEnemiDiag(cas, player)) {
 			if (c != null) {
 				return true;
 			}
@@ -308,12 +306,12 @@ public class PlateauFousFous implements Partie1 {
 		return false;
 	}
 	
-	// Verifie que la case choisi a attaque appartient au enemie direct en diagonal
+	// Vérifie que la case choisie à attaquer appartient à l'ennemie direct en diagonale
 	public boolean verifDiagVide(Case[] cas, String player) {
 		Case origin = cas[0];
 		Case dest = cas[1];
-		// Gere attaque a enemie direct
-		for (Case c : Obtdiag(origin)) {
+		// Gère l'attaque d'un ennemie direct
+		for (Case c : obtdiag(origin)) {
 			if (c != null) {
 				if(dest.getId().equalsIgnoreCase(c.getId())) {
 					return true;
@@ -325,7 +323,7 @@ public class PlateauFousFous implements Partie1 {
 	// Echange les positions sur le plateau
 	private Case[] mvcel(String move) {
 		Case[] mv = new Case[2];
-		String[] data = move.split("-");
+		String[] data = move.split(Color.VIDE.toString());
 		String dest = data[1];
 		String pion = data[0];
 		mv[0] = this.plateau[Integer.parseInt(pion.substring(1, 2)) - 1][pion
@@ -345,10 +343,10 @@ public class PlateauFousFous implements Partie1 {
 		for (Case[] tab : this.plateau) {
 			for (Case c : tab) {
 				String pionCourant = "";
-				if("b".equalsIgnoreCase(c.getColor()) && "blanc".equalsIgnoreCase(this.joueurCourant)) {
+				if(Color.BLANC == (c.getColor()) && JOUEUR_BLANC.equalsIgnoreCase(this.joueurCourant)) {
 					pionCourant = c.getId();
 				}
-				else if("n".equalsIgnoreCase(c.getColor()) && "noir".equalsIgnoreCase(this.joueurCourant)) {
+				else if(Color.NOIR == (c.getColor()) && JOUEUR_NOIR.equalsIgnoreCase(this.joueurCourant)) {
 					pionCourant = c.getId();
 				}
 				// Si la cellule n'est pas vide
@@ -356,10 +354,9 @@ public class PlateauFousFous implements Partie1 {
 					// on parcourt le plateau pour calculer le nombre de déplacement que le pion courant peut faire
 					for(Case[] tab2 : this.plateau) {
 						for (Case c2 : tab2) {
-							if(!"-".equalsIgnoreCase(c2.getColor()) && !pionCourant.equalsIgnoreCase(c2.getId())) {
-								if(estValide(pionCourant+"-"+c2.getId(), this.joueurCourant)) {
-									coupsPossibles.add(pionCourant+"-"+c2.getId());									
-//									System.out.println("mouvement="+pionCourant+"-"+c2.getId());
+							if(!(Color.VIDE == (c2.getColor())) && !pionCourant.equalsIgnoreCase(c2.getId())) {
+								if(estValide(pionCourant+Color.VIDE+c2.getId(), this.joueurCourant)) {
+									coupsPossibles.add(pionCourant+Color.VIDE+c2.getId());				
 								}
 							}							
 						}
@@ -370,59 +367,38 @@ public class PlateauFousFous implements Partie1 {
 		return coupsPossibles;
 	}
 
-    public static void main(String[] args) {
-//    	PlateauFousFous PlateauTest = new PlateauFousFous();
-//    	System.out.println(PlateauTest);
-//    	System.out.println(PlateauTest.estValide("B1-C2", "blanc"));
-//    	PlateauTest.play("B1-C2", "blanc");
-//    	System.out.println(PlateauTest);
-//    	System.out.println(PlateauTest.estValide("C2-F5", "noir"));
-//    	PlateauTest.play("B1-C2", "blanc");
-//    	System.out.println(PlateauTest);
-//    	System.out.println(PlateauTest.estValide("C2-B1", "blanc"));
-//    	PlateauTest.play("C2-B1", "blanc");
-//    	System.out.println(PlateauTest);
-//    	PlateauTest.play("E2-D3", "noir");
-//    	System.out.println(PlateauTest);
-//    	PlateauTest.play("F1-G2", "blanc");
-//    	System.out.println(PlateauTest);
-//    	PlateauTest.play("G2-F1", "blanc");
-//    	System.out.println(PlateauTest);
-//    	PlateauTest.play("D7-E8", "blanc");
-//    	System.out.println(PlateauTest);
-//    	PlateauTest.play("C6-B7", "noir");
-//    	System.out.println(PlateauTest);
-//    	PlateauTest.play("C6-B7", "noir");
-//    	System.out.println(PlateauTest);
-//    	PlateauTest.play("D1-E2", "blanc");
-//    	System.out.println(PlateauTest);
-//    	PlateauTest.play("H3-G4", "blanc");
-//    	System.out.println(PlateauTest);
-    	
+    public static void main(String[] args) {    	
+    	// Création du fichier de sauvegarde et de lecture
     	Date today = new Date();
     	SimpleDateFormat formater = new SimpleDateFormat("yyyyMMddHHmmss");
     	String file = "files/"+formater.format(today)+".txt";
+    	
     	Scanner sc = new Scanner(System.in);
-    	PlateauFousFous PlateauTest = new PlateauFousFous();
+    	PlateauFousFous PlateauTest = new PlateauFousFous();    	
     	
     	System.out.println("La partie va commencer...");
 		while(!PlateauTest.finDePartie()) {
-			// Affichage du plateau courant
+			// Afficher le plateau courant
 	        System.out.println(PlateauTest);
 	        
+	        // Calculer et afficher les coups possibles
 			System.out.println("Joueur courant : " + PlateauTest.joueurCourant);
 			ArrayList<String> listeCoupsPossibles = PlateauTest.mouvementsPossibles(PlateauTest.joueurCourant);
 			System.out.println("Il y a "+listeCoupsPossibles.size()+ " coups possibles sur le plateau.");
 			System.out.println(listeCoupsPossibles);
 			
+			// Récupérer déplacement à faire + jouer 
 			System.out.println("Veuillez saisir le coup à jouer (exemple : B1-C2) : ");
 			String coup = sc.nextLine();
+			
 			PlateauTest.play(coup.toUpperCase(), PlateauTest.joueurCourant);
 
+			// Import et export dans un fichier
 	        PlateauTest.saveToFile(file);
 	        PlateauTest.setFromFile(file);
 		}
         sc.close();
+        // Affiche le joueur gagnant
 		if(PlateauTest.nbPionBlanc() == 0) {
 			System.out.println("Le joueur noir a gagné !!");
 		}

@@ -5,10 +5,10 @@ public class Case {
 	private int j; // Position en j 
 	private int i; // Position en i 
 	private String id; // Id de type B1 A1 ect...
-	private String color; // Couleur donc joueur de cette Case
+	private Color color; // Couleur donc joueur de cette Case
 	
 	// Initialiser une Case
-	public Case(int i, int j, String color){ 
+	public Case(int i, int j, Color color){ 
 		this.i = i;
 		this.j = j;
 		this.color = color;
@@ -39,11 +39,11 @@ public class Case {
 		this.id = id;
 	}
 
-	public String getColor() {
+	public Color getColor() {
 		return color;
 	}
 
-	public void setColor(String color) {
+	public void setColor(Color color) {
 		this.color = color;
 	}
 
