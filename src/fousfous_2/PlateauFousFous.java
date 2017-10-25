@@ -82,11 +82,30 @@ public class PlateauFousFous implements Partie1 {
 
     		PlateauFousFous PlateauTest = new PlateauFousFous();
     		PlateauTest.VoirTableau();
-    		System.out.println(PlateauTest.estValide("B1-C2", "blanc"));
+//    		System.out.println(PlateauTest.estValide("B1-C2", "blanc"));
+//    		PlateauTest.play("B1-C2", "blanc");
+//    		PlateauTest.VoirTableau();
+    		//System.out.println(PlateauTest.estValide("C2-F5", "noir"));
     		PlateauTest.play("B1-C2", "blanc");
     		PlateauTest.VoirTableau();
-    		System.out.println(PlateauTest.estValide("C2-E4", "blanc"));
-    		PlateauTest.play("C2-E4", "blanc");
+    		//System.out.println(PlateauTest.estValide("C2-B1", "blanc"));
+    		PlateauTest.play("C2-B1", "blanc");
+    		PlateauTest.VoirTableau();
+    		PlateauTest.play("E2-D3", "noir");
+    		PlateauTest.VoirTableau();
+    		PlateauTest.play("F1-G2", "blanc");
+    		PlateauTest.VoirTableau();
+    		PlateauTest.play("G2-F1", "blanc");
+    		PlateauTest.VoirTableau();
+    		PlateauTest.play("D7-E8", "blanc");
+    		PlateauTest.VoirTableau();
+    		PlateauTest.play("C6-B7", "noir");
+    		PlateauTest.VoirTableau();
+    		PlateauTest.play("C6-B7", "noir");
+    		PlateauTest.VoirTableau();
+    		PlateauTest.play("D1-E2", "blanc");
+    		PlateauTest.VoirTableau();
+    		PlateauTest.play("H3-G4", "blanc");
     		PlateauTest.VoirTableau();
     		/*Date today = new Date();
     		SimpleDateFormat formater = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -174,99 +193,178 @@ public class PlateauFousFous implements Partie1 {
 	@Override
 	// Verifier la validé d'un coup
 	public boolean estValide(String move, String player) {
+		
 		Case[] cas = mvcel(move);
-		if (cas[0].getColor().equals(cas[1].getColor())) {return false;}
-		if (cas[1].getColor().equals("b") && player.substring(0, 1).equals("n")) {return true;}
-		if (cas[1].getColor().equals("n") && player.substring(0, 1).equals("b")) {return true;}
-		if (this.men(cas[0], player)) {return false;}
-		if (this.men(cas[1], player)) {return true;}
-		return false;
+		
+		// Chemin vide et diag verif
+		if(!verifDiagVide(cas, player)) {
+			return false;
+		}
+		// vrai pion
+		if(cas[0].getColor() == "-" ) {
+			return false;
+		}
+		//Ne pas aller sur la même couleur 
+		if(cas[1].getColor().equals(cas[0].getColor())) {
+			return false;
+		}
+		// On attaque un pion 
+ 		if((cas[0].getColor() == "n" && cas[1].getColor() == "b") || (cas[0].getColor() == "b" && cas[1].getColor() == "n")) {
+			return true;
+		}
+			else {
+				// Verif que nous sommes pas en position d'attaque
+				if(men(cas[0], player)) {
+					return false;
+				}
+				// On peut manger avec ce deplacement
+				if(men(cas[1], player)) {
+					return true;
+				}
+					else {
+					return false;
+					}
+			}
 	}
 
 	@Override
 	//Déplacement d'un pion d'une Case a une autre
 	public void play(String move, String player) {
-		Case[] dest = mvcel(move);
-		if (player.substring(0, 1).equals(dest[0].getColor()) && estValide(move, player)) {
-			dest[1].setColor(dest[0].getColor());
-			dest[0].setColor("-");
-			for (Case[] tab : this.Plateau) {
-				for (Case c : tab) {
-					if (c.getI() == dest[0].getI() && c.getJ() == dest[0].getJ()) {
-						c = dest[0];
+		if(estValide(move, player)) {
+			Case[] dest = mvcel(move);
+			//System.out.print(player.substring(0, 1));
+			//System.out.print(dest[0].getColor());
+			if (player.substring(0, 1).equals(dest[0].getColor())) {
+				dest[1].setColor(dest[0].getColor());
+				dest[0].setColor("-");
+				for (Case[] tab : this.Plateau) {
+					for (Case c : tab) {
+						if (c.getI() == dest[0].getI() && c.getJ() == dest[0].getJ()) {
+							c = dest[0];
+						}
+						if (c.getI() == dest[1].getI() && c.getJ() == dest[1].getJ()) {
+							c = dest[1];
+						}
 					}
-					if (c.getI() == dest[1].getI() && c.getJ() == dest[1].getJ()) {
-						c = dest[1];
+					if("blanc".equalsIgnoreCase(player)) {
+						this.joueurCourant = "noir";
+					} else {
+						this.joueurCourant = "blanc";
 					}
-				}
-				if("blanc".equalsIgnoreCase(player)) {
-					this.joueurCourant = "noir";
-				} else {
-					this.joueurCourant = "blanc";
-				}
 
+				}
+			} else {
+				System.out.print("Impossible");
 			}
-		} else {
-			System.out.print("Impossible");
 		}
-		
+		else {
+			System.out.println("Le mouvement est impossible");	
+		}	
+	}
+
+	public Case[] Obtdiag(Case C) {
+		Case[] res = new Case[15];
+
+		int i = C.getI() + 1;
+		int j = C.getJ() + 1;
+		int iter = 0;
+		while (i < 8 && j < 8) {
+			res[iter] = this.Plateau[i][j];
+			iter++;
+			if (this.Plateau[i][j].getColor().equals("b")
+					|| this.Plateau[i][j].getColor().equals("n")) {
+				break;
+			}
+
+			i++;
+			j++;
+		}
+
+		i = C.getI() - 1;
+		j = C.getJ() - 1;
+		while (i >= 0 && j >= 0) {
+
+			res[iter] = this.Plateau[i][j];
+			iter++;
+			if (this.Plateau[i][j].getColor().equals("b")
+					|| this.Plateau[i][j].getColor().equals("n")) {
+				break;
+			}
+
+			i--;
+			j--;
+		}
+
+		i = C.getI() - 1;
+		j = C.getJ() + 1;
+		while (i >= 0 && j < 8) {
+
+			res[iter] = this.Plateau[i][j];
+			//System.out.print(this.Plateau[i][j].getId() +" | ");
+			iter++;
+			if (this.Plateau[i][j].getColor().equals("b")
+					|| this.Plateau[i][j].getColor().equals("n")) {
+				break;
+			}
+
+			i--;
+			j++;
+		}
+
+		i = C.getI() + 1;
+		j = C.getJ() - 1;
+		while (i < 8 && j >= 0) {
+
+			res[iter] = this.Plateau[i][j];
+			iter++;
+			if (this.Plateau[i][j].getColor().equals("b")
+					|| this.Plateau[i][j].getColor().equals("n")) {
+				break;
+			}
+
+			i++;
+			j--;
+		}
+		return res;
+
+	}
+	public Case[] ObtEnemiDiag(Case C, String player) {
+		Case[] res = new Case[4];
+		int iter = 0;
+		for (Case c : this.Obtdiag(C)) {
+			if (c != null) {
+				if (player.substring(0, 1).equals("b")
+						&& c.getColor().equals("n")) {
+					res[iter] = c;
+					iter++;
+				}
+				if (player.substring(0, 1).equals("n")
+						&& c.getColor().equals("b")) {
+					res[iter] = c;
+					iter++;
+				}
+			}
+		}
+		return res;
 	}
 	//Gestion de la menace d'un pion 
 	public boolean men(Case cas, String player) {
-		//obtenir les pions en diagonal 
-		Case[] rest = new Case[15]; 
-		// Je boucle sur la diagonal qui vas vers le sud est
-		int i = cas.getI() + 1; int j = cas.getJ() + 1; int iter = 0;
-		while (i < 8 && j < 8) {
-			rest[iter] = this.Plateau[i][j];iter++;
-			if (this.Plateau[i][j].getColor().equals("n")
-					||this.Plateau[i][j].getColor().equals("b")
-					) {
-				break;
-			}
-			i++;j++;
-		}
-		// Je boucle sur la diagonal qui vas vers le nord ouest
-		i = cas.getI() - 1; j = cas.getJ() - 1;
-		while (i >= 0 && j >= 0) {
-			rest[iter] = this.Plateau[i][j]; iter++;
-			if (this.Plateau[i][j].getColor().equals("b")
-					|| this.Plateau[i][j].getColor().equals("n")) {
-				break;
-			}
-			i--;j--;
-		}
-		// Je boucle sur la diagonal qui vas vers le nord est
-		i = cas.getI() - 1; j = cas.getJ() + 1;
-		while (i >= 0 && j < 8) {
-			rest[iter] = this.Plateau[i][j]; iter++;
-			if (this.Plateau[i][j].getColor().equals("b")
-					|| this.Plateau[i][j].getColor().equals("n")) {
-				break;
-			}
-			i--;j++;
-		}
-		// Je boucle sur la diagonal qui vas vers le sud ouest
-		i = cas.getI() + 1; j = cas.getJ() - 1;
-		while (i < 8 && j >= 0) {
-			rest[iter] = this.Plateau[i][j]; iter++;
-			if (this.Plateau[i][j].getColor().equals("b")
-					|| this.Plateau[i][j].getColor().equals("n")) {
-				break;
-			}
-			i++; j--;
-		}
-		//Obtenir les enemies diagonal
-		for (Case c : rest) {
+		for (Case c : ObtEnemiDiag(cas, player)) {
 			if (c != null) {
-				//Verification de la menace cas joueur blanc et couleur de pion noir
-				if (player.substring(0, 1).equals("b")
-						&& c.getColor().equals("n")) {
-					return true;
-				}
-				//Verification de la menace cas joueur noir et couleur de pion blanc
-				if (player.substring(0, 1).equals("n")
-						&& c.getColor().equals("b")) {
+				return true;
+			}
+		}
+		return false;
+	}
+	// Verifie que la case choisi a attaque appartient au enemie direct en diagonal
+	public boolean verifDiagVide(Case[] cas, String player) {
+		Case origin = cas[0];
+		Case dest = cas[1];
+		// Gere attaque a enemie direct
+		for (Case c : Obtdiag(origin)) {
+			if (c != null) {
+				if(dest.getId().equals(c.getId()))
+				{
 					return true;
 				}
 			}
@@ -279,6 +377,7 @@ public class PlateauFousFous implements Partie1 {
 			String[] data = move.split("-");
 			String dest = data[1];
 			String pion = data[0];
+//			System.out.println("data=["+data[0]+","+data[1]+"] || pion="+pion);
 			mv[0] = this.Plateau[Integer.parseInt(pion.substring(1, 2)) - 1][pion
 					.toCharArray()[0] - 'A'];
 			mv[1] = this.Plateau[Integer.parseInt(dest.substring(1, 2)) - 1][dest
@@ -287,33 +386,35 @@ public class PlateauFousFous implements Partie1 {
 
 	}
 	// retourne le nombre de coups possible pour le joueur courant
-			public int getNbCoupsPossibles() {
-				int nb = 0;
-				// pour chaque pion du joueur courant
-				for (Case[] tab : this.Plateau) {
-					for (Case c : tab) {
-						String pionCourant = "";
-						if("b".equalsIgnoreCase(c.getColor()) && "blanc".equalsIgnoreCase(this.joueurCourant)) {
-							pionCourant = c.getId();
-						}
-						else if("n".equalsIgnoreCase(c.getColor()) && "noir".equalsIgnoreCase(this.joueurCourant)) {
-							pionCourant = c.getId();
-						}
-						// Si la cellule n'est pas vide
-						if(pionCourant != "") {
-							// on parcourt le plateau pour calculer le nombre de déplacement que le pion courant peut faire
-							for(Case[] tab2 : this.Plateau) {
-								for (Case c2 : tab2) {
-									if(estValide(pionCourant+"-"+c2.getId(), this.joueurCourant)) {
-										nb++;
-//										System.out.println(nb + " - coup :"+pionCourant+"-"+c2.getId());
-									}
+	public int getNbCoupsPossibles() {
+		int nb = 0;
+		// pour chaque pion du joueur courant
+		for (Case[] tab : this.Plateau) {
+			for (Case c : tab) {
+				String pionCourant = "";
+				if("b".equalsIgnoreCase(c.getColor()) && "blanc".equalsIgnoreCase(this.joueurCourant)) {
+					pionCourant = c.getId();
+				}
+				else if("n".equalsIgnoreCase(c.getColor()) && "noir".equalsIgnoreCase(this.joueurCourant)) {
+					pionCourant = c.getId();
+				}
+				// Si la cellule n'est pas vide
+				if(pionCourant != "") {
+					// on parcourt le plateau pour calculer le nombre de déplacement que le pion courant peut faire
+					for(Case[] tab2 : this.Plateau) {
+						for (Case c2 : tab2) {
+							if(!"-".equalsIgnoreCase(c2.getColor()) && !pionCourant.equalsIgnoreCase(c2.getId())) {
+								if(estValide(pionCourant+"-"+c2.getId(), this.joueurCourant)) {
+									nb++;
+									System.out.println("mouvement="+pionCourant+"-"+c2.getId());
 								}
-							}
+							}							
 						}
 					}
 				}
-				return nb;
 			}
+		}
+		return nb;
+	}
 
 }

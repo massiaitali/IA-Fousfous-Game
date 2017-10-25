@@ -5,7 +5,7 @@ public class Case {
  private int j; // Position en j 
  private int i; // Position en i 
  private String id; // Id de type B1 A1 ect...
-	private String Color; // Couleur donc joueur de cette Case
+private String Color; // Couleur donc joueur de cette Case
 	
 	
 	public Case(int i, int j, String Color){ // Initialiser une Case
