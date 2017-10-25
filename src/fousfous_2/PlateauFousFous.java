@@ -261,13 +261,14 @@ public class PlateauFousFous implements Partie1 {
 			System.out.println("Le mouvement est impossible");	
 		}	
 	}
-
+	// Recuperer les pions en diagonal (on s'arrete une fois un pion trouvé)
 	public Case[] Obtdiag(Case C) {
 		Case[] res = new Case[15];
 
 		int i = C.getI() + 1;
 		int j = C.getJ() + 1;
 		int iter = 0;
+		//Diagonal sud est
 		while (i < 8 && j < 8) {
 			res[iter] = this.Plateau[i][j];
 			iter++;
@@ -282,6 +283,7 @@ public class PlateauFousFous implements Partie1 {
 
 		i = C.getI() - 1;
 		j = C.getJ() - 1;
+		//Diagonal nord ouest
 		while (i >= 0 && j >= 0) {
 
 			res[iter] = this.Plateau[i][j];
@@ -297,6 +299,7 @@ public class PlateauFousFous implements Partie1 {
 
 		i = C.getI() - 1;
 		j = C.getJ() + 1;
+		//Diagonal nord est
 		while (i >= 0 && j < 8) {
 
 			res[iter] = this.Plateau[i][j];
@@ -313,6 +316,7 @@ public class PlateauFousFous implements Partie1 {
 
 		i = C.getI() + 1;
 		j = C.getJ() - 1;
+		//Diagonal sud ouest
 		while (i < 8 && j >= 0) {
 
 			res[iter] = this.Plateau[i][j];
@@ -328,6 +332,7 @@ public class PlateauFousFous implements Partie1 {
 		return res;
 
 	}
+	// Obtenir la liste d'enemie direct en diagonal
 	public Case[] ObtEnemiDiag(Case C, String player) {
 		Case[] res = new Case[4];
 		int iter = 0;
