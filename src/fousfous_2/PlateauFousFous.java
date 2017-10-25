@@ -132,7 +132,7 @@ public class PlateauFousFous implements Partie1 {
     	System.out.println("La partie va commencer...");
 		while(!PlateauTest.finDePartie()) {
 			// Affichage du plateau courant
-	        System.out.println(PlateauTest);
+//	        System.out.println(PlateauTest);
 			System.out.println("Joueur courant : " + PlateauTest.joueurCourant);
 			ArrayList<String> listeCoupsPossibles = PlateauTest.mouvementsPossibles(PlateauTest.joueurCourant);
 			System.out.println("Il y a "+listeCoupsPossibles.size()+ " coups possibles sur le plateau.");
@@ -143,7 +143,7 @@ public class PlateauFousFous implements Partie1 {
 			PlateauTest.play(coup.toUpperCase(), PlateauTest.joueurCourant);
 
 	        PlateauTest.saveToFile(file);
-	        //PlateauTest.setFromFile(file);
+	        PlateauTest.setFromFile(file);
 		}
         sc.close();
 		if(PlateauTest.nbPionBlanc() == 0) {
@@ -411,35 +411,34 @@ public class PlateauFousFous implements Partie1 {
 	// retourne le nombre de coups possible pour le joueur courant
 	public ArrayList<String> mouvementsPossibles(String player) {
 //		System.out.println("player="+player);
+
+        System.out.println(this);
 		ArrayList<String> coupsPossibles = new ArrayList<String>();
+
 		// pour chaque pion du joueur courant
-		for(int i = 0 ; i < TAILLE ; i++) {
-			for(int j = 0 ; j < TAILLE ; j++) {
+		for (Case[] tab : this.Plateau) {
+			for (Case c : tab) {
 				String pionCourant = "";
-				Case c = this.Plateau[i][j];
-				if("b".equalsIgnoreCase(c.getColor()) && "blanc".equalsIgnoreCase(player)) {
+				if("b".equalsIgnoreCase(c.getColor()) && "blanc".equalsIgnoreCase(this.joueurCourant)) {
 					pionCourant = c.getId();
 				}
-				else if("n".equalsIgnoreCase(c.getColor()) && "noir".equalsIgnoreCase(player)) {
+				else if("n".equalsIgnoreCase(c.getColor()) && "noir".equalsIgnoreCase(this.joueurCourant)) {
 					pionCourant = c.getId();
 				}
 				// Si la cellule n'est pas vide
 				if(pionCourant != "") {
-//					System.out.println("pioncourant="+pionCourant);
 					// on parcourt le plateau pour calculer le nombre de déplacement que le pion courant peut faire
-					for(int k = 0 ; k < TAILLE ; k++) {
-						for(int l = 0 ; l < TAILLE ; l++) {	
-							Case c2 = this.Plateau[k][l];
-//							System.out.println("c2="+c2);
+					for(Case[] tab2 : this.Plateau) {
+						for (Case c2 : tab2) {
 							if(!"-".equalsIgnoreCase(c2.getColor()) && !pionCourant.equalsIgnoreCase(c2.getId())) {
-								if(estValide(pionCourant+"-"+c2.getId(), player)) {
-									coupsPossibles.add(pionCourant+"-"+c2.getId());
+								if(estValide(pionCourant+"-"+c2.getId(), this.joueurCourant)) {
+									coupsPossibles.add(pionCourant+"-"+c2.getId());									
 //									System.out.println("mouvement="+pionCourant+"-"+c2.getId());
 								}
 							}							
 						}
 					}
-				}				
+				}
 			}
 		}
 		return coupsPossibles;
