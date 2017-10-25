@@ -46,7 +46,7 @@ public class PlateauFousFous implements Partie1 {
 		int nb = 0;
 		for (int i = 0; i < TAILLE; i++) {
 			for (int w = 0; w < TAILLE; w++) {
-				if (this.plateau[i][w].getColor().equals("b")) {
+				if ("b".equalsIgnoreCase(this.plateau[i][w].getColor())) {
 					nb++;
 				}
 			}
@@ -142,38 +142,38 @@ public class PlateauFousFous implements Partie1 {
 	@Override
 	// Verifier la validité d'un coup
 	public boolean estValide(String move, String player) {
-		
 		Case[] cas = mvcel(move);
-		
+
 		// Chemin vide et diag verif
 		if(!verifDiagVide(cas, player)) {
 			return false;
 		}
 		// vrai pion
-		if(cas[0].getColor() == "-" ) {
+		if("-".equalsIgnoreCase(cas[0].getColor())) {
 			return false;
 		}
 		//Ne pas aller sur la même couleur 
-		if(cas[1].getColor().equals(cas[0].getColor())) {
+		if(cas[1].getColor().equalsIgnoreCase(cas[0].getColor())) {
 			return false;
 		}
 		// On attaque un pion 
- 		if((cas[0].getColor() == "n" && cas[1].getColor() == "b") || (cas[0].getColor() == "b" && cas[1].getColor() == "n")) {
+ 		if(("n".equalsIgnoreCase(cas[0].getColor()) && "b".equalsIgnoreCase(cas[1].getColor())) 
+ 				|| ("b".equalsIgnoreCase(cas[0].getColor()) && "n".equalsIgnoreCase(cas[1].getColor()))) {
 			return true;
 		}
-			else {
-				// Verif que nous sommes pas en position d'attaque
-				if(men(cas[0], player)) {
-					return false;
-				}
-				// On peut manger avec ce deplacement
-				if(men(cas[1], player)) {
-					return true;
-				}
-					else {
-					return false;
-					}
+		else {
+			// Verif que nous sommes pas en position d'attaque
+			if(men(cas[0], player)) {
+				return false;
 			}
+			// On peut manger avec ce deplacement
+			if(men(cas[1], player)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
 	}
 
 	@Override
@@ -322,15 +322,15 @@ public class PlateauFousFous implements Partie1 {
 		}
 		return false;
 	}
-	// Echange les position sur le plateau
+	// Echange les positions sur le plateau
 	private Case[] mvcel(String move) {
 		Case[] mv = new Case[2];
-			String[] data = move.split("-");
-			String dest = data[1];
-			String pion = data[0];
-			mv[0] = this.plateau[Integer.parseInt(pion.substring(1, 2)) - 1][pion
-					.toCharArray()[0] - 'A'];
-			mv[1] = this.plateau[Integer.parseInt(dest.substring(1, 2)) - 1][dest
+		String[] data = move.split("-");
+		String dest = data[1];
+		String pion = data[0];
+		mv[0] = this.plateau[Integer.parseInt(pion.substring(1, 2)) - 1][pion
+				.toCharArray()[0] - 'A'];
+		mv[1] = this.plateau[Integer.parseInt(dest.substring(1, 2)) - 1][dest
 				                                             					.toCharArray()[0] - 'A'];
 		return mv;
 
@@ -338,9 +338,7 @@ public class PlateauFousFous implements Partie1 {
 	
 	// retourne le nombre de coups possible pour le joueur courant
 	public ArrayList<String> mouvementsPossibles(String player) {
-//		System.out.println("player="+player);
-
-        System.out.println(this);
+        //System.out.println(this);
 		ArrayList<String> coupsPossibles = new ArrayList<String>();
 
 		// pour chaque pion du joueur courant
@@ -406,10 +404,12 @@ public class PlateauFousFous implements Partie1 {
     	String file = "files/"+formater.format(today)+".txt";
     	Scanner sc = new Scanner(System.in);
     	PlateauFousFous PlateauTest = new PlateauFousFous();
+    	
     	System.out.println("La partie va commencer...");
 		while(!PlateauTest.finDePartie()) {
 			// Affichage du plateau courant
-//	        System.out.println(PlateauTest);
+	        System.out.println(PlateauTest);
+	        
 			System.out.println("Joueur courant : " + PlateauTest.joueurCourant);
 			ArrayList<String> listeCoupsPossibles = PlateauTest.mouvementsPossibles(PlateauTest.joueurCourant);
 			System.out.println("Il y a "+listeCoupsPossibles.size()+ " coups possibles sur le plateau.");
@@ -430,5 +430,4 @@ public class PlateauFousFous implements Partie1 {
 			System.out.println("Le joueur blanc a gagné !!");			
 		}    	
 	}
-
 }
