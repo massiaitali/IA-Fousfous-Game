@@ -2,39 +2,53 @@ package fousfous_2;
 
 //Classe Case permet de faciliter les fonctions
 public class Case {
- private int j; // Position en j 
- private int i; // Position en i 
- private String id; // Id de type B1 A1 ect...
-private String Color; // Couleur donc joueur de cette Case
+	private int j; // Position en j 
+	private int i; // Position en i 
+	private String id; // Id de type B1 A1 ect...
+	private String color; // Couleur donc joueur de cette Case
 	
-	
-	public Case(int i, int j, String Color){ // Initialiser une Case
+	// Initialiser une Case
+	public Case(int i, int j, String color){ 
 		this.i = i;
 		this.j = j;
-		this.Color = Color;
-		this.id=""+(char)(j+65)+""+(i+1);
+		this.color = color;
+		this.id = ""+(char)(j+65)+""+(i+1);
 	}
 	
-	public String getId(){ // Retourner l'id 
-		return this.id;
+	public int getJ() {
+		return j;
 	}
-	public int getI(){ // retourner I
-		return this.i;
+
+	public void setJ(int j) {
+		this.j = j;
 	}
-	
-	public int getJ(){ // retourner J
-		return this.j;
+
+	public int getI() {
+		return i;
 	}
-	public String getColor(){ // Retourner la couleur 
-		return this.Color;
+
+	public void setI(int i) {
+		this.i = i;
 	}
-	
-	public void setColor(String Color){ // Definir la couleur
-		this.Color = Color;
+
+	public String getId() {
+		return id;
 	}
-	
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
 	public String toString() {
-		String res = "tab["+i+"]["+j+"] = "+id +"("+Color+")\n";
+		String res = "tab["+i+"]["+j+"] = "+id +"("+color+")\n";
 		return res;
 	}
 }

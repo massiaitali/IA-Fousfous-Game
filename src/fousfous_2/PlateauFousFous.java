@@ -14,23 +14,23 @@ import java.util.Scanner;
 
 public class PlateauFousFous implements Partie1 {
     // Initialisation du plateau avce un tableau de Case 
-    public Case[][] Plateau;
+    public Case[][] plateau;
     public final int TAILLE = 8;
     public String joueurCourant = "";
     
     // Génerer le plateau avec les pions blanc et noir
 	public PlateauFousFous() {
 
-		this.Plateau = new Case[this.TAILLE][this.TAILLE];
+		this.plateau = new Case[this.TAILLE][this.TAILLE];
 
 		for (int w = 0; w < this.TAILLE; w++) {
 			for (int i = 0; i < this.TAILLE; i++) {
 				if ((w % 2) == 0 && (i % 2) == 1) {
-					this.Plateau[w][i] = new Case(w, i, "b");
+					this.plateau[w][i] = new Case(w, i, "b");
 				} else if ((w % 2) == 1 && (i % 2) == 0) {
-					this.Plateau[w][i] = new Case(w, i, "n");
+					this.plateau[w][i] = new Case(w, i, "n");
 				} else {
-					this.Plateau[w][i] = new Case(w, i, "-");
+					this.plateau[w][i] = new Case(w, i, "-");
 				}
 			}
 		}
@@ -46,7 +46,7 @@ public class PlateauFousFous implements Partie1 {
 		int nb = 0;
 		for (int i = 0; i < TAILLE; i++) {
 			for (int w = 0; w < TAILLE; w++) {
-				if (this.Plateau[i][w].getColor().equals("b")) {
+				if (this.plateau[i][w].getColor().equals("b")) {
 					nb++;
 				}
 			}
@@ -58,7 +58,7 @@ public class PlateauFousFous implements Partie1 {
 		int nb = 0;
 		for (int i = 0; i < TAILLE; i++) {
 			for (int w = 0; w < TAILLE; w++) {
-				if (this.Plateau[i][w].getColor().equals("n")) {
+				if (this.plateau[i][w].getColor().equals("n")) {
 					nb++;
 				}
 			}
@@ -74,87 +74,15 @@ public class PlateauFousFous implements Partie1 {
 		for (int i = 0; i < TAILLE; i++) {
 			res += (i + 1) + " ";
 			for (int j = 0; j < TAILLE; j++) {
-				res += this.Plateau[i][j].getColor();
+				res += this.plateau[i][j].getColor();
 			}
 			res += " " + (i + 1)+"\n";
 		}
 		res += "% ABCDEFGH\n";
-		
-		/*res += "% DEBUG:\n";
-		res += "% ABCDEFGH\n";
-		for (int i = 0; i < TAILLE; i++) {
-			res += (i + 1) + " ";
-			for (int j = 0; j < TAILLE; j++) {
-				res += this.Plateau[i][j].getId();
-			}
-			res += " " + (i + 1)+"\n";
-		}
-		res += "% ABCDEFGH\n";*/
-		
-		
 		return res;
     }
     
-    public static void main(String[] args) {
-//    	PlateauFousFous PlateauTest = new PlateauFousFous();
-//    	System.out.println(PlateauTest);
-//    	System.out.println(PlateauTest.estValide("B1-C2", "blanc"));
-//    	PlateauTest.play("B1-C2", "blanc");
-//    	System.out.println(PlateauTest);
-//    	System.out.println(PlateauTest.estValide("C2-F5", "noir"));
-//    	PlateauTest.play("B1-C2", "blanc");
-//    	System.out.println(PlateauTest);
-//    	System.out.println(PlateauTest.estValide("C2-B1", "blanc"));
-//    	PlateauTest.play("C2-B1", "blanc");
-//    	System.out.println(PlateauTest);
-//    	PlateauTest.play("E2-D3", "noir");
-//    	System.out.println(PlateauTest);
-//    	PlateauTest.play("F1-G2", "blanc");
-//    	System.out.println(PlateauTest);
-//    	PlateauTest.play("G2-F1", "blanc");
-//    	System.out.println(PlateauTest);
-//    	PlateauTest.play("D7-E8", "blanc");
-//    	System.out.println(PlateauTest);
-//    	PlateauTest.play("C6-B7", "noir");
-//    	System.out.println(PlateauTest);
-//    	PlateauTest.play("C6-B7", "noir");
-//    	System.out.println(PlateauTest);
-//    	PlateauTest.play("D1-E2", "blanc");
-//    	System.out.println(PlateauTest);
-//    	PlateauTest.play("H3-G4", "blanc");
-//    	System.out.println(PlateauTest);
-    	
-    	Date today = new Date();
-    	SimpleDateFormat formater = new SimpleDateFormat("yyyyMMddHHmmss");
-    	String file = "files/"+formater.format(today)+".txt";
-    	Scanner sc = new Scanner(System.in);
-    	PlateauFousFous PlateauTest = new PlateauFousFous();
-    	System.out.println("La partie va commencer...");
-		while(!PlateauTest.finDePartie()) {
-			// Affichage du plateau courant
-//	        System.out.println(PlateauTest);
-			System.out.println("Joueur courant : " + PlateauTest.joueurCourant);
-			ArrayList<String> listeCoupsPossibles = PlateauTest.mouvementsPossibles(PlateauTest.joueurCourant);
-			System.out.println("Il y a "+listeCoupsPossibles.size()+ " coups possibles sur le plateau.");
-			System.out.println(listeCoupsPossibles);
-			
-			System.out.println("Veuillez saisir le coup à jouer (exemple : B1-C2) : ");
-			String coup = sc.nextLine();
-			PlateauTest.play(coup.toUpperCase(), PlateauTest.joueurCourant);
-
-	        PlateauTest.saveToFile(file);
-	        PlateauTest.setFromFile(file);
-		}
-        sc.close();
-		if(PlateauTest.nbPionBlanc() == 0) {
-			System.out.println("Le joueur noir a gagné !!");
-		}
-		if(PlateauTest.nbPionNoir() == 0) {
-			System.out.println("Le joueur blanc a gagné !!");			
-		}    	
-	}
-
-	@Override
+	// Permet de remplir le plateau à partir d'un fichier
 	public void setFromFile(String fileName) {
 		File file = new File(fileName);
 		if(file.isFile()) {
@@ -169,7 +97,7 @@ public class PlateauFousFous implements Partie1 {
 					if(!"%".equalsIgnoreCase(line.substring(0, 1))) {
 						int ligne = Integer.parseInt(line.substring(0, 1));
 						for (int j = 0; j < TAILLE; j++) {							
-							this.Plateau[ligne-1][j] = new Case(ligne-1, j, line.substring(c, c+1));
+							this.plateau[ligne-1][j] = new Case(ligne-1, j, line.substring(c, c+1));
 							c++;
 						}
 					}
@@ -186,7 +114,7 @@ public class PlateauFousFous implements Partie1 {
 		}
 	}
 
-	@Override
+	// Permet de sauvegarder le plateau dans un fichier
 	public void saveToFile(String fileName) {
 		final File file = new File(fileName); 
         try {
@@ -197,7 +125,7 @@ public class PlateauFousFous implements Partie1 {
         		for (int i = 0; i < TAILLE; i++) {
         			writer.write((i + 1) + " ");
         			for (int j = 0; j < TAILLE; j++) {
-        				writer.write(this.Plateau[i][j].getColor());
+        				writer.write(this.plateau[i][j].getColor());
         			}
         			writer.write(" " + (i + 1)+"\n");
         		}
@@ -256,7 +184,7 @@ public class PlateauFousFous implements Partie1 {
 			if (player.substring(0, 1).equals(dest[0].getColor())) {
 				dest[1].setColor(dest[0].getColor());
 				dest[0].setColor("-");
-				for (Case[] tab : this.Plateau) {
+				for (Case[] tab : this.plateau) {
 					for (Case c : tab) {
 						if (c.getI() == dest[0].getI() && c.getJ() == dest[0].getJ()) {
 							c = dest[0];
@@ -288,10 +216,10 @@ public class PlateauFousFous implements Partie1 {
 		int iter = 0;
 		//Diagonal sud est
 		while (i < 8 && j < 8) {
-			res[iter] = this.Plateau[i][j];
+			res[iter] = this.plateau[i][j];
 			iter++;
-			if (this.Plateau[i][j].getColor().equals("b")
-					|| this.Plateau[i][j].getColor().equals("n")) {
+			if (this.plateau[i][j].getColor().equals("b")
+					|| this.plateau[i][j].getColor().equals("n")) {
 				break;
 			}
 
@@ -304,10 +232,10 @@ public class PlateauFousFous implements Partie1 {
 		//Diagonal nord ouest
 		while (i >= 0 && j >= 0) {
 
-			res[iter] = this.Plateau[i][j];
+			res[iter] = this.plateau[i][j];
 			iter++;
-			if (this.Plateau[i][j].getColor().equals("b")
-					|| this.Plateau[i][j].getColor().equals("n")) {
+			if (this.plateau[i][j].getColor().equals("b")
+					|| this.plateau[i][j].getColor().equals("n")) {
 				break;
 			}
 
@@ -320,11 +248,11 @@ public class PlateauFousFous implements Partie1 {
 		//Diagonal nord est
 		while (i >= 0 && j < 8) {
 
-			res[iter] = this.Plateau[i][j];
+			res[iter] = this.plateau[i][j];
 			//System.out.print(this.Plateau[i][j].getId() +" | ");
 			iter++;
-			if (this.Plateau[i][j].getColor().equals("b")
-					|| this.Plateau[i][j].getColor().equals("n")) {
+			if (this.plateau[i][j].getColor().equals("b")
+					|| this.plateau[i][j].getColor().equals("n")) {
 				break;
 			}
 
@@ -337,10 +265,10 @@ public class PlateauFousFous implements Partie1 {
 		//Diagonal sud ouest
 		while (i < 8 && j >= 0) {
 
-			res[iter] = this.Plateau[i][j];
+			res[iter] = this.plateau[i][j];
 			iter++;
-			if (this.Plateau[i][j].getColor().equals("b")
-					|| this.Plateau[i][j].getColor().equals("n")) {
+			if (this.plateau[i][j].getColor().equals("b")
+					|| this.plateau[i][j].getColor().equals("n")) {
 				break;
 			}
 
@@ -400,9 +328,9 @@ public class PlateauFousFous implements Partie1 {
 			String[] data = move.split("-");
 			String dest = data[1];
 			String pion = data[0];
-			mv[0] = this.Plateau[Integer.parseInt(pion.substring(1, 2)) - 1][pion
+			mv[0] = this.plateau[Integer.parseInt(pion.substring(1, 2)) - 1][pion
 					.toCharArray()[0] - 'A'];
-			mv[1] = this.Plateau[Integer.parseInt(dest.substring(1, 2)) - 1][dest
+			mv[1] = this.plateau[Integer.parseInt(dest.substring(1, 2)) - 1][dest
 				                                             					.toCharArray()[0] - 'A'];
 		return mv;
 
@@ -416,7 +344,7 @@ public class PlateauFousFous implements Partie1 {
 		ArrayList<String> coupsPossibles = new ArrayList<String>();
 
 		// pour chaque pion du joueur courant
-		for (Case[] tab : this.Plateau) {
+		for (Case[] tab : this.plateau) {
 			for (Case c : tab) {
 				String pionCourant = "";
 				if("b".equalsIgnoreCase(c.getColor()) && "blanc".equalsIgnoreCase(this.joueurCourant)) {
@@ -428,7 +356,7 @@ public class PlateauFousFous implements Partie1 {
 				// Si la cellule n'est pas vide
 				if(pionCourant != "") {
 					// on parcourt le plateau pour calculer le nombre de déplacement que le pion courant peut faire
-					for(Case[] tab2 : this.Plateau) {
+					for(Case[] tab2 : this.plateau) {
 						for (Case c2 : tab2) {
 							if(!"-".equalsIgnoreCase(c2.getColor()) && !pionCourant.equalsIgnoreCase(c2.getId())) {
 								if(estValide(pionCourant+"-"+c2.getId(), this.joueurCourant)) {
@@ -443,4 +371,64 @@ public class PlateauFousFous implements Partie1 {
 		}
 		return coupsPossibles;
 	}
+
+    public static void main(String[] args) {
+//    	PlateauFousFous PlateauTest = new PlateauFousFous();
+//    	System.out.println(PlateauTest);
+//    	System.out.println(PlateauTest.estValide("B1-C2", "blanc"));
+//    	PlateauTest.play("B1-C2", "blanc");
+//    	System.out.println(PlateauTest);
+//    	System.out.println(PlateauTest.estValide("C2-F5", "noir"));
+//    	PlateauTest.play("B1-C2", "blanc");
+//    	System.out.println(PlateauTest);
+//    	System.out.println(PlateauTest.estValide("C2-B1", "blanc"));
+//    	PlateauTest.play("C2-B1", "blanc");
+//    	System.out.println(PlateauTest);
+//    	PlateauTest.play("E2-D3", "noir");
+//    	System.out.println(PlateauTest);
+//    	PlateauTest.play("F1-G2", "blanc");
+//    	System.out.println(PlateauTest);
+//    	PlateauTest.play("G2-F1", "blanc");
+//    	System.out.println(PlateauTest);
+//    	PlateauTest.play("D7-E8", "blanc");
+//    	System.out.println(PlateauTest);
+//    	PlateauTest.play("C6-B7", "noir");
+//    	System.out.println(PlateauTest);
+//    	PlateauTest.play("C6-B7", "noir");
+//    	System.out.println(PlateauTest);
+//    	PlateauTest.play("D1-E2", "blanc");
+//    	System.out.println(PlateauTest);
+//    	PlateauTest.play("H3-G4", "blanc");
+//    	System.out.println(PlateauTest);
+    	
+    	Date today = new Date();
+    	SimpleDateFormat formater = new SimpleDateFormat("yyyyMMddHHmmss");
+    	String file = "files/"+formater.format(today)+".txt";
+    	Scanner sc = new Scanner(System.in);
+    	PlateauFousFous PlateauTest = new PlateauFousFous();
+    	System.out.println("La partie va commencer...");
+		while(!PlateauTest.finDePartie()) {
+			// Affichage du plateau courant
+//	        System.out.println(PlateauTest);
+			System.out.println("Joueur courant : " + PlateauTest.joueurCourant);
+			ArrayList<String> listeCoupsPossibles = PlateauTest.mouvementsPossibles(PlateauTest.joueurCourant);
+			System.out.println("Il y a "+listeCoupsPossibles.size()+ " coups possibles sur le plateau.");
+			System.out.println(listeCoupsPossibles);
+			
+			System.out.println("Veuillez saisir le coup à jouer (exemple : B1-C2) : ");
+			String coup = sc.nextLine();
+			PlateauTest.play(coup.toUpperCase(), PlateauTest.joueurCourant);
+
+	        PlateauTest.saveToFile(file);
+	        PlateauTest.setFromFile(file);
+		}
+        sc.close();
+		if(PlateauTest.nbPionBlanc() == 0) {
+			System.out.println("Le joueur noir a gagné !!");
+		}
+		if(PlateauTest.nbPionNoir() == 0) {
+			System.out.println("Le joueur blanc a gagné !!");			
+		}    	
+	}
+
 }
