@@ -398,6 +398,7 @@ public class PlateauFousFous implements Partie1 {
 	        PlateauTest.setFromFile(file);
 		}
         sc.close();
+        System.out.println(PlateauTest);
         // Affiche le joueur gagnant
 		if(PlateauTest.nbPionBlanc() == 0) {
 			System.out.println("Le joueur noir a gagné !!");
