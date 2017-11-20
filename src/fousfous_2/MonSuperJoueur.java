@@ -1,6 +1,6 @@
 package fousfous_2;
 
-public class monsuperjoueur implements IJoueur {
+public class MonSuperJoueur implements IJoueur {
 
 	@Override
 	public int getNumJoueur() {
@@ -28,8 +28,7 @@ public class monsuperjoueur implements IJoueur {
 
 	@Override
 	public String binoName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "MonSuperJoueur";
 	}
 
 	@Override

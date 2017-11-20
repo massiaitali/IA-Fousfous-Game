@@ -7,10 +7,10 @@ import java.util.Date;
  * Petite Classe toute simple qui vous montre comment on peut lancer une partie sur deux IJoueurs...
  * Cela vous servira a debugger facilement votre projet en conditions presque reelles de tournoi
  * 
- * Attention, l'arbitre n'est pas lanc� dessus, mais comme il s'agit de deux IJoueur � vous il n'est
- * pas n�cessaire de v�rifier la validit� des coups (bien entendu)
+ * Attention, l'arbitre n'est pas lancé dessus, mais comme il s'agit de deux IJoueur à vous il n'est
+ * pas nécessaire de vérifier la validité des coups (bien entendu)
  * 
- * Par contre, comme rien ne v�rifie la fin de partie (pas d'arbitre), vos IJoueur devront renvoyer
+ * Par contre, comme rien ne vérifie la fin de partie (pas d'arbitre), vos IJoueur devront renvoyer
  * la chaine "xxxxx" pour dire que la partie est finie.
  * 
  * Cette classe n'affiche rien : elle se contente de donner la main alternativement aux deux
@@ -33,12 +33,12 @@ public class Solo {
     static boolean APPLETGRAPHIQUE = true;
 
     public void setAppletGraphique(boolean t) {
-	APPLETGRAPHIQUE = t;
+    	APPLETGRAPHIQUE = t;
     }
 
     /**
-     * Pour �viter de toujours envoyer des lignes de commandes, vous pouvez renvoyer automatiquement
-     * dans cette m�thode votre joueur par d�faut. Attention, il faut bien remplir le return new
+     * Pour éviter de toujours envoyer des lignes de commandes, vous pouvez renvoyer automatiquement
+     * dans cette méthode votre joueur par défaut. Attention, il faut bien remplir le return new
      * VOTREJOUEUR() pour que cela fonctionne la classe implantee renvoyee doit implanter
      * l'interface IJoueur...
      * 
@@ -46,10 +46,9 @@ public class Solo {
      * @return Ijoueur un joueur demande
      */
     private static IJoueur getDefaultPlayer(String s) {
-	System.out.println(s + " : defaultPlayer");
-	// vous devez faire qq chose comme return new MonMeilleurJoueur();
-	return new JoueurAleatoire();
-
+    	System.out.println(s + " : defaultPlayer");
+    	// vous devez faire qq chose comme return new MonMeilleurJoueur();
+    	return new JoueurFinal();
     }
 
     /**
@@ -62,18 +61,18 @@ public class Solo {
      * @return la classe chargee dynamiquement
      */
     private static IJoueur loadNamedPlayer(String classeJoueur, String s) {
-	IJoueur joueur;
-	System.out.print(s + " : Chargement de la classe joueur " + classeJoueur + "... ");
-	try {
-	    Class<?> cjoueur = Class.forName(classeJoueur);
-	    joueur = (IJoueur) cjoueur.newInstance();
-	} catch (Exception e) {
-	    System.out.println("Erreur de chargement");
-	    System.out.println(e);
-	    return null;
-	}
-	System.out.println("Ok");
-	return joueur;
+		IJoueur joueur;
+		System.out.print(s + " : Chargement de la classe joueur " + classeJoueur + "... ");
+		try {
+		    Class<?> cjoueur = Class.forName(classeJoueur);
+		    joueur = (IJoueur) cjoueur.newInstance();
+		} catch (Exception e) {
+		    System.out.println("Erreur de chargement");
+		    System.out.println(e);
+		    return null;
+		}
+		System.out.println("Ok");
+		return joueur;
     }
 
     /**
@@ -85,45 +84,45 @@ public class Solo {
      * @param joueurNoir
      */
     public static void gameLoop(IJoueur joueurBlanc, IJoueur joueurNoir) {
-	String coup;
-	boolean partieFinie = false;
-	IJoueur joueurCourant = joueurBlanc; // C'est eux qui commencent
-	//while (demicoup<209) {
-		//demicoup ++;
-	while (!partieFinie) {
-	    nbCoups++;
-
-	    System.out.println("\n*********\nOn demande � " + joueurCourant.binoName() + " de jouer...");
-	    long waitingTime1 = new Date().getTime();
-
-	    coup = joueurCourant.choixMouvement();
-
-	    long waitingTime2 = new Date().getTime();
-	    // On rajoute 1 pour eliminer les temps infinis
-	    long waitingTime = waitingTime2 - waitingTime1 + 1;
-	    System.out.println("Le joueur " + joueurCourant.binoName() + " a jou� le coup " + coup + " en "
-		    + waitingTime + "s.");
-	    try {
-		Thread.sleep(1); // Juste pour attendre un peu
-	    } catch (InterruptedException e) {
-	    }
-
-	    if (coup.compareTo("xxxxx") == 0)
-		partieFinie = true;
-	    else {
-		if (joueurCourant.getNumJoueur() == BLANC)
-		    joueurCourant = joueurNoir;
-		else
-		    joueurCourant = joueurBlanc;
-
-		// On averti le second joueur du coup calcule par le precedent
-		joueurCourant.mouvementEnnemi(coup);
-		// Ce sera ensuite a lui de jouer de retour en haut de la boucle
-
-	    }
-	}
-
-	System.out.println("Partie finie en " + nbCoups + " coups.\n");	
+		String coup;
+		boolean partieFinie = false;
+		IJoueur joueurCourant = joueurBlanc; // C'est eux qui commencent
+		//while (demicoup<209) {
+			//demicoup ++;
+		while (!partieFinie) {
+		    nbCoups++;
+	
+		    System.out.println("\n*********\nOn demande à " + joueurCourant.binoName() + " de jouer...");
+		    long waitingTime1 = new Date().getTime();
+	
+		    coup = joueurCourant.choixMouvement();
+	
+		    long waitingTime2 = new Date().getTime();
+		    // On rajoute 1 pour eliminer les temps infinis
+		    long waitingTime = waitingTime2 - waitingTime1 + 1;
+		    System.out.println("Le joueur " + joueurCourant.binoName() + " a jou� le coup " + coup + " en "
+			    + waitingTime + "s.");
+		    try {
+		    	Thread.sleep(1); // Juste pour attendre un peu
+		    } catch (InterruptedException e) {
+		    }
+	
+		    if ("xxxxx".equalsIgnoreCase(coup)) {
+		    	partieFinie = true;
+		    }
+		    else {
+				if (joueurCourant.getNumJoueur() == BLANC) {
+				    joueurCourant = joueurNoir;
+				}
+				else {
+				    joueurCourant = joueurBlanc;
+				}
+				// On averti le second joueur du coup calcule par le precedent
+				joueurCourant.mouvementEnnemi(coup);
+				// Ce sera ensuite a lui de jouer de retour en haut de la boucle	
+		    }
+		}
+		System.out.println("Partie finie en " + nbCoups + " coups.\n");	
     }
 
     /**
@@ -134,30 +133,31 @@ public class Solo {
      */
     public static void main(String args[]) {
 
-	System.out.println("Partie solo ...");
-
-	if (args.length == 0) { // On a deux classes a charger
-	    joueurBlanc = getDefaultPlayer("Blanc");
-	    joueurNoir = getDefaultPlayer("Noir");
-	} else if (args.length == 2) { // On a deux classes a charger
-	    joueurBlanc = getDefaultPlayer("Blanc");
-	    joueurNoir = getDefaultPlayer("Noir");
-	} else if (args.length == 3) {
-	    joueurBlanc = loadNamedPlayer(args[0], "Blanc");
-	    joueurNoir = loadNamedPlayer(args[0], "Noir");
-	} else if (args.length == 4) {
-	    joueurBlanc = loadNamedPlayer(args[0], "Blanc");
-	    joueurNoir = loadNamedPlayer(args[1], "Noir");
-	}
-
-	joueurBlanc.initJoueur(BLANC);
-	System.out.println("Joueur Blanc : " + joueurBlanc.binoName());
-
-	joueurNoir.initJoueur(NOIR);
-	System.out.println("Joueur Noir : " + joueurNoir.binoName());
-
-	System.out.println("Initialisation des deux joueurs ok.");
-
-	gameLoop(joueurBlanc, joueurNoir);
+		System.out.println("Partie solo ...");
+	
+		if (args.length == 0) { // On a deux classes a charger
+		    joueurBlanc = getDefaultPlayer("Blanc");
+		    joueurNoir = getDefaultPlayer("Noir");
+		} else if (args.length == 1) {
+		    joueurBlanc = loadNamedPlayer(args[0], "Blanc");
+		    joueurNoir = loadNamedPlayer(args[0], "Noir");
+		} else if (args.length == 2) {
+		    joueurBlanc = loadNamedPlayer(args[0], "Blanc");
+		    joueurNoir = loadNamedPlayer(args[1], "Noir");
+		}
+	
+		joueurBlanc.initJoueur(BLANC);
+		System.out.println("Joueur Blanc : " + joueurBlanc.binoName());
+	
+		joueurNoir.initJoueur(NOIR);
+		System.out.println("Joueur Noir : " + joueurNoir.binoName());
+	
+		if(joueurNoir.binoName() != null && joueurBlanc.binoName() != null) {
+			
+			System.out.println("Initialisation des deux joueurs ok.");	
+			gameLoop(joueurBlanc, joueurNoir);
+		} else {	
+			System.out.println("Problème initialisation");
+		}
     }
 }
