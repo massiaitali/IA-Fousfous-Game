@@ -48,6 +48,7 @@ public class JoueurFinal implements IJoueur {
 
 	@Override
 	public void initJoueur(int mycolour) {
+		plateau = new PlateauFousFous();
 		this.ColorServeur = mycolour;
 		if(mycolour == -1) {
 			this.MaCouleur = plateau.JOUEUR_BLANC;
@@ -57,7 +58,6 @@ public class JoueurFinal implements IJoueur {
 			this.MaCouleur = plateau.JOUEUR_NOIR;
 			this.MaCouleurEnnemie = plateau.JOUEUR_BLANC;		
 		}	
-		plateau = new PlateauFousFous();
 	}
 	
 }

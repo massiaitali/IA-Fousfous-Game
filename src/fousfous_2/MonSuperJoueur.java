@@ -43,7 +43,7 @@ public class MonSuperJoueur implements IJoueur {
 	@Override
 	public String binoName() {
 //		return NomBinome;
-		return "JoueurFinal";
+		return "MonSuperJoueur";
 	}
 
 	@Override
