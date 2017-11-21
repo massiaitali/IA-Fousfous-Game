@@ -137,11 +137,53 @@ public class PlateauFousFous implements Partie1 {
             System.out.println("Impossible de créer le fichier");
         }		
 	}
+	
+	/*// Vérifie la validité d'un coup
+		public boolean estValide(String move, String player) {
+			Case[] cas = mvcel(move);
+			System.out.println("cas[0]="+cas[0]);
+			System.out.println("cas[1]=" +cas[1] );
+			
+			// Vrai pion -> pas vide
+			if(Color.VIDE == (cas[0].getColor())) {
+				return false;
+			}
+			// Ne pas aller sur la même couleur 
+			if(cas[1].getColor() == (cas[0].getColor())) {
+				return false;
+			}
+			
+			// Chemin vide et diagonale vérifiée
+			if(!verifDiagVide(cas, player)) {
+				return false;
+			}
+			
+			// On attaque un pion 
+	 		if((Color.NOIR == (cas[0].getColor()) && Color.BLANC == (cas[1].getColor())) 
+	 				|| (Color.BLANC == (cas[0].getColor()) && Color.NOIR == (cas[1].getColor()))) {
+				return true;
+			}
+			else {
+				System.out.println("else");
+				// Vérifie que nous ne sommes pas en position d'attaque
+				if(men(cas[0], player)) {
+					return false;
+				}
+				// On peut prendre avec ce déplacement
+				if(men(cas[1], player)) {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+		}*/
+
 
 	// Vérifie la validité d'un coup
 	public boolean estValide(String move, String player) {
 		Case[] cas = mvcel(move);
-
+		System.out.println("cas[0]="+cas[0] + " - cas[1]=" +cas[1] );
 		// Chemin vide et diagonale vérifiée
 		if(!verifDiagVide(cas, player)) {
 			return false;
@@ -160,6 +202,7 @@ public class PlateauFousFous implements Partie1 {
 			return true;
 		}
 		else {
+			System.out.println("else");
 			// Vérifie que nous ne sommes pas en position d'attaque
 			if(men(cas[0], player)) {
 				return false;
@@ -279,8 +322,10 @@ public class PlateauFousFous implements Partie1 {
 	public Case[] obtEnemiDiag(Case C, String player) {
 		Case[] res = new Case[4];
 		int iter = 0;
+		
 		for (Case c : this.obtdiag(C)) {
 			if (c != null) {
+//				System.out.println("case diag="+c);
 				if (Color.BLANC.toString().equalsIgnoreCase(player.substring(0, 1)) 
 						&& Color.NOIR == (c.getColor())) {
 					res[iter] = c;
@@ -298,6 +343,7 @@ public class PlateauFousFous implements Partie1 {
 	
 	// Gestion de la menace d'un pion 
 	public boolean men(Case cas, String player) {
+//		System.out.println("menace");
 		for (Case c : obtEnemiDiag(cas, player)) {
 			if (c != null) {
 				return true;
@@ -355,9 +401,25 @@ public class PlateauFousFous implements Partie1 {
 					for(Case[] tab2 : this.plateau) {
 						for (Case c2 : tab2) {
 							if(!(Color.VIDE == (c2.getColor())) && !pionCourant.equalsIgnoreCase(c2.getId())) {
-								if(estValide(pionCourant+Color.VIDE+c2.getId(), this.joueurCourant)) {
-									coupsPossibles.add(pionCourant+Color.VIDE+c2.getId());				
+								Case[] res = obtdiag(c2);
+								System.out.println("case testée="+c2);
+								System.out.println("[");
+								for(Case case1 : res) {
+
+									if(case1 != null) {
+										System.out.print(case1.getId() + ", ");
+									}
 								}
+								System.out.println("]");
+								for(Case case1 : res) {
+									if(case1 != null) {
+										System.out.println(pionCourant+Color.VIDE+case1.getId() + " - " + this.joueurCourant);
+										if(estValide(pionCourant+Color.VIDE+case1.getId(), this.joueurCourant)) {
+											coupsPossibles.add(pionCourant+Color.VIDE+case1.getId());				
+										}
+									}
+									
+								}	
 							}							
 						}
 					}
@@ -376,6 +438,16 @@ public class PlateauFousFous implements Partie1 {
     	Scanner sc = new Scanner(System.in);
     	PlateauFousFous PlateauTest = new PlateauFousFous();    	
     	
+    	System.out.println(Color.BLANC.toString());
+    	System.out.println("blanc".substring(0, 1));
+    	System.out.println(Color.NOIR);
+    	System.out.println(new Case(0, 0, Color.NOIR).getColor());
+    	System.out.println(Color.BLANC.toString().equalsIgnoreCase("blanc".substring(0, 1)) );
+    	System.out.println(Color.NOIR == (new Case(0, 0, Color.NOIR).getColor()));
+    	System.out.println(Color.BLANC.toString().equalsIgnoreCase("blanc".substring(0, 1)) && Color.NOIR == (new Case(0, 0, Color.NOIR).getColor()));
+    	
+		
+    	
     	System.out.println("La partie va commencer...");
 		while(!PlateauTest.finDePartie()) {
 			// Afficher le plateau courant
@@ -388,10 +460,14 @@ public class PlateauFousFous implements Partie1 {
 			System.out.println(listeCoupsPossibles);
 			
 			// Récupérer déplacement à faire + jouer 
-			System.out.println("Veuillez saisir le coup à jouer (exemple : B1-C2) : ");
-			String coup = sc.nextLine();
+			//System.out.println("Veuillez saisir le coup à jouer (exemple : B1-C2) : ");
+			//String coup = sc.nextLine();
 			
-			PlateauTest.play(coup.toUpperCase(), PlateauTest.joueurCourant);
+			int taille = listeCoupsPossibles.size() - 1;
+			int nombreAleatoire = 0 + (int)(Math.random() * ((taille - 0) + 1));
+			String coup = listeCoupsPossibles.get(nombreAleatoire);
+			
+			PlateauTest.play(coup, PlateauTest.joueurCourant);
 
 			// Import et export dans un fichier
 	        PlateauTest.saveToFile(file);
@@ -405,6 +481,6 @@ public class PlateauFousFous implements Partie1 {
 		}
 		if(PlateauTest.nbPionNoir() == 0) {
 			System.out.println("Le joueur blanc a gagné !!");			
-		}    	
+		}   
 	}
 }

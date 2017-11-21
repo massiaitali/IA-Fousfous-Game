@@ -17,10 +17,14 @@ public class JoueurFinal implements IJoueur {
 	@Override
 	public String choixMouvement() {
 		ArrayList<String> listeCoupsPossibles = plateau.mouvementsPossibles(MaCouleur);
-		int taille = listeCoupsPossibles.size();
+		int taille = listeCoupsPossibles.size() - 1;
 		int nombreAleatoire = 0 + (int)(Math.random() * ((taille - 0) + 1));
-		String coup = listeCoupsPossibles.get(nombreAleatoire);
 		System.out.println("NA="+nombreAleatoire);
+		System.out.println("taille="+taille);
+		System.out.println("liste="+listeCoupsPossibles);
+		String coup = listeCoupsPossibles.get(nombreAleatoire);
+		System.out.println(plateau);
+		plateau.play(coup, MaCouleur);
 		return coup;
 	}
 
