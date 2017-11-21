@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class MonSuperJoueur implements IJoueur {
 	private String NomBinome = "Massinissa - Mathilde";
-	int ColorServeur;
-	String MaCouleur;
-	String CouleurEnnemi;
-	PlateauFousFous Plateau;
-	
+	private int ColorServeur;
+	private String MaCouleur;
+	private String MaCouleurEnnemie;
+	private PlateauFousFous plateau;
+
 	@Override
 	public int getNumJoueur() {
 		return ColorServeur;
@@ -16,7 +16,7 @@ public class MonSuperJoueur implements IJoueur {
 
 	@Override
 	public String choixMouvement() {
-		ArrayList<String> listeCoupsPossibles = Plateau.mouvementsPossibles(MaCouleur);
+		ArrayList<String> listeCoupsPossibles = plateau.mouvementsPossibles(MaCouleur);
 		int taille = listeCoupsPossibles.size();
 		int nombreAleatoire = 0 + (int)(Math.random() * ((taille - 0) + 1));
 		String coup = listeCoupsPossibles.get(nombreAleatoire);
@@ -37,7 +37,7 @@ public class MonSuperJoueur implements IJoueur {
 
 	@Override
 	public void mouvementEnnemi(String coup) {
-		Plateau.play(coup, CouleurEnnemi);	
+		plateau.play(coup, MaCouleurEnnemie);		
 	}
 
 	@Override
@@ -48,16 +48,16 @@ public class MonSuperJoueur implements IJoueur {
 
 	@Override
 	public void initJoueur(int mycolour) {
-		ColorServeur = mycolour;
-		if( mycolour == -1 ) { // blanc
-			MaCouleur = "blanc";
-			CouleurEnnemi = "noir";
+		plateau = new PlateauFousFous();
+		this.ColorServeur = mycolour;
+		if(mycolour == -1) {
+			this.MaCouleur = plateau.JOUEUR_BLANC;
+			this.MaCouleurEnnemie = plateau.JOUEUR_NOIR;
 		}
-		else {
-			MaCouleur = "noir";
-			CouleurEnnemi = "blanc";
-		}
-	 Plateau = new PlateauFousFous();
+		else if(mycolour == 1) {
+			this.MaCouleur = plateau.JOUEUR_NOIR;
+			this.MaCouleurEnnemie = plateau.JOUEUR_BLANC;		
+		}	
 	}
 
 }
