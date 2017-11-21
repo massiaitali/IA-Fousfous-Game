@@ -21,3 +21,17 @@
 ### Massinissa :
 * ...
 * ...
+
+### COMMANDES
+# Lancer le serveur
+cd IA-FousFous
+java -cp serveur/obfousfous.jar fousfous.ServeurJeu 1234 1
+
+# Lancer joueur 1
+cd IA-FousFous/bin
+java -cp . fousfous_2.ClientJeu fousfous_2.JoueurFinal localhost 1234
+
+# Lancer joueur 2
+cd IA-FousFous/bin
+java -cp . fousfous_2.ClientJeu fousfous_2.MonSuperJoueur localhost 1234
+
