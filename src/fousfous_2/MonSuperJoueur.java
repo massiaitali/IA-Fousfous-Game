@@ -1,6 +1,9 @@
 package fousfous_2;
 
+import java.util.ArrayList;
+
 public class MonSuperJoueur implements IJoueur {
+	private String NomBinome = "Massinissa - Mathilde";
 	int ColorServeur;
 	String MaCouleur;
 	String CouleurEnnemi;
@@ -13,25 +16,34 @@ public class MonSuperJoueur implements IJoueur {
 
 	@Override
 	public String choixMouvement() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<String> listeCoupsPossibles = Plateau.mouvementsPossibles(MaCouleur);
+		int taille = listeCoupsPossibles.size();
+		int nombreAleatoire = 0 + (int)(Math.random() * ((taille - 0) + 1));
+		String coup = listeCoupsPossibles.get(nombreAleatoire);
+		System.out.println("NA="+nombreAleatoire);
+		return coup;
 	}
 
 	@Override
 	public void declareLeVainqueur(int colour) {
-		// TODO Auto-generated method stub
+		if(colour == this.ColorServeur) {
+			System.out.println("Le binone " + NomBinome + " a gagné :)");
+		}
+		else {
+			System.out.println("Le binone " + NomBinome + " a perdu... :(");			
+		}
 		
 	}
 
 	@Override
 	public void mouvementEnnemi(String coup) {
-		// TODO Auto-generated method stub
-		
+		Plateau.play(coup, CouleurEnnemi);	
 	}
 
 	@Override
 	public String binoName() {
-		return "MonSuperJoueur";
+//		return NomBinome;
+		return "JoueurFinal";
 	}
 
 	@Override
