@@ -46,9 +46,9 @@ public class Solo {
      * @return Ijoueur un joueur demande
      */
     private static IJoueur getDefaultPlayer(String s) {
-    	System.out.println(s + " : defaultPlayer");
-    	// vous devez faire qq chose comme return new MonMeilleurJoueur();
-    	return new JoueurFinal();
+	    	System.out.println(s + " : defaultPlayer");
+	    	// vous devez faire qq chose comme return new MonMeilleurJoueur();
+	    	return new JoueurFinal();
     }
 
     /**

@@ -1,11 +1,14 @@
 package fousfous_2;
 
 public class MonSuperJoueur implements IJoueur {
-
+	int ColorServeur;
+	String MaCouleur;
+	String CouleurEnnemi;
+	PlateauFousFous Plateau;
+	
 	@Override
 	public int getNumJoueur() {
-		// TODO Auto-generated method stub
-		return 0;
+		return ColorServeur;
 	}
 
 	@Override
@@ -33,8 +36,16 @@ public class MonSuperJoueur implements IJoueur {
 
 	@Override
 	public void initJoueur(int mycolour) {
-		// TODO Auto-generated method stub
-		
+		ColorServeur = mycolour;
+		if( mycolour == -1 ) { // blanc
+			MaCouleur = "blanc";
+			CouleurEnnemi = "noir";
+		}
+		else {
+			MaCouleur = "noir";
+			CouleurEnnemi = "blanc";
+		}
+	 Plateau = new PlateauFousFous();
 	}
 
 }
