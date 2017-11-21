@@ -152,12 +152,12 @@ public class Solo {
 		joueurNoir.initJoueur(NOIR);
 		System.out.println("Joueur Noir : " + joueurNoir.binoName());
 		
-		/*if(joueurNoir.binoName() != null && joueurBlanc.binoName() != null) {
+		if(joueurNoir.binoName() != null && joueurBlanc.binoName() != null) {
 			
 			System.out.println("Initialisation des deux joueurs ok.");	
 			gameLoop(joueurBlanc, joueurNoir);
 		} else {	
 			System.out.println("Problème initialisation");
-		}*/
+		}
     }
 }
