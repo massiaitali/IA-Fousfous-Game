@@ -137,48 +137,6 @@ public class PlateauFousFous implements Partie1 {
             System.out.println("Impossible de créer le fichier");
         }		
 	}
-	
-	/*// Vérifie la validité d'un coup
-		public boolean estValide(String move, String player) {
-			Case[] cas = mvcel(move);
-			System.out.println("cas[0]="+cas[0]);
-			System.out.println("cas[1]=" +cas[1] );
-			
-			// Vrai pion -> pas vide
-			if(Color.VIDE == (cas[0].getColor())) {
-				return false;
-			}
-			// Ne pas aller sur la même couleur 
-			if(cas[1].getColor() == (cas[0].getColor())) {
-				return false;
-			}
-			
-			// Chemin vide et diagonale vérifiée
-			if(!verifDiagVide(cas, player)) {
-				return false;
-			}
-			
-			// On attaque un pion 
-	 		if((Color.NOIR == (cas[0].getColor()) && Color.BLANC == (cas[1].getColor())) 
-	 				|| (Color.BLANC == (cas[0].getColor()) && Color.NOIR == (cas[1].getColor()))) {
-				return true;
-			}
-			else {
-				System.out.println("else");
-				// Vérifie que nous ne sommes pas en position d'attaque
-				if(men(cas[0], player)) {
-					return false;
-				}
-				// On peut prendre avec ce déplacement
-				if(men(cas[1], player)) {
-					return true;
-				}
-				else {
-					return false;
-				}
-			}
-		}*/
-
 
 	// Vérifie la validité d'un coup
 	public boolean estValide(String move, String player) {
@@ -247,93 +205,45 @@ public class PlateauFousFous implements Partie1 {
 			System.out.println("Le mouvement est impossible");	
 		}	
 	}
+
 	// Récupère les pions en diagonale (on s'arrête une fois un pion trouvé)
-	public Case[] obtdiag(Case C) {
-		Case[] res = new Case[15];
-
-		int i = C.getI() + 1;
-		int j = C.getJ() + 1;
-		int iter = 0;
-		// Diagonale sud est
-		while (i < 8 && j < 8) {
-			res[iter] = this.plateau[i][j];
-			iter++;
-			if (Color.BLANC == (this.plateau[i][j].getColor())
-					|| Color.NOIR == (this.plateau[i][j].getColor())) {
+	public ArrayList<Case> getDiagonal(int iDeb, int jDeb, int iIter, int jIter) {
+		ArrayList<Case> res = new ArrayList<Case>();
+		while (iDeb < 8 && jDeb < 8 && iDeb >= 0 && jDeb >= 0) {
+			res.add(this.plateau[iDeb][jDeb]);
+			if (Color.BLANC == (this.plateau[iDeb][jDeb].getColor())
+					|| Color.NOIR == (this.plateau[iDeb][jDeb].getColor())) {
 				break;
 			}
 
-			i++;
-			j++;
-		}
-
-		i = C.getI() - 1;
-		j = C.getJ() - 1;
-		//Diagonale nord ouest
-		while (i >= 0 && j >= 0) {
-
-			res[iter] = this.plateau[i][j];
-			iter++;
-			if (Color.BLANC == (this.plateau[i][j].getColor())
-					|| Color.NOIR == (this.plateau[i][j].getColor())) {
-				break;
-			}
-
-			i--;
-			j--;
-		}
-
-		i = C.getI() - 1;
-		j = C.getJ() + 1;
-		//Diagonale nord est
-		while (i >= 0 && j < 8) {
-
-			res[iter] = this.plateau[i][j];
-			iter++;
-			if (Color.BLANC == (this.plateau[i][j].getColor())
-					|| Color.NOIR == (this.plateau[i][j].getColor())) {
-				break;
-			}
-
-			i--;
-			j++;
-		}
-
-		i = C.getI() + 1;
-		j = C.getJ() - 1;
-		//Diagonale sud ouest
-		while (i < 8 && j >= 0) {
-
-			res[iter] = this.plateau[i][j];
-			iter++;
-			if (Color.BLANC == (this.plateau[i][j].getColor())
-					|| Color.NOIR == (this.plateau[i][j].getColor())) {
-				break;
-			}
-
-			i++;
-			j--;
+			iDeb += iIter;
+			jDeb += jIter;
 		}
 		return res;
-
 	}
+
+	// On fusionne les points des 4 diagonales
+	public ArrayList<Case> obtdiag(Case C) {
+		ArrayList<Case> resTotal = new ArrayList<Case>();
+		resTotal.addAll(getDiagonal(C.getI() + 1, C.getJ() + 1, 1, 1));
+		resTotal.addAll(getDiagonal(C.getI() - 1, C.getJ() - 1, -1, -1));
+		resTotal.addAll(getDiagonal(C.getI() - 1, C.getJ() + 1, -1, 1));
+		resTotal.addAll(getDiagonal(C.getI() + 1, C.getJ() - 1, 1, -1));
+		return resTotal;
+	}
+	
 	// Obtient la liste des ennemies directs en diagonale
-	public Case[] obtEnemiDiag(Case C, String player) {
-		Case[] res = new Case[4];
-		int iter = 0;
+	public ArrayList<Case> obtEnemiDiag(Case C, String player) {
+		ArrayList<Case> res = new ArrayList<Case>();
 		
 		for (Case c : this.obtdiag(C)) {
-			if (c != null) {
-				if (Color.BLANC.toString().equalsIgnoreCase(player.substring(0, 1)) 
-						&& Color.NOIR == (c.getColor())) {
-					res[iter] = c;
-					iter++;
-				}
-				if (Color.NOIR.toString().equalsIgnoreCase(player.substring(0, 1))
-						&& Color.BLANC == (c.getColor())) {
-					res[iter] = c;
-					iter++;
-				}
+			if (Color.BLANC.toString().equalsIgnoreCase(player.substring(0, 1)) 
+					&& Color.NOIR == (c.getColor())) {
+				res.add(c);
+			}
+			if (Color.NOIR.toString().equalsIgnoreCase(player.substring(0, 1))
+					&& Color.BLANC == (c.getColor())) {
+				res.add(c);
 			}
 		}
 		return res;
@@ -341,10 +251,8 @@ public class PlateauFousFous implements Partie1 {
 	
 	// Gestion de la menace d'un pion 
 	public boolean men(Case cas, String player) {
-		for (Case c : obtEnemiDiag(cas, player)) {
-			if (c != null) {
-				return true;
-			}
+		if(obtEnemiDiag(cas, player).size() > 0) {
+			return true;
 		}
 		return false;
 	}
@@ -355,14 +263,13 @@ public class PlateauFousFous implements Partie1 {
 		Case dest = cas[1];
 		// Gère l'attaque d'un ennemie direct
 		for (Case c : obtdiag(origin)) {
-			if (c != null) {
-				if(dest.getId().equalsIgnoreCase(c.getId())) {
-					return true;
-				}
+			if(dest.getId().equalsIgnoreCase(c.getId())) {
+				return true;
 			}
 		}
 		return false;
 	}
+	
 	// Echange les positions sur le plateau
 	private Case[] mvcel(String move) {
 		Case[] mv = new Case[2];
@@ -398,14 +305,11 @@ public class PlateauFousFous implements Partie1 {
 					for(Case[] tab2 : this.plateau) {
 						for (Case c2 : tab2) {
 							if(!pionCourant.equalsIgnoreCase(c2.getId())) {
-								Case[] res = obtdiag(c2);								
+								ArrayList<Case> res = obtdiag(c2);								
 								for(Case case1 : res) {
-									if(case1 != null) {
-										if(estValide(pionCourant+Color.VIDE+case1.getId(), this.joueurCourant)) {
-											coupsPossibles.add(pionCourant+Color.VIDE+case1.getId());				
-										}
-									}
-									
+									if(estValide(pionCourant+Color.VIDE+case1.getId(), this.joueurCourant)) {
+										coupsPossibles.add(pionCourant+Color.VIDE+case1.getId());				
+									}									
 								}	
 							}							
 						}
