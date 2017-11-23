@@ -18,12 +18,8 @@ public class MonSuperJoueur implements IJoueur {
 	public String choixMouvement() {
 		ArrayList<String> listeCoupsPossibles = plateau.mouvementsPossibles(MaCouleur);
 		int taille = listeCoupsPossibles.size() - 1;
-		int nombreAleatoire = 0 + (int)(Math.random() * ((taille - 0) + 1));
-		System.out.println("taille="+taille);
-		System.out.println("liste="+listeCoupsPossibles);
-		System.out.println("NA="+nombreAleatoire);
+		int nombreAleatoire = 0 + (int)(Math.random() * ((taille - 0) + 1));		
 		String coup = listeCoupsPossibles.get(nombreAleatoire);
-		System.out.println(plateau);
 		plateau.play(coup, MaCouleur);
 		return coup;
 	}

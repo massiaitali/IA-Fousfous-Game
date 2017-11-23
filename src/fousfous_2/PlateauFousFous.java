@@ -183,7 +183,7 @@ public class PlateauFousFous implements Partie1 {
 	// Vérifie la validité d'un coup
 	public boolean estValide(String move, String player) {
 		Case[] cas = mvcel(move);
-		System.out.println("cas[0]="+cas[0] + " - cas[1]=" +cas[1] );
+
 		// Chemin vide et diagonale vérifiée
 		if(!verifDiagVide(cas, player)) {
 			return false;
@@ -202,7 +202,6 @@ public class PlateauFousFous implements Partie1 {
 			return true;
 		}
 		else {
-			System.out.println("else");
 			// Vérifie que nous ne sommes pas en position d'attaque
 			if(men(cas[0], player)) {
 				return false;
@@ -325,7 +324,6 @@ public class PlateauFousFous implements Partie1 {
 		
 		for (Case c : this.obtdiag(C)) {
 			if (c != null) {
-//				System.out.println("case diag="+c);
 				if (Color.BLANC.toString().equalsIgnoreCase(player.substring(0, 1)) 
 						&& Color.NOIR == (c.getColor())) {
 					res[iter] = c;
@@ -343,7 +341,6 @@ public class PlateauFousFous implements Partie1 {
 	
 	// Gestion de la menace d'un pion 
 	public boolean men(Case cas, String player) {
-//		System.out.println("menace");
 		for (Case c : obtEnemiDiag(cas, player)) {
 			if (c != null) {
 				return true;
@@ -382,12 +379,12 @@ public class PlateauFousFous implements Partie1 {
 	
 	// retourne le nombre de coups possible pour le joueur courant
 	public ArrayList<String> mouvementsPossibles(String player) {
-        //System.out.println(this);
 		ArrayList<String> coupsPossibles = new ArrayList<String>();
 
-		// pour chaque pion du joueur courant
+		// parcours de toutes les cases du plateau
 		for (Case[] tab : this.plateau) {
 			for (Case c : tab) {
+				// pour chaque pion du joueur courant
 				String pionCourant = "";
 				if(Color.BLANC == (c.getColor()) && JOUEUR_BLANC.equalsIgnoreCase(this.joueurCourant)) {
 					pionCourant = c.getId();
@@ -400,20 +397,10 @@ public class PlateauFousFous implements Partie1 {
 					// on parcourt le plateau pour calculer le nombre de déplacement que le pion courant peut faire
 					for(Case[] tab2 : this.plateau) {
 						for (Case c2 : tab2) {
-							if(!(Color.VIDE == (c2.getColor())) && !pionCourant.equalsIgnoreCase(c2.getId())) {
-								Case[] res = obtdiag(c2);
-								System.out.println("case testée="+c2);
-								System.out.println("[");
-								for(Case case1 : res) {
-
-									if(case1 != null) {
-										System.out.print(case1.getId() + ", ");
-									}
-								}
-								System.out.println("]");
+							if(!pionCourant.equalsIgnoreCase(c2.getId())) {
+								Case[] res = obtdiag(c2);								
 								for(Case case1 : res) {
 									if(case1 != null) {
-										System.out.println(pionCourant+Color.VIDE+case1.getId() + " - " + this.joueurCourant);
 										if(estValide(pionCourant+Color.VIDE+case1.getId(), this.joueurCourant)) {
 											coupsPossibles.add(pionCourant+Color.VIDE+case1.getId());				
 										}
@@ -437,17 +424,7 @@ public class PlateauFousFous implements Partie1 {
     	
     	Scanner sc = new Scanner(System.in);
     	PlateauFousFous PlateauTest = new PlateauFousFous();    	
-    	
-    	System.out.println(Color.BLANC.toString());
-    	System.out.println("blanc".substring(0, 1));
-    	System.out.println(Color.NOIR);
-    	System.out.println(new Case(0, 0, Color.NOIR).getColor());
-    	System.out.println(Color.BLANC.toString().equalsIgnoreCase("blanc".substring(0, 1)) );
-    	System.out.println(Color.NOIR == (new Case(0, 0, Color.NOIR).getColor()));
-    	System.out.println(Color.BLANC.toString().equalsIgnoreCase("blanc".substring(0, 1)) && Color.NOIR == (new Case(0, 0, Color.NOIR).getColor()));
-    	
-		
-    	
+    	    	    	
     	System.out.println("La partie va commencer...");
 		while(!PlateauTest.finDePartie()) {
 			// Afficher le plateau courant
@@ -460,13 +437,9 @@ public class PlateauFousFous implements Partie1 {
 			System.out.println(listeCoupsPossibles);
 			
 			// Récupérer déplacement à faire + jouer 
-			//System.out.println("Veuillez saisir le coup à jouer (exemple : B1-C2) : ");
-			//String coup = sc.nextLine();
-			
-			int taille = listeCoupsPossibles.size() - 1;
-			int nombreAleatoire = 0 + (int)(Math.random() * ((taille - 0) + 1));
-			String coup = listeCoupsPossibles.get(nombreAleatoire);
-			
+			System.out.println("Veuillez saisir le coup à jouer (exemple : B1-C2) : ");
+			String coup = sc.nextLine();
+						
 			PlateauTest.play(coup, PlateauTest.joueurCourant);
 
 			// Import et export dans un fichier
