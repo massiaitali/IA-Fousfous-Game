@@ -249,6 +249,22 @@ public class PlateauFousFous implements Partie1 {
 		return res;
 	}
 	
+	// Obtient si un ami est sur la diagonale
+		public boolean AmiInDiag(Case C, String player) {
+			boolean res = false;
+			for (Case c : this.obtdiag(C)) {
+				if (Color.BLANC.toString().equalsIgnoreCase(player.substring(0, 1)) 
+						&& Color.BLANC == (c.getColor())) {
+					res = true;
+				}
+				if (Color.NOIR.toString().equalsIgnoreCase(player.substring(0, 1))
+						&& Color.NOIR == (c.getColor())) {
+					res = true;
+				}
+			}
+			return res;
+		}
+	
 	// Gestion de la menace d'un pion 
 	public boolean men(Case cas, String player) {
 		if(obtEnemiDiag(cas, player).size() > 0) {
@@ -319,7 +335,47 @@ public class PlateauFousFous implements Partie1 {
 		}
 		return coupsPossibles;
 	}
-
+	
+	public int NbPions(String Joueur) {
+		int nb = 0;
+		if(Joueur.substring(0,1).equals("b")) {
+			
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 8; j++) {
+					if (this.plateau[i][j].getColor().equals("b")) {
+						nb++;
+					}
+				}
+			}
+		}
+		if(Joueur.substring(0,1).equals("n")) {
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 8; j++) {
+					if (this.plateau[i][j].getColor().equals("n")) {
+						nb++;
+					}
+				}
+			}
+		}
+		return nb;
+	}
+	// Calcul un score sur la diagonal du pion. Pour herestique
+	public int ValeurDiago(String player){
+		float nombrePionFort = 0;
+		float nombrePion = 0;
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (this.plateau[i][j].getColor().equals(player.substring(0, 1))) {
+					if(AmiInDiag(this.plateau[i][j],player)){
+						nombrePionFort++;
+					}
+					nombrePion++;
+				}
+			}
+		}
+		return (int)(10*(nombrePionFort/nombrePion));
+	}
+	
     public static void main(String[] args) {    	
     	// Création du fichier de sauvegarde et de lecture
     	Date today = new Date();
