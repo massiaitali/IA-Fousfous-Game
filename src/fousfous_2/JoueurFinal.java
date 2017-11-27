@@ -24,7 +24,12 @@ public class JoueurFinal implements IJoueur {
 		System.out.println("liste="+listeCoupsPossibles);
 		String coup = listeCoupsPossibles.get(nombreAleatoire);
 		System.out.println(plateau);
+		heurest test = new heurest();
+		System.out.println("Avant coup avec heurestique DIff : "+ test.calculDiff(plateau, MaCouleur));
+		System.out.println("Avant coup avec heurestique Pourcentage : "+ test.calculDiag(plateau, MaCouleur));
 		plateau.play(coup, MaCouleur);
+		System.out.println("Après coup avec heurestique DIff : "+ test.calculDiff(plateau, MaCouleur));
+		System.out.println("Après coup avec heurestique Pourcentage : "+ test.calculDiag(plateau, MaCouleur));
 		return coup;
 	}
 

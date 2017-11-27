@@ -337,30 +337,20 @@ public class PlateauFousFous implements Partie1 {
 	}
 	
 	public int PourcentageDiag(String player){
-		float res = 0;
-		float nbPion = 0;
+		float TotalPion = 0;
+		float NbPionAmi = 0;
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				if (this.plateau[i][j].getColor().equals(player.substring(0, 1))) {
-					boolean NbDiagAmi = false;
-					for (Case c : this.obtdiag(this.plateau[i][j])) {
-						if (c != null) {
-							if (player.substring(0, 1).equals(c.getColor())) {
-								NbDiagAmi = true;
-							}
-							if (player.substring(0, 1).equals(c.getColor())) {
-								NbDiagAmi = true;
-							}
-						}
+				if (this.plateau[i][j].getColor().toString().equals(player.substring(0, 1))) {
+					if(AmiInDiag(this.plateau[i][j],player)){
+						TotalPion++;
 					}
-					if(NbDiagAmi){
-						res++;
-					}
-					nbPion++;
+					NbPionAmi++;
 				}
 			}
 		}
-		return (int)(100*(res/nbPion));
+		System.out.println("TotalPion = "+TotalPion+" Nb pion ami = "+NbPionAmi);
+		return (int)(100*(TotalPion/NbPionAmi));
 	}
     public static void main(String[] args) {    	
     	// Création du fichier de sauvegarde et de lecture
