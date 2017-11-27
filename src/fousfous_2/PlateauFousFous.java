@@ -336,46 +336,6 @@ public class PlateauFousFous implements Partie1 {
 		return coupsPossibles;
 	}
 	
-	public int NbPions(String Joueur) {
-		int nb = 0;
-		if(Joueur.substring(0,1).equals("b")) {
-			
-			for (int i = 0; i < 8; i++) {
-				for (int j = 0; j < 8; j++) {
-					if (this.plateau[i][j].getColor().equals("b")) {
-						nb++;
-					}
-				}
-			}
-		}
-		if(Joueur.substring(0,1).equals("n")) {
-			for (int i = 0; i < 8; i++) {
-				for (int j = 0; j < 8; j++) {
-					if (this.plateau[i][j].getColor().equals("n")) {
-						nb++;
-					}
-				}
-			}
-		}
-		return nb;
-	}
-	// Calcul un score sur la diagonal du pion. Pour herestique
-	public int ValeurDiago(String player){
-		float nombrePionFort = 0;
-		float nombrePion = 0;
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				if (this.plateau[i][j].getColor().equals(player.substring(0, 1))) {
-					if(AmiInDiag(this.plateau[i][j],player)){
-						nombrePionFort++;
-					}
-					nombrePion++;
-				}
-			}
-		}
-		return (int)(10*(nombrePionFort/nombrePion));
-	}
-	
     public static void main(String[] args) {    	
     	// Création du fichier de sauvegarde et de lecture
     	Date today = new Date();
