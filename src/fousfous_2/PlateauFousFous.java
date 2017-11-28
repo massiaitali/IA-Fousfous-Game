@@ -140,32 +140,32 @@ public class PlateauFousFous implements Partie1 {
 
 	// Vérifie la validité d'un coup
 	public boolean estValide(String move, String player) {
-		Case[] cas = mvcel(move);
+		Case[] caseCourante = mvcel(move);
 
 		// Chemin vide et diagonale vérifiée
-		if(!verifDiagVide(cas, player)) {
+		if(!verificationDiagonaleVide(caseCourante, player)) {
 			return false;
 		}
 		// Vrai pion -> pas vide
-		if(Color.VIDE == (cas[0].getColor())) {
+		if(Color.VIDE == (caseCourante[0].getColor())) {
 			return false;
 		}
 		// Ne pas aller sur la même couleur 
-		if(cas[1].getColor() == (cas[0].getColor())) {
+		if(caseCourante[1].getColor() == (caseCourante[0].getColor())) {
 			return false;
 		}
 		// On attaque un pion 
- 		if((Color.NOIR == (cas[0].getColor()) && Color.BLANC == (cas[1].getColor())) 
- 				|| (Color.BLANC == (cas[0].getColor()) && Color.NOIR == (cas[1].getColor()))) {
+ 		if((Color.NOIR == (caseCourante[0].getColor()) && Color.BLANC == (caseCourante[1].getColor())) 
+ 				|| (Color.BLANC == (caseCourante[0].getColor()) && Color.NOIR == (caseCourante[1].getColor()))) {
 			return true;
 		}
 		else {
 			// Vérifie que nous ne sommes pas en position d'attaque
-			if(men(cas[0], player)) {
+			if(menace(caseCourante[0], player)) {
 				return false;
 			}
 			// On peut prendre avec ce déplacement
-			if(men(cas[1], player)) {
+			if(menace(caseCourante[1], player)) {
 				return true;
 			}
 			else {
@@ -223,20 +223,24 @@ public class PlateauFousFous implements Partie1 {
 	}
 
 	// On fusionne les points des 4 diagonales
-	public ArrayList<Case> obtdiag(Case C) {
+	public ArrayList<Case> obtdiag(Case caseCourante) {
 		ArrayList<Case> resTotal = new ArrayList<Case>();
-		resTotal.addAll(getDiagonal(C.getI() + 1, C.getJ() + 1, 1, 1));
-		resTotal.addAll(getDiagonal(C.getI() - 1, C.getJ() - 1, -1, -1));
-		resTotal.addAll(getDiagonal(C.getI() - 1, C.getJ() + 1, -1, 1));
-		resTotal.addAll(getDiagonal(C.getI() + 1, C.getJ() - 1, 1, -1));
+		// Diagonale Sud-Est
+		resTotal.addAll(getDiagonal(caseCourante.getI() + 1, caseCourante.getJ() + 1, 1, 1));
+		// Diagonale Nord-Ouest
+		resTotal.addAll(getDiagonal(caseCourante.getI() - 1, caseCourante.getJ() - 1, -1, -1));
+		// Diagonale Sud-Ouest
+		resTotal.addAll(getDiagonal(caseCourante.getI() - 1, caseCourante.getJ() + 1, -1, 1));
+		// Diagonale Nord-Est
+		resTotal.addAll(getDiagonal(caseCourante.getI() + 1, caseCourante.getJ() - 1, 1, -1));
 		return resTotal;
 	}
 	
 	// Obtient la liste des ennemies directs en diagonale
-	public ArrayList<Case> obtEnemiDiag(Case C, String player) {
+	public ArrayList<Case> obtenirDiagonaleEnnemie(Case caseCourante, String player) {
 		ArrayList<Case> res = new ArrayList<Case>();
 		
-		for (Case c : this.obtdiag(C)) {
+		for (Case c : this.obtdiag(caseCourante)) {
 			if (Color.BLANC.toString().equalsIgnoreCase(player.substring(0, 1)) 
 					&& Color.NOIR == (c.getColor())) {
 				res.add(c);
@@ -249,37 +253,37 @@ public class PlateauFousFous implements Partie1 {
 		return res;
 	}
 	
-	// Obtient si un ami est sur la diagonale
-		public boolean AmiInDiag(Case C, String player) {
-			boolean res = false;
-			for (Case c : this.obtdiag(C)) {
-				if (Color.BLANC.toString().equalsIgnoreCase(player.substring(0, 1)) 
-						&& Color.BLANC == (c.getColor())) {
-					res = true;
-				}
-				if (Color.NOIR.toString().equalsIgnoreCase(player.substring(0, 1))
-						&& Color.NOIR == (c.getColor())) {
-					res = true;
-				}
+	// Renvoie vrai si un ami est sur la diagonale
+	public boolean estAmiDiagonale(Case caseCourante, String player) {
+		boolean res = false;
+		for (Case c : this.obtdiag(caseCourante)) {
+			if (Color.BLANC.toString().equalsIgnoreCase(player.substring(0, 1)) 
+					&& Color.BLANC == (c.getColor())) {
+				res = true;
 			}
-			return res;
+			if (Color.NOIR.toString().equalsIgnoreCase(player.substring(0, 1))
+					&& Color.NOIR == (c.getColor())) {
+				res = true;
+			}
 		}
+		return res;
+	}
 	
 	// Gestion de la menace d'un pion 
-	public boolean men(Case cas, String player) {
-		if(obtEnemiDiag(cas, player).size() > 0) {
+	public boolean menace(Case caseCourante, String player) {
+		if(obtenirDiagonaleEnnemie(caseCourante, player).size() > 0) {
 			return true;
 		}
 		return false;
 	}
 	
 	// Vérifie que la case choisie à attaquer appartient à l'ennemie direct en diagonale
-	public boolean verifDiagVide(Case[] cas, String player) {
-		Case origin = cas[0];
-		Case dest = cas[1];
+	public boolean verificationDiagonaleVide(Case[] caseCourante, String player) {
+		Case origine = caseCourante[0];
+		Case destination = caseCourante[1];
 		// Gère l'attaque d'un ennemie direct
-		for (Case c : obtdiag(origin)) {
-			if(dest.getId().equalsIgnoreCase(c.getId())) {
+		for (Case c : obtdiag(origine)) {
+			if(destination.getId().equalsIgnoreCase(c.getId())) {
 				return true;
 			}
 		}
@@ -297,7 +301,6 @@ public class PlateauFousFous implements Partie1 {
 		mv[1] = this.plateau[Integer.parseInt(dest.substring(1, 2)) - 1][dest
 				                                             					.toCharArray()[0] - 'A'];
 		return mv;
-
 	}
 	
 	// retourne le nombre de coups possible pour le joueur courant
@@ -336,22 +339,23 @@ public class PlateauFousFous implements Partie1 {
 		return coupsPossibles;
 	}
 	
-	public int PourcentageDiag(String player){
-		float TotalPion = 0;
-		float NbPionAmi = 0;
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
+	public int pourcentageDiagonale(String player){
+		float totalPions = 0;
+		float nbPionsAmi = 0;
+		for (int i = 0 ; i < TAILLE ; i++) {
+			for (int j = 0 ; j < TAILLE ; j++) {
 				if (this.plateau[i][j].getColor().toString().equals(player.substring(0, 1))) {
-					if(AmiInDiag(this.plateau[i][j],player)){
-						TotalPion++;
+					if(estAmiDiagonale(this.plateau[i][j],player)){
+						totalPions++;
 					}
-					NbPionAmi++;
+					nbPionsAmi++;
 				}
 			}
 		}
-		System.out.println("TotalPion = "+TotalPion+" Nb pion ami = "+NbPionAmi);
-		return (int)(100*(TotalPion/NbPionAmi));
+		System.out.println("totalPions = "+totalPions+" Nb pion ami = "+nbPionsAmi);
+		return (int)(100*(totalPions/nbPionsAmi));
 	}
+	
     public static void main(String[] args) {    	
     	// Création du fichier de sauvegarde et de lecture
     	Date today = new Date();
