@@ -339,6 +339,26 @@ public class PlateauFousFous implements Partie1 {
 		return coupsPossibles;
 	}
 	
+	public Case[][] getCopyPlateau(PlateauFousFous plateau) {
+		Case[][] tmp = new Case[this.TAILLE][this.TAILLE];
+		for (int w = 0; w < this.TAILLE; w++) {
+			for (int i = 0; i < this.TAILLE; i++) {				
+				tmp[w][i] = plateau.plateau[w][i];				
+			}
+		}
+		return tmp;
+	}
+	
+	public Case[][] getCopyPlateau(Case[][] plateau) {
+		Case[][] tmp = new Case[this.TAILLE][this.TAILLE];
+		for (int w = 0; w < this.TAILLE; w++) {
+			for (int i = 0; i < this.TAILLE; i++) {				
+				tmp[w][i] = plateau[w][i];				
+			}
+		}
+		return tmp;
+	}
+	
 	public int pourcentageDiagonale(String player){
 		float totalPions = 0;
 		float nbPionsAmi = 0;
@@ -356,7 +376,7 @@ public class PlateauFousFous implements Partie1 {
 		return (int)(100*(totalPions/nbPionsAmi));
 	}
 	
-    public static void main(String[] args) {    	
+    public static void main(String[] args) {        	
     	// Création du fichier de sauvegarde et de lecture
     	Date today = new Date();
     	SimpleDateFormat formater = new SimpleDateFormat("yyyyMMddHHmmss");
