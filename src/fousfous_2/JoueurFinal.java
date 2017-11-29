@@ -8,6 +8,9 @@ public class JoueurFinal implements IJoueur {
 	private String MaCouleur;
 	private String MaCouleurEnnemie;
 	private PlateauFousFous plateau;
+	private alBeta AlpBeta;
+	private Minimax algoMiniMax;
+	private int prof = 3;
 
 	@Override
 	public int getNumJoueur() {
@@ -16,7 +19,7 @@ public class JoueurFinal implements IJoueur {
 
 	@Override
 	public String choixMouvement() {
-		ArrayList<String> listeCoupsPossibles = plateau.mouvementsPossibles(MaCouleur);
+		/*ArrayList<String> listeCoupsPossibles = plateau.mouvementsPossibles(MaCouleur);
 		int taille = listeCoupsPossibles.size() - 1;
 		int nombreAleatoire = 0 + (int)(Math.random() * ((taille - 0) + 1));
 		System.out.println("NA="+nombreAleatoire);
@@ -30,6 +33,10 @@ public class JoueurFinal implements IJoueur {
 		plateau.play(coup, MaCouleur);
 		System.out.println("Après coup avec heurestique DIff : "+ test.calculDiff(plateau, MaCouleur));
 		System.out.println("Après coup avec heurestique Pourcentage : "+ test.calculDiag(plateau, MaCouleur));
+		return coup;*/
+		this.AlpBeta = new alBeta(new heurest(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
+		String coup = this.AlpBeta.meilleurCoup(this.plateau);
+		plateau.play(coup, MaCouleur);
 		return coup;
 	}
 

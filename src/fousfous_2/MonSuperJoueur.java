@@ -8,18 +8,20 @@ public class MonSuperJoueur implements IJoueur {
 	private String MaCouleur;
 	private String MaCouleurEnnemie;
 	private PlateauFousFous plateau;
+	private Minimax algoMiniMax;
+	private int prof = 2;
 
 	@Override
 	public int getNumJoueur() {
 		return ColorServeur;
 	}
-
+	
 	@Override
 	public String choixMouvement() {
-		ArrayList<String> listeCoupsPossibles = plateau.mouvementsPossibles(MaCouleur);
-		int taille = listeCoupsPossibles.size() - 1;
-		int nombreAleatoire = 0 + (int)(Math.random() * ((taille - 0) + 1));		
-		String coup = listeCoupsPossibles.get(nombreAleatoire);
+		//ArrayList<String> listeCoupsPossibles = plateau.mouvementsPossibles(MaCouleur);
+		//int taille = listeCoupsPossibles.size() - 1;
+		this.algoMiniMax = new Minimax(new heurest(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
+		String coup = this.algoMiniMax.meilleurCoup(this.plateau);
 		plateau.play(coup, MaCouleur);
 		return coup;
 	}

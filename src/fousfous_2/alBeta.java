@@ -1,6 +1,6 @@
 package fousfous_2;
 
-public class Minimax {
+public class alBeta {
 	/** La profondeur de recherche par défaut
      */
     private final static int PROFMAXDEFAUT = 4;
@@ -30,11 +30,11 @@ public class Minimax {
   // -------------------------------------------
   // Constructeurs
   // -------------------------------------------
-    public Minimax(heurest h, String joueurMax, String joueurMin) {
+    public alBeta(heurest h, String joueurMax, String joueurMin) {
         this(h,joueurMax,joueurMin,PROFMAXDEFAUT);
     }
 
-    public Minimax(heurest h, String joueurMax, String joueurMin, int profMaxi) {
+    public alBeta(heurest h, String joueurMax, String joueurMin, int profMaxi) {
         this.h = h;
         this.joueurMin = joueurMin;
         this.joueurMax = joueurMax;
@@ -44,77 +44,81 @@ public class Minimax {
    // -------------------------------------------
   // Méthodes de l'interface AlgoJeu
   // -------------------------------------------
-   public String meilleurCoup(PlateauFousFous p) {
-	   int Max = Integer.MIN_VALUE;
-		String meilleuraction = "";
-		int nextval;
-		for(String move : p.mouvementsPossibles(this.joueurMax)){
-			if (move != null) {
+public String meilleurCoup(PlateauFousFous p) {
+		
+		String meilleurCoup = "";
+		int a = Integer.MIN_VALUE;
+		int b = Integer.MAX_VALUE;
+
+		for (String coup : p.mouvementsPossibles(this.joueurMax)) {
+			if (coup != null) {
+				System.out.print("*");
 				PlateauFousFous temp_p = new PlateauFousFous();
 				String file = "tempplateau.txt";
 				p.saveToFile(file);
-				temp_p.setFromFile(file);
-				nextval = minMax(temp_p,this.profMax-1);
-				System.out.print("*");
-				System.out.println("Action:"+move+", Val Heur :"+nextval);
-				if (nextval > 10000){
-					System.out.println();
-					return move;
-				}
-				if (nextval>Max){
-					Max=nextval;
-					meilleuraction=move;
+				temp_p.setFromFile(file);	
+				temp_p.play(coup, this.joueurMax);
+				int Max = maxMin(temp_p, this.profMax - 1, a, b);
+				System.out.println("Action:"+coup+", Val Heur :"+Max);
+				if (a < Max) {
+					b = Max;
+					meilleurCoup = coup;
 				}
 			}
 		}
-		System.out.println("le meilleur coup est: " + meilleuraction);
-		return meilleuraction;
-		
+		System.out.println();
+		System.out.println("le meilleur coup est: " + meilleurCoup);
+		return meilleurCoup;
 	}
-	
-	public int maxMin(PlateauFousFous p, int prof){
-		if(p.finDePartie() || prof == 0){
-			return this.h.calculDiff(p, this.joueurMax);
-		}else{
-			int Max = Integer.MIN_VALUE;
-			for(String move : p.mouvementsPossibles(this.joueurMax)){
-				if (move != null) {
+
+	private int maxMin(PlateauFousFous p, int prof, int a, int b) {
+		if (p.finDePartie() || prof == 0) {
+			return h.calculDiff(p, this.joueurMax);
+		} else {
+			for (String c : p.mouvementsPossibles(this.joueurMax)) {
+				if (c != null) {
 					PlateauFousFous temp_p = new PlateauFousFous();
 					String file = "tempplateau.txt";
 					p.saveToFile(file);
 					temp_p.setFromFile(file);
-					temp_p.play(move, this.joueurMax);
-					Max = Math.max(Max, minMax(temp_p,prof-1));
+					temp_p.play(c, this.joueurMax);
+					a = Math.max(a, minMax(temp_p, prof - 1, a, b));
+					if (a >= b) {
+						return b;
+					}
 				}
 			}
-			return Max;
+			return a;
 		}
 	}
 	
-	public int minMax(PlateauFousFous p, int prof){
-		if(p.finDePartie() || prof == 0){
+	private int minMax(PlateauFousFous p, int prof, int a, int b) {
+		if (p.finDePartie() || prof == 0) {
 			return this.h.calculDiff(p, this.joueurMax);
-		}else{
-			int Min = Integer.MAX_VALUE;
-			for(String move : p.mouvementsPossibles(this.joueurMin)){
-				if (move != null) {
+		} else {
+			for (String c : p.mouvementsPossibles(this.joueurMin)) {
+				if (c != null) {
 					PlateauFousFous temp_p = new PlateauFousFous();
 					String file = "tempplateau.txt";
 					p.saveToFile(file);
 					temp_p.setFromFile(file);
-					temp_p.play(move, this.joueurMin);
-					Min = Math.min(Min, maxMin(temp_p,prof-1));
+					temp_p.play(c, this.joueurMin);
+					b = Math.min(b, maxMin(temp_p, prof - 1, a, b));
+					if (a >= b) {
+						return a;
+					}
 				}
 			}
-			return Min;
+			return b;
 		}
 	}
+
 
   // -------------------------------------------
   // Méthodes publiques
   // -------------------------------------------
     public String toString() {
-        return "MiniMax(ProfMax="+profMax+")";
+        return "alBeta(ProfMax="+profMax+")";
     }
   // -------------------------------------------
   // Méthodes internes
