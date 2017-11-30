@@ -52,11 +52,12 @@ public String meilleurCoup(PlateauFousFous p) {
 
 		for (String coup : p.mouvementsPossibles(this.joueurMax)) {
 			if (coup != null) {
-				System.out.print("*");
+				System.out.print("**");
 				PlateauFousFous temp_p = new PlateauFousFous();
 				String file = "tempplateau.txt";
 				p.saveToFile(file);
 				temp_p.setFromFile(file);	
+//				PlateauFousFous temp_p = p.getCopyPlateau(p);
 				temp_p.play(coup, this.joueurMax);
 				int Max = maxMin(temp_p, this.profMax - 1, a, b);
 				System.out.println("Action:"+coup+", Val Heur :"+Max);
@@ -81,6 +82,8 @@ public String meilleurCoup(PlateauFousFous p) {
 					String file = "tempplateau.txt";
 					p.saveToFile(file);
 					temp_p.setFromFile(file);
+
+//					PlateauFousFous temp_p = p.getCopyPlateau(p);
 					temp_p.play(c, this.joueurMax);
 					a = Math.max(a, minMax(temp_p, prof - 1, a, b));
 					if (a >= b) {
@@ -102,6 +105,7 @@ public String meilleurCoup(PlateauFousFous p) {
 					String file = "tempplateau.txt";
 					p.saveToFile(file);
 					temp_p.setFromFile(file);
+//					PlateauFousFous temp_p = p.getCopyPlateau(p);
 					temp_p.play(c, this.joueurMin);
 					b = Math.min(b, maxMin(temp_p, prof - 1, a, b));
 					if (a >= b) {

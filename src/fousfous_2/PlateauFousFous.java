@@ -339,25 +339,16 @@ public class PlateauFousFous implements Partie1 {
 		return coupsPossibles;
 	}
 	
-	public Case[][] getCopyPlateau(PlateauFousFous plateau) {
-		Case[][] tmp = new Case[this.TAILLE][this.TAILLE];
+	public PlateauFousFous getCopyPlateau(PlateauFousFous plateau) {
+		PlateauFousFous tmp = new PlateauFousFous();
 		for (int w = 0; w < this.TAILLE; w++) {
 			for (int i = 0; i < this.TAILLE; i++) {				
-				tmp[w][i] = plateau.plateau[w][i];				
+				tmp.plateau[w][i] = plateau.plateau[w][i];				
 			}
 		}
 		return tmp;
 	}
 	
-	public Case[][] getCopyPlateau(Case[][] plateau) {
-		Case[][] tmp = new Case[this.TAILLE][this.TAILLE];
-		for (int w = 0; w < this.TAILLE; w++) {
-			for (int i = 0; i < this.TAILLE; i++) {				
-				tmp[w][i] = plateau[w][i];				
-			}
-		}
-		return tmp;
-	}
 	
 	public int pourcentageDiagonale(String player){
 		float totalPions = 0;
