@@ -3,7 +3,7 @@ package fousfous_2;
 public class Minimax {
 	/** La profondeur de recherche par défaut
      */
-    private final static int PROFMAXDEFAUT = 4;
+    private final static int PROFMAXDEFAUT = 2;
 
    
     // -------------------------------------------
@@ -74,7 +74,7 @@ public class Minimax {
 	
 	public int maxMin(PlateauFousFous p, int prof){
 		if(p.finDePartie() || prof == 0){
-			return this.h.calculDiff(p, this.joueurMax);
+			return this.h.calculDiag(p, this.joueurMax);
 		}else{
 			int Max = Integer.MIN_VALUE;
 			for(String move : p.mouvementsPossibles(this.joueurMax)){
@@ -93,7 +93,7 @@ public class Minimax {
 	
 	public int minMax(PlateauFousFous p, int prof){
 		if(p.finDePartie() || prof == 0){
-			return this.h.calculDiff(p, this.joueurMax);
+			return this.h.calculDiag(p, this.joueurMax);
 		}else{
 			int Min = Integer.MAX_VALUE;
 			for(String move : p.mouvementsPossibles(this.joueurMin)){

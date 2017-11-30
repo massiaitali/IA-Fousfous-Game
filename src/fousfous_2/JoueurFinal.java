@@ -10,7 +10,7 @@ public class JoueurFinal implements IJoueur {
 	private PlateauFousFous plateau;
 	private alBeta AlpBeta;
 	private Minimax algoMiniMax;
-	private int prof = 3;
+	private int prof = 2;
 
 	@Override
 	public int getNumJoueur() {

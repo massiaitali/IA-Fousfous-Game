@@ -198,11 +198,11 @@ public class PlateauFousFous implements Partie1 {
 					}
 				}
 			} else {
-				System.out.println("Impossible");
+				//System.out.println("Impossible");
 			}
 		}
 		else {
-			System.out.println("Le mouvement est impossible");	
+			//System.out.println("Le mouvement est impossible");	
 		}	
 	}
 
@@ -352,7 +352,7 @@ public class PlateauFousFous implements Partie1 {
 				}
 			}
 		}
-		System.out.println("totalPions = "+totalPions+" Nb pion ami = "+nbPionsAmi);
+		//System.out.println("totalPions = "+totalPions+" Nb pion ami = "+nbPionsAmi);
 		return (int)(100*(totalPions/nbPionsAmi));
 	}
 	

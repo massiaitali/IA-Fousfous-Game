@@ -3,7 +3,7 @@ package fousfous_2;
 public class alBeta {
 	/** La profondeur de recherche par défaut
      */
-    private final static int PROFMAXDEFAUT = 4;
+    private final static int PROFMAXDEFAUT = 2;
 
    
     // -------------------------------------------
@@ -73,7 +73,7 @@ public String meilleurCoup(PlateauFousFous p) {
 
 	private int maxMin(PlateauFousFous p, int prof, int a, int b) {
 		if (p.finDePartie() || prof == 0) {
-			return h.calculDiff(p, this.joueurMax);
+			return h.calculDiag(p, this.joueurMax);
 		} else {
 			for (String c : p.mouvementsPossibles(this.joueurMax)) {
 				if (c != null) {
@@ -94,7 +94,7 @@ public String meilleurCoup(PlateauFousFous p) {
 	
 	private int minMax(PlateauFousFous p, int prof, int a, int b) {
 		if (p.finDePartie() || prof == 0) {
-			return this.h.calculDiff(p, this.joueurMax);
+			return this.h.calculDiag(p, this.joueurMax);
 		} else {
 			for (String c : p.mouvementsPossibles(this.joueurMin)) {
 				if (c != null) {
