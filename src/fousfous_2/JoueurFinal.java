@@ -1,7 +1,5 @@
 package fousfous_2;
 
-import java.util.ArrayList;
-
 public class JoueurFinal implements IJoueur {
 	private String NomBinome = "Massinissa - Mathilde";
 	private int ColorServeur;
@@ -11,6 +9,7 @@ public class JoueurFinal implements IJoueur {
 	private alBeta AlpBeta;
 	private Minimax algoMiniMax;
 	private int prof = 2;
+	private long timer = 0;
 
 	@Override
 	public int getNumJoueur() {
@@ -34,19 +33,22 @@ public class JoueurFinal implements IJoueur {
 		System.out.println("Après coup avec heurestique DIff : "+ test.calculDiff(plateau, MaCouleur));
 		System.out.println("Après coup avec heurestique Pourcentage : "+ test.calculDiag(plateau, MaCouleur));
 		return coup;*/
+		long debut = System.currentTimeMillis();
 		this.AlpBeta = new alBeta(new heurest(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
 		String coup = this.AlpBeta.meilleurCoup(this.plateau);
 		plateau.play(coup, MaCouleur);
+		timer += System.currentTimeMillis() - debut;
+		System.out.println("TIMER : " + (timer / 1000) + " secondes");
 		return coup;
 	}
 
 	@Override
 	public void declareLeVainqueur(int colour) {
 		if(colour == this.ColorServeur) {
-			System.out.println("Le binone " + NomBinome + " a gagné :)");
+			System.out.println("Le binone " + binoName() + " a gagné :)");
 		}
 		else {
-			System.out.println("Le binone " + NomBinome + " a perdu... :(");			
+			System.out.println("Le binone " + binoName() + " a perdu... :(");			
 		}
 		
 	}

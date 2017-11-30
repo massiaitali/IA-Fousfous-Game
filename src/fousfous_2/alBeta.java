@@ -44,27 +44,21 @@ public class alBeta {
    // -------------------------------------------
   // Méthodes de l'interface AlgoJeu
   // -------------------------------------------
-public String meilleurCoup(PlateauFousFous p) {
-		
+public String meilleurCoup(PlateauFousFous p) {		
 		String meilleurCoup = "";
 		int a = Integer.MIN_VALUE;
 		int b = Integer.MAX_VALUE;
 
 		for (String coup : p.mouvementsPossibles(this.joueurMax)) {
-			if (coup != null) {
-				System.out.print("**");
-				PlateauFousFous temp_p = new PlateauFousFous();
-				String file = "tempplateau.txt";
-				p.saveToFile(file);
-				temp_p.setFromFile(file);	
-//				PlateauFousFous temp_p = p.getCopyPlateau(p);
-				temp_p.play(coup, this.joueurMax);
-				int Max = maxMin(temp_p, this.profMax - 1, a, b);
-				System.out.println("Action:"+coup+", Val Heur :"+Max);
-				if (a < Max) {
-					b = Max;
-					meilleurCoup = coup;
-				}
+			System.out.print("**");
+			PlateauFousFous temp_p = p.getCopyPlateau();
+
+			temp_p.play(coup, this.joueurMax);
+			int Max = maxMin(temp_p, this.profMax - 1, a, b);
+			System.out.println("Action:"+coup+", Val Heur :"+Max);
+			if (a < Max) {
+				b = Max;
+				meilleurCoup = coup;
 			}
 		}
 		System.out.println();
@@ -77,18 +71,11 @@ public String meilleurCoup(PlateauFousFous p) {
 			return h.calculDiag(p, this.joueurMax);
 		} else {
 			for (String c : p.mouvementsPossibles(this.joueurMax)) {
-				if (c != null) {
-					PlateauFousFous temp_p = new PlateauFousFous();
-					String file = "tempplateau.txt";
-					p.saveToFile(file);
-					temp_p.setFromFile(file);
-
-//					PlateauFousFous temp_p = p.getCopyPlateau(p);
-					temp_p.play(c, this.joueurMax);
-					a = Math.max(a, minMax(temp_p, prof - 1, a, b));
-					if (a >= b) {
-						return b;
-					}
+				PlateauFousFous temp_p = p.getCopyPlateau();
+				temp_p.play(c, this.joueurMax);
+				a = Math.max(a, minMax(temp_p, prof - 1, a, b));
+				if (a >= b) {
+					return b;
 				}
 			}
 			return a;
@@ -99,18 +86,13 @@ public String meilleurCoup(PlateauFousFous p) {
 		if (p.finDePartie() || prof == 0) {
 			return this.h.calculDiag(p, this.joueurMax);
 		} else {
-			for (String c : p.mouvementsPossibles(this.joueurMin)) {
-				if (c != null) {
-					PlateauFousFous temp_p = new PlateauFousFous();
-					String file = "tempplateau.txt";
-					p.saveToFile(file);
-					temp_p.setFromFile(file);
-//					PlateauFousFous temp_p = p.getCopyPlateau(p);
-					temp_p.play(c, this.joueurMin);
-					b = Math.min(b, maxMin(temp_p, prof - 1, a, b));
-					if (a >= b) {
-						return a;
-					}
+			for (String c : p.mouvementsPossibles(this.joueurMin)) {				
+				PlateauFousFous temp_p = p.getCopyPlateau();
+
+				temp_p.play(c, this.joueurMin);
+				b = Math.min(b, maxMin(temp_p, prof - 1, a, b));
+				if (a >= b) {
+					return a;
 				}
 			}
 			return b;

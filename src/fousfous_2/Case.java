@@ -1,7 +1,7 @@
 package fousfous_2;
 
 //Classe Case permet de faciliter les fonctions
-public class Case {
+public class Case implements Cloneable{
 	private int j; // Position en j 
 	private int i; // Position en i 
 	private String id; // Id de type B1 A1 ect...
@@ -50,6 +50,17 @@ public class Case {
 	public String toString() {
 		String res = "tab["+i+"]["+j+"] = "+id +"("+color+")\n";
 		return res;
+	}
+	
+	// Méthode pour cloner un objet de type Case
+	public Case clone() {
+		Case caseClone = null;
+	    try {
+	    	caseClone = (Case) super.clone();
+	    } catch(CloneNotSupportedException cnse) {
+			cnse.printStackTrace(System.err);
+	    }
+	    return caseClone;
 	}
 }
 

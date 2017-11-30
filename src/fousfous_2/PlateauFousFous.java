@@ -339,11 +339,11 @@ public class PlateauFousFous implements Partie1 {
 		return coupsPossibles;
 	}
 	
-	public PlateauFousFous getCopyPlateau(PlateauFousFous plateau) {
+	public PlateauFousFous getCopyPlateau() {
 		PlateauFousFous tmp = new PlateauFousFous();
 		for (int w = 0; w < this.TAILLE; w++) {
 			for (int i = 0; i < this.TAILLE; i++) {				
-				tmp.plateau[w][i] = plateau.plateau[w][i];				
+				tmp.plateau[w][i] = this.plateau[w][i].clone();				
 			}
 		}
 		return tmp;
@@ -367,7 +367,7 @@ public class PlateauFousFous implements Partie1 {
 		return (int)(100*(totalPions/nbPionsAmi));
 	}
 	
-    public static void main(String[] args) {        	
+    public static void main(String[] args) {         	
     	// Création du fichier de sauvegarde et de lecture
     	Date today = new Date();
     	SimpleDateFormat formater = new SimpleDateFormat("yyyyMMddHHmmss");
