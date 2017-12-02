@@ -19,7 +19,7 @@
 * Mini Max
 
 ### Massinissa :
-* Heurestique
+* Heuristiques
 * Iterative Deepening 
 
 ## COMMANDES

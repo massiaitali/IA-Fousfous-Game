@@ -1,7 +1,7 @@
 package fousfous_2;
 
-public class heurest {
-	public heurest() {
+public class Heuristique {
+	public Heuristique() {
 	}
 	// Difference 
 	public int calculDiff(PlateauFousFous P, String Joueur) {

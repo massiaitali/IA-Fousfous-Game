@@ -1,6 +1,6 @@
 package fousfous_2;
 
-public class Minimax {
+public class Minimax implements AlgoJeu {
 	/** La profondeur de recherche par défaut
      */
     private final static int PROFMAXDEFAUT = 2;
@@ -16,7 +16,7 @@ public class Minimax {
 
      /**  L'heuristique utilisée par l'algorithme
       */
-   private heurest h;
+   private Heuristique h;
 
     /** Le joueur Min
      *  (l'adversaire) */
@@ -30,11 +30,11 @@ public class Minimax {
   // -------------------------------------------
   // Constructeurs
   // -------------------------------------------
-    public Minimax(heurest h, String joueurMax, String joueurMin) {
+    public Minimax(Heuristique h, String joueurMax, String joueurMin) {
         this(h,joueurMax,joueurMin,PROFMAXDEFAUT);
     }
 
-    public Minimax(heurest h, String joueurMax, String joueurMin, int profMaxi) {
+    public Minimax(Heuristique h, String joueurMax, String joueurMin, int profMaxi) {
         this.h = h;
         this.joueurMin = joueurMin;
         this.joueurMax = joueurMax;
@@ -48,23 +48,18 @@ public class Minimax {
 	   int Max = Integer.MIN_VALUE;
 		String meilleuraction = "";
 		int nextval;
-		for(String move : p.mouvementsPossibles(this.joueurMax)){
-			if (move != null) {
-				PlateauFousFous temp_p = new PlateauFousFous();
-				String file = "tempplateau.txt";
-				p.saveToFile(file);
-				temp_p.setFromFile(file);
-				nextval = minMax(temp_p,this.profMax-1);
-				System.out.print("*");
-				System.out.println("Action:"+move+", Val Heur :"+nextval);
-				if (nextval > 10000){
-					System.out.println();
-					return move;
-				}
-				if (nextval>Max){
-					Max=nextval;
-					meilleuraction=move;
-				}
+		for(String move : p.mouvementsPossibles(this.joueurMax)) {
+			PlateauFousFous temp_p = p.getCopyPlateau();
+			nextval = minMax(temp_p,this.profMax-1);
+//			System.out.print("*");
+//			System.out.println("Action:"+move+", Val Heur :"+nextval);
+			if (nextval > 10000){
+//				System.out.println();
+				return move;
+			}
+			if (nextval>Max){
+				Max=nextval;
+				meilleuraction=move;
 			}
 		}
 		System.out.println("le meilleur coup est: " + meilleuraction);
@@ -72,43 +67,6 @@ public class Minimax {
 		
 	}
 	
-	public int maxMin(PlateauFousFous p, int prof){
-		if(p.finDePartie() || prof == 0){
-			return this.h.calculDiag(p, this.joueurMax);
-		}else{
-			int Max = Integer.MIN_VALUE;
-			for(String move : p.mouvementsPossibles(this.joueurMax)){
-				if (move != null) {
-					PlateauFousFous temp_p = new PlateauFousFous();
-					String file = "tempplateau.txt";
-					p.saveToFile(file);
-					temp_p.setFromFile(file);
-					temp_p.play(move, this.joueurMax);
-					Max = Math.max(Max, minMax(temp_p,prof-1));
-				}
-			}
-			return Max;
-		}
-	}
-	
-	public int minMax(PlateauFousFous p, int prof){
-		if(p.finDePartie() || prof == 0){
-			return this.h.calculDiag(p, this.joueurMax);
-		}else{
-			int Min = Integer.MAX_VALUE;
-			for(String move : p.mouvementsPossibles(this.joueurMin)){
-				if (move != null) {
-					PlateauFousFous temp_p = new PlateauFousFous();
-					String file = "tempplateau.txt";
-					p.saveToFile(file);
-					temp_p.setFromFile(file);
-					temp_p.play(move, this.joueurMin);
-					Min = Math.min(Min, maxMin(temp_p,prof-1));
-				}
-			}
-			return Min;
-		}
-	}
 
   // -------------------------------------------
   // Méthodes publiques
@@ -120,7 +78,33 @@ public class Minimax {
   // Méthodes internes
   // -------------------------------------------
 
-    //A vous de jouer pour implanter Minimax
+   private int maxMin(PlateauFousFous p, int prof){
+		if(p.finDePartie() || prof == 0){
+			return this.h.calculDiag(p, this.joueurMax);
+		}else{
+			int Max = Integer.MIN_VALUE;
+			for(String move : p.mouvementsPossibles(this.joueurMax)){
+				PlateauFousFous temp_p = p.getCopyPlateau();
+				temp_p.play(move, this.joueurMax);
+				Max = Math.max(Max, minMax(temp_p,prof-1));
+			}
+			return Max;
+		}
+	}
+	
+	private int minMax(PlateauFousFous p, int prof){
+		if(p.finDePartie() || prof == 0){
+			return this.h.calculDiag(p, this.joueurMax);
+		}else{
+			int Min = Integer.MAX_VALUE;
+			for(String move : p.mouvementsPossibles(this.joueurMin)){
+				PlateauFousFous temp_p = p.getCopyPlateau();				
+				temp_p.play(move, this.joueurMin);
+				Min = Math.min(Min, maxMin(temp_p,prof-1));
+			}
+			return Min;
+		}
+	}
 
 	
 }

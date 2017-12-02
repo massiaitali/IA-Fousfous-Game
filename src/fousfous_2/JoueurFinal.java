@@ -6,7 +6,7 @@ public class JoueurFinal implements IJoueur {
 	private String MaCouleur;
 	private String MaCouleurEnnemie;
 	private PlateauFousFous plateau;
-	private alBeta AlpBeta;
+	private AlphaBeta AlpBeta;
 	private Minimax algoMiniMax;
 	private int prof = 2;
 	private long timer = 0;
@@ -34,7 +34,7 @@ public class JoueurFinal implements IJoueur {
 		System.out.println("Après coup avec heurestique Pourcentage : "+ test.calculDiag(plateau, MaCouleur));
 		return coup;*/
 		long debut = System.currentTimeMillis();
-		this.AlpBeta = new alBeta(new heurest(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
+		this.AlpBeta = new AlphaBeta(new Heuristique(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
 		String coup = this.AlpBeta.meilleurCoup(this.plateau);
 		plateau.play(coup, MaCouleur);
 		timer += System.currentTimeMillis() - debut;

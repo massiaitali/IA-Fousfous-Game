@@ -20,7 +20,7 @@ public class MonSuperJoueur implements IJoueur {
 		//ArrayList<String> listeCoupsPossibles = plateau.mouvementsPossibles(MaCouleur);
 		//int taille = listeCoupsPossibles.size() - 1;
 		long debut = System.currentTimeMillis();
-		this.algoMiniMax = new Minimax(new heurest(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
+		this.algoMiniMax = new Minimax(new Heuristique(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
 		String coup = this.algoMiniMax.meilleurCoup(this.plateau);
 		plateau.play(coup, MaCouleur);
 		timer += System.currentTimeMillis() - debut;

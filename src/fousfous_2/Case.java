@@ -1,7 +1,7 @@
 package fousfous_2;
 
 //Classe Case permet de faciliter les fonctions
-public class Case implements Cloneable{
+public class Case implements Cloneable {
 	private int j; // Position en j 
 	private int i; // Position en i 
 	private String id; // Id de type B1 A1 ect...
