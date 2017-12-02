@@ -6,7 +6,7 @@ public class JoueurFinal implements IJoueur {
 	private String MaCouleur;
 	private String MaCouleurEnnemie;
 	private PlateauFousFous plateau;
-	private alBeta AlpBeta;
+	private AlphaBeta AlpBeta;
 	private Minimax algoMiniMax;
 	private int prof = 2;
 	private long timer = 0;
@@ -24,7 +24,7 @@ public class JoueurFinal implements IJoueur {
 		if (taille > 20){
 			this.prof = 3;
 			System.out.println("Alpha avec P=" + this.prof);
-			this.AlpBeta = new alBeta(new heurest(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
+			this.AlpBeta = new AlphaBeta(new Heuristique(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
 			coup = this.AlpBeta.meilleurCoup(this.plateau);
 		} else {
 			if ( taille > 10){
@@ -33,7 +33,7 @@ public class JoueurFinal implements IJoueur {
 				this.prof = 3;
 			}
 			System.out.println("Mini avec P= " + this.prof);
-			this.algoMiniMax = new Minimax(new heurest(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
+			this.algoMiniMax = new Minimax(new Heuristique(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
 			coup = this.algoMiniMax.meilleurCoup(this.plateau);
 		}
 		plateau.play(coup, MaCouleur);

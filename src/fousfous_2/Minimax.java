@@ -1,6 +1,6 @@
 package fousfous_2;
 
-public class Minimax {
+public class Minimax implements AlgoJeu {
 	/** La profondeur de recherche par défaut
      */
     private final static int PROFMAXDEFAUT = 2;
@@ -16,7 +16,7 @@ public class Minimax {
 
      /**  L'heuristique utilisée par l'algorithme
       */
-   private heurest h;
+   private Heuristique h;
 
     /** Le joueur Min
      *  (l'adversaire) */
@@ -30,11 +30,11 @@ public class Minimax {
   // -------------------------------------------
   // Constructeurs
   // -------------------------------------------
-    public Minimax(heurest h, String joueurMax, String joueurMin) {
+    public Minimax(Heuristique h, String joueurMax, String joueurMin) {
         this(h,joueurMax,joueurMin,PROFMAXDEFAUT);
     }
 
-    public Minimax(heurest h, String joueurMax, String joueurMin, int profMaxi) {
+    public Minimax(Heuristique h, String joueurMax, String joueurMin, int profMaxi) {
         this.h = h;
         this.joueurMin = joueurMin;
         this.joueurMax = joueurMax;
@@ -54,7 +54,6 @@ public class Minimax {
 				nextval = minMax(temp_p,this.profMax-1);
 				//System.out.println("Action:"+move+", Val Heur :"+nextval);
 				if (nextval > 10000){
-					System.out.println();
 					return move;
 				}
 				if (nextval>Max){
@@ -68,7 +67,18 @@ public class Minimax {
 		
 	}
 	
-	public int maxMin(PlateauFousFous p, int prof){
+
+  // -------------------------------------------
+  // Méthodes publiques
+  // -------------------------------------------
+    public String toString() {
+        return "MiniMax(ProfMax="+profMax+")";
+    }
+  // -------------------------------------------
+  // Méthodes internes
+  // -------------------------------------------
+
+   private int maxMin(PlateauFousFous p, int prof){
 		if(p.finDePartie() || prof == 0){
 			return this.h.calculDiag(p, this.joueurMax);
 		}else{
@@ -84,7 +94,7 @@ public class Minimax {
 		}
 	}
 	
-	public int minMax(PlateauFousFous p, int prof){
+	private int minMax(PlateauFousFous p, int prof){
 		if(p.finDePartie() || prof == 0){
 			return this.h.calculDiag(p, this.joueurMax);
 		}else{
@@ -99,18 +109,6 @@ public class Minimax {
 			return Min;
 		}
 	}
-
-  // -------------------------------------------
-  // Méthodes publiques
-  // -------------------------------------------
-    public String toString() {
-        return "MiniMax(ProfMax="+profMax+")";
-    }
-  // -------------------------------------------
-  // Méthodes internes
-  // -------------------------------------------
-
-    //A vous de jouer pour implanter Minimax
 
 	
 }
