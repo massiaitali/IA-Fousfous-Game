@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class PlateauFousFous implements Partie1 {
     // Initialise le plateau avec un tableau de Case 
@@ -336,7 +338,10 @@ public class PlateauFousFous implements Partie1 {
 				}
 			}
 		}
-		return coupsPossibles;
+		Set set = new HashSet() ;
+        set.addAll(coupsPossibles) ;
+        ArrayList distinctList = new ArrayList(set) ;
+		return distinctList;
 	}
 	
 	public PlateauFousFous getCopyPlateau() {
