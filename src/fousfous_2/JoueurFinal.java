@@ -21,18 +21,19 @@ public class JoueurFinal implements IJoueur {
 		//long debut = System.currentTimeMillis();
 		int taille = plateau.mouvementsPossibles(MaCouleur).size() - 1;
 		String coup;
+		//System.out.println(taille);
 		if (taille > 20){
 			this.prof = 3;
-			System.out.println("Alpha avec P=" + this.prof);
+			//System.out.println("Alpha avec P=" + this.prof);
 			this.AlpBeta = new AlphaBeta(new Heuristique(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
 			coup = this.AlpBeta.meilleurCoup(this.plateau);
 		} else {
 			if ( taille > 10){
-				this.prof = 3;
+				this.prof = 4;
 			} else {
-				this.prof = 3;
+				this.prof = 5;
 			}
-			System.out.println("Mini avec P= " + this.prof);
+			//System.out.println("Mini avec P= " + this.prof);
 			this.algoMiniMax = new Minimax(new Heuristique(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
 			coup = this.algoMiniMax.meilleurCoup(this.plateau);
 		}

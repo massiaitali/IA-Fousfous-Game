@@ -10,10 +10,10 @@ public class MonSuperJoueur implements IJoueur {
 	private AlphaBeta AlpBeta;
 	private int prof = 2;
 	private long timer = 0;
-	static int PROFMIN = 5;
-	static int PROFMAX = 18;
-	static int SEUILMIN = 8;
-	static int SEUILMAX = 30;
+	static int PROFMIN = 3;
+	static int PROFMAX = 8;
+	static int SEUILMIN = 7;
+	static int SEUILMAX = 31;
 
 	@Override
 	public int getNumJoueur() {
@@ -25,6 +25,7 @@ public class MonSuperJoueur implements IJoueur {
 		//long debut = System.currentTimeMillis();
 		int taille = plateau.mouvementsPossibles(MaCouleur).size() - 1;
 		String coup;
+		//System.out.println(taille);
 		if (taille > 22){
 			this.prof = choisisProf(taille) - 1;
 			System.out.println("Alpha avec P=" + this.prof);
