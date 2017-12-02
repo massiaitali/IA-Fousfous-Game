@@ -25,10 +25,10 @@ public class MonSuperJoueur implements IJoueur {
 		//long debut = System.currentTimeMillis();
 		int taille = plateau.mouvementsPossibles(MaCouleur).size() - 1;
 		String coup;
-		for(String test : plateau.mouvementsPossibles(MaCouleur)) {
+		/*for(String test : plateau.mouvementsPossibles(MaCouleur)) {
 			System.out.print(test+" ,");
 		}
-		System.out.println();
+		System.out.println();*/
 		//System.out.println(taille);
 		if (taille > 22){
 			this.prof = choisisProf(taille) - 1;
