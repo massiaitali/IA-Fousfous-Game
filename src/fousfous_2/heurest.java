@@ -24,12 +24,14 @@ public class heurest {
 		if(Joueur.substring(0, 1).equals("b"))
 		{
 			// On fait la difference des pions sur le plateau
-			return (int) P.pourcentageDiagonale(Joueur) ;
+			//return (int) P.pourcentageDiagonale(Joueur) ;
+			return (P.nbPionBlanc() * (1+P.pourcentageDiagonale(Joueur))) - (P.nbPionNoir()) ;
 		}
 		// Si joueur noir
 		if(Joueur.substring(0, 1).equals("n"))
 		{
-			return (int) P.pourcentageDiagonale(Joueur) ;
+			//return (int) P.pourcentageDiagonale(Joueur) ;
+			return (P.nbPionNoir() * (1+P.pourcentageDiagonale(Joueur))) - (P.nbPionBlanc()) ;
 		}
 		return 0;
 	}

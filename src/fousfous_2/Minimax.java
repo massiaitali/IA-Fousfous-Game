@@ -50,13 +50,9 @@ public class Minimax {
 		int nextval;
 		for(String move : p.mouvementsPossibles(this.joueurMax)){
 			if (move != null) {
-				PlateauFousFous temp_p = new PlateauFousFous();
-				String file = "tempplateau.txt";
-				p.saveToFile(file);
-				temp_p.setFromFile(file);
+				PlateauFousFous temp_p = p.getCopyPlateau();
 				nextval = minMax(temp_p,this.profMax-1);
-				System.out.print("*");
-				System.out.println("Action:"+move+", Val Heur :"+nextval);
+				//System.out.println("Action:"+move+", Val Heur :"+nextval);
 				if (nextval > 10000){
 					System.out.println();
 					return move;
@@ -67,7 +63,7 @@ public class Minimax {
 				}
 			}
 		}
-		System.out.println("le meilleur coup est: " + meilleuraction);
+		//System.out.println("le meilleur coup est: " + meilleuraction);
 		return meilleuraction;
 		
 	}
@@ -79,10 +75,7 @@ public class Minimax {
 			int Max = Integer.MIN_VALUE;
 			for(String move : p.mouvementsPossibles(this.joueurMax)){
 				if (move != null) {
-					PlateauFousFous temp_p = new PlateauFousFous();
-					String file = "tempplateau.txt";
-					p.saveToFile(file);
-					temp_p.setFromFile(file);
+					PlateauFousFous temp_p = p.getCopyPlateau();
 					temp_p.play(move, this.joueurMax);
 					Max = Math.max(Max, minMax(temp_p,prof-1));
 				}
@@ -98,10 +91,7 @@ public class Minimax {
 			int Min = Integer.MAX_VALUE;
 			for(String move : p.mouvementsPossibles(this.joueurMin)){
 				if (move != null) {
-					PlateauFousFous temp_p = new PlateauFousFous();
-					String file = "tempplateau.txt";
-					p.saveToFile(file);
-					temp_p.setFromFile(file);
+					PlateauFousFous temp_p = p.getCopyPlateau();
 					temp_p.play(move, this.joueurMin);
 					Min = Math.min(Min, maxMin(temp_p,prof-1));
 				}

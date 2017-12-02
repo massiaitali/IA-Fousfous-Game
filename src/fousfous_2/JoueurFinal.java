@@ -18,27 +18,27 @@ public class JoueurFinal implements IJoueur {
 
 	@Override
 	public String choixMouvement() {
-		/*ArrayList<String> listeCoupsPossibles = plateau.mouvementsPossibles(MaCouleur);
-		int taille = listeCoupsPossibles.size() - 1;
-		int nombreAleatoire = 0 + (int)(Math.random() * ((taille - 0) + 1));
-		System.out.println("NA="+nombreAleatoire);
-		System.out.println("taille="+taille);
-		System.out.println("liste="+listeCoupsPossibles);
-		String coup = listeCoupsPossibles.get(nombreAleatoire);
-		System.out.println(plateau);
-		heurest test = new heurest();
-		System.out.println("Avant coup avec heurestique DIff : "+ test.calculDiff(plateau, MaCouleur));
-		System.out.println("Avant coup avec heurestique Pourcentage : "+ test.calculDiag(plateau, MaCouleur));
+		//long debut = System.currentTimeMillis();
+		int taille = plateau.mouvementsPossibles(MaCouleur).size() - 1;
+		String coup;
+		if (taille > 20){
+			this.prof = 3;
+			System.out.println("Alpha avec P=" + this.prof);
+			this.AlpBeta = new alBeta(new heurest(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
+			coup = this.AlpBeta.meilleurCoup(this.plateau);
+		} else {
+			if ( taille > 10){
+				this.prof = 3;
+			} else {
+				this.prof = 3;
+			}
+			System.out.println("Mini avec P= " + this.prof);
+			this.algoMiniMax = new Minimax(new heurest(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
+			coup = this.algoMiniMax.meilleurCoup(this.plateau);
+		}
 		plateau.play(coup, MaCouleur);
-		System.out.println("Après coup avec heurestique DIff : "+ test.calculDiff(plateau, MaCouleur));
-		System.out.println("Après coup avec heurestique Pourcentage : "+ test.calculDiag(plateau, MaCouleur));
-		return coup;*/
-		long debut = System.currentTimeMillis();
-		this.AlpBeta = new alBeta(new heurest(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
-		String coup = this.AlpBeta.meilleurCoup(this.plateau);
-		plateau.play(coup, MaCouleur);
-		timer += System.currentTimeMillis() - debut;
-		System.out.println("TIMER : " + (timer / 1000) + " secondes");
+		//timer += System.currentTimeMillis() - debut;
+		//System.out.println("TIMER : " + (timer / 1000) + " secondes");
 		return coup;
 	}
 

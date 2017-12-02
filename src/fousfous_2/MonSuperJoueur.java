@@ -7,8 +7,13 @@ public class MonSuperJoueur implements IJoueur {
 	private String MaCouleurEnnemie;
 	private PlateauFousFous plateau;
 	private Minimax algoMiniMax;
+	private alBeta AlpBeta;
 	private int prof = 2;
 	private long timer = 0;
+	static int PROFMIN = 5;
+	static int PROFMAX = 18;
+	static int SEUILMIN = 8;
+	static int SEUILMAX = 30;
 
 	@Override
 	public int getNumJoueur() {
@@ -17,14 +22,27 @@ public class MonSuperJoueur implements IJoueur {
 	
 	@Override
 	public String choixMouvement() {
-		//ArrayList<String> listeCoupsPossibles = plateau.mouvementsPossibles(MaCouleur);
-		//int taille = listeCoupsPossibles.size() - 1;
-		long debut = System.currentTimeMillis();
-		this.algoMiniMax = new Minimax(new heurest(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
-		String coup = this.algoMiniMax.meilleurCoup(this.plateau);
+		//long debut = System.currentTimeMillis();
+		int taille = plateau.mouvementsPossibles(MaCouleur).size() - 1;
+		String coup;
+		if (taille > 22){
+			this.prof = choisisProf(taille) - 1;
+			System.out.println("Alpha avec P=" + this.prof);
+			this.AlpBeta = new alBeta(new heurest(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
+			coup = this.AlpBeta.meilleurCoup(this.plateau);
+		} else {
+			if ( taille > 12){
+				this.prof = choisisProf(taille) - 1;
+			} else {
+				this.prof = choisisProf(taille) - 1;
+			}
+			System.out.println("Mini avec P= " + this.prof);
+			this.algoMiniMax = new Minimax(new heurest(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
+			coup = this.algoMiniMax.meilleurCoup(this.plateau);
+		}
 		plateau.play(coup, MaCouleur);
-		timer += System.currentTimeMillis() - debut;
-		System.out.println("TIMER : " + (timer / 1000) + " secondes");
+		//timer += System.currentTimeMillis() - debut;
+		//System.out.println("TIMER : " + (timer / 1000) + " secondes");
 		return coup;
 	}
 
@@ -62,6 +80,19 @@ public class MonSuperJoueur implements IJoueur {
 			this.MaCouleur = plateau.JOUEUR_NOIR;
 			this.MaCouleurEnnemie = plateau.JOUEUR_BLANC;		
 		}	
+	}
+	private int choisisProf(int taille){
+		if (taille >= SEUILMAX)
+			return PROFMIN;
+		else if (taille <= SEUILMIN)
+			return PROFMAX;
+		else{
+			double xtrmRange = (PROFMAX - PROFMIN);
+			double seuilRange = (SEUILMAX - SEUILMIN);
+			double step = xtrmRange / seuilRange;
+			return (int) (PROFMAX - (step*taille));
+		}
+		
 	}
 
 }

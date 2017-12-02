@@ -50,19 +50,16 @@ public String meilleurCoup(PlateauFousFous p) {
 		int b = Integer.MAX_VALUE;
 
 		for (String coup : p.mouvementsPossibles(this.joueurMax)) {
-			System.out.print("**");
 			PlateauFousFous temp_p = p.getCopyPlateau();
-
 			temp_p.play(coup, this.joueurMax);
 			int Max = maxMin(temp_p, this.profMax - 1, a, b);
-			System.out.println("Action:"+coup+", Val Heur :"+Max);
+			//System.out.println("Action:"+coup+", Val Heur :"+Max);
 			if (a < Max) {
 				b = Max;
 				meilleurCoup = coup;
 			}
 		}
-		System.out.println();
-		System.out.println("le meilleur coup est: " + meilleurCoup);
+		//System.out.println("le meilleur coup est: " + meilleurCoup);
 		return meilleurCoup;
 	}
 
