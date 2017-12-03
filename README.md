@@ -40,3 +40,4 @@ cd IA-FousFous/serveur
 java -cp obfousfous.jar fousfous.ClientJeu fousfous.JoueurAleatoire localhost 1234
 
 ### Lancer notre meilleur joueur
+java -cp fousfous_2.jar fousfous_2.ClientJeu fousfous_2.MonSuperJoueur localhost 1234

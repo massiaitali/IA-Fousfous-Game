@@ -33,13 +33,10 @@ public class MonSuperJoueur implements IJoueur {
 		long debut = System.currentTimeMillis();
 		ArrayList<String> liste = plateau.mouvementsPossibles(MaCouleur);
 		int taille = liste.size() - 1;
-//		System.out.println(liste);
 		String coup = "";
-//		System.out.println("taille="+taille);
 		if (taille > 22){
 			this.prof = choisiProf(taille);
 			this.prof = getProfWithtimer();
-//			System.out.println("Alpha avec P=" + this.prof);
 			this.AlpBeta = new AlphaBeta(new Heuristique(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
 			coup = this.AlpBeta.meilleurCoup(this.plateau);
 		} else {
@@ -49,13 +46,11 @@ public class MonSuperJoueur implements IJoueur {
 				this.prof = choisiProf(taille);
 			}
 			this.prof = getProfWithtimer();
-//			System.out.println("Mini avec P= " + this.prof);
 			this.algoMiniMax = new Minimax(new Heuristique(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
 			coup = this.algoMiniMax.meilleurCoup(this.plateau);
 		}
 		plateau.play(coup, MaCouleur);
 		timer += System.currentTimeMillis() - debut;
-//		System.out.println("TIMER : " + (timer / 1000) + " secondes");
 		return coup;
 	}
 
@@ -78,8 +73,7 @@ public class MonSuperJoueur implements IJoueur {
 
 	@Override
 	public String binoName() {
-//		return NomBinome;
-		return "MonSuperJoueur";
+		return NomBinome;
 	}
 
 	@Override
@@ -113,19 +107,14 @@ public class MonSuperJoueur implements IJoueur {
 		// timer
 		if(this.timer < 60000 * 2) {
 			score += 1;
-//			System.out.println("timer <2min");
 		} else if(this.timer < 60000 * 4) {
 			score += 2;
-//			System.out.println("timer <4min");
 		} else if(this.timer < 60000 * 6) {
 			score += 3;
-//			System.out.println("timer <6min");
 		} else if(this.timer < 60000 * 8) {
 			score += 4;
-//			System.out.println("timer <8min");
 		} else if(this.timer < 60000 * 10) {
 			score += 5;
-//			System.out.println("timer <10min");
 		}
 		
 		// pions
@@ -138,21 +127,15 @@ public class MonSuperJoueur implements IJoueur {
 		}
 		if(nbPions > 13) {
 			score += 5;
-//			System.out.println("pions > 13");
 		} else if(nbPions > 10) {
 			score += 4;
-//			System.out.println("pions > 10");
 		} else if(nbPions > 7) {
 			score += 3;
-//			System.out.println("pions > 7");
 		} else if(nbPions > 4) {
 			score += 2;
-//			System.out.println("pions > 4");
 		} else if(nbPions > 1) {
 			score += 1;
-//			System.out.println("pions > 1");
 		} 
-//		System.out.println("score="+score);
 		
 		if(score > 7) {
 			return diminueProf(3);
@@ -163,7 +146,6 @@ public class MonSuperJoueur implements IJoueur {
 	}
 	
 	private int diminueProf(int diminution) {
-//		System.out.println("this.prof="+this.prof);
 		if(this.prof > diminution) {
 			return this.prof - diminution;
 		} else if(this.prof < diminution) {
