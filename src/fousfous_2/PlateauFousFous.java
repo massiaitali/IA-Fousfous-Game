@@ -13,6 +13,12 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
+/**
+ * Projet IA - Polytech Paris-Sud 2017-2018
+ * @author Massinissa Ait Ali et Mathilde PREVOST
+ *
+ */
+
 public class PlateauFousFous implements Partie1 {
     // Initialise le plateau avec un tableau de Case 
     public Case[][] plateau;

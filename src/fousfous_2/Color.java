@@ -1,5 +1,11 @@
 package fousfous_2;
 
+/**
+ * Projet IA - Polytech Paris-Sud 2017-2018
+ * @author Massinissa Ait Ali et Mathilde PREVOST
+ *
+ */
+
 public enum Color {
 	//Objets directement construits	
 	BLANC ("b"),

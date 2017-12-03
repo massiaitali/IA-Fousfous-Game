@@ -87,8 +87,6 @@ public class Solo {
 		String coup;
 		boolean partieFinie = false;
 		IJoueur joueurCourant = joueurBlanc; // C'est eux qui commencent
-		//while (demicoup<209) {
-			//demicoup ++;
 		while (!partieFinie) {
 		    nbCoups++;
 	
@@ -100,7 +98,7 @@ public class Solo {
 		    long waitingTime2 = new Date().getTime();
 		    // On rajoute 1 pour eliminer les temps infinis
 		    long waitingTime = waitingTime2 - waitingTime1 + 1;
-		    System.out.println("Le joueur " + joueurCourant.binoName() + " a jou� le coup " + coup + " en "
+		    System.out.println("Le joueur " + joueurCourant.binoName() + " a joué le coup " + coup + " en "
 			    + waitingTime + "s.");
 		    try {
 		    	Thread.sleep(1); // Juste pour attendre un peu

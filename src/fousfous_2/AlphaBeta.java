@@ -1,5 +1,11 @@
 package fousfous_2;
 
+/**
+ * Projet IA - Polytech Paris-Sud 2017-2018
+ * @author Massinissa Ait Ali et Mathilde PREVOST
+ *
+ */
+
 public class AlphaBeta implements AlgoJeu {
 	/** La profondeur de recherche par défaut
      */
@@ -53,13 +59,11 @@ public class AlphaBeta implements AlgoJeu {
 			PlateauFousFous temp_p = p.getCopyPlateau();
 			temp_p.play(coup, this.joueurMax);
 			int Max = maxMin(temp_p, this.profMax - 1, a, b);
-			//System.out.println("Action:"+coup+", Val Heur :"+Max);
 			if (a < Max) {
 				b = Max;
 				meilleurCoup = coup;
 			}
 		}
-		//System.out.println("le meilleur coup est: " + meilleurCoup);
 		return meilleurCoup;
 	}
 
@@ -95,7 +99,6 @@ public class AlphaBeta implements AlgoJeu {
 		} else {
 			for (String c : p.mouvementsPossibles(this.joueurMin)) {				
 				PlateauFousFous temp_p = p.getCopyPlateau();
-
 				temp_p.play(c, this.joueurMin);
 				b = Math.min(b, maxMin(temp_p, prof - 1, a, b));
 				if (a >= b) {
@@ -104,8 +107,5 @@ public class AlphaBeta implements AlgoJeu {
 			}
 			return b;
 		}
-	}
-
-
-	
+	}	
 }

@@ -35,4 +35,8 @@ java -cp . fousfous_2.ClientJeu fousfous_2.JoueurFinal localhost 1234
 cd IA-FousFous/bin
 java -cp . fousfous_2.ClientJeu fousfous_2.MonSuperJoueur localhost 1234
 
+### Lancer joueur aléatoire
+cd IA-FousFous/serveur
+java -cp obfousfous.jar fousfous.ClientJeu fousfous.JoueurAleatoire localhost 1234
+
 ### Lancer notre meilleur joueur

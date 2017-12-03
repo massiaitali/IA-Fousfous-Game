@@ -1,5 +1,11 @@
 package fousfous_2;
 
+/**
+ * Projet IA - Polytech Paris-Sud 2017-2018
+ * @author Massinissa Ait Ali et Mathilde PREVOST
+ *
+ */
+
 //Classe Case permet de faciliter les fonctions
 public class Case implements Cloneable {
 	private int j; // Position en j 

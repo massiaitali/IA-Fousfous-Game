@@ -1,5 +1,11 @@
 package fousfous_2;
 
+/**
+ * Projet IA - Polytech Paris-Sud 2017-2018
+ * @author Massinissa Ait Ali et Mathilde PREVOST
+ *
+ */
+
 public class Minimax implements AlgoJeu {
 	/** La profondeur de recherche par défaut
      */
@@ -52,7 +58,6 @@ public class Minimax implements AlgoJeu {
 			if (move != null) {
 				PlateauFousFous temp_p = p.getCopyPlateau();
 				nextval = minMax(temp_p,this.profMax-1);
-				//System.out.println("Action:"+move+", Val Heur :"+nextval);
 				if (nextval > 10000){
 					return move;
 				}
@@ -62,9 +67,7 @@ public class Minimax implements AlgoJeu {
 				}
 			}
 		}
-		//System.out.println("le meilleur coup est: " + meilleuraction);
-		return meilleuraction;
-		
+		return meilleuraction;		
 	}
 	
 
@@ -108,7 +111,5 @@ public class Minimax implements AlgoJeu {
 			}
 			return Min;
 		}
-	}
-
-	
+	}	
 }

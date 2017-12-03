@@ -1,5 +1,13 @@
 package fousfous_2;
 
+import java.util.ArrayList;
+
+/**
+ * Projet IA - Polytech Paris-Sud 2017-2018
+ * @author Massinissa Ait Ali et Mathilde PREVOST
+ *
+ */
+
 public class MonSuperJoueur implements IJoueur {
 	private String NomBinome = "Massinissa - Mathilde";
 	private int ColorServeur;
@@ -11,9 +19,9 @@ public class MonSuperJoueur implements IJoueur {
 	private int prof = 2;
 	private long timer = 0;
 	static int PROFMIN = 3;
-	static int PROFMAX = 8;
-	static int SEUILMIN = 7;
-	static int SEUILMAX = 31;
+	static int PROFMAX = 7;
+	static int SEUILMIN = 6;
+	static int SEUILMAX = 30;
 
 	@Override
 	public int getNumJoueur() {
@@ -22,37 +30,38 @@ public class MonSuperJoueur implements IJoueur {
 	
 	@Override
 	public String choixMouvement() {
-		//long debut = System.currentTimeMillis();
-		int taille = plateau.mouvementsPossibles(MaCouleur).size() - 1;
-		String coup;
-		/*for(String test : plateau.mouvementsPossibles(MaCouleur)) {
-			System.out.print(test+" ,");
-		}
-		System.out.println();*/
-		//System.out.println(taille);
+		long debut = System.currentTimeMillis();
+		ArrayList<String> liste = plateau.mouvementsPossibles(MaCouleur);
+		int taille = liste.size() - 1;
+//		System.out.println(liste);
+		String coup = "";
+//		System.out.println("taille="+taille);
 		if (taille > 22){
-			this.prof = choisisProf(taille) - 1;
-			System.out.println("Alpha avec P=" + this.prof);
+			this.prof = choisiProf(taille);
+			this.prof = getProfWithtimer();
+//			System.out.println("Alpha avec P=" + this.prof);
 			this.AlpBeta = new AlphaBeta(new Heuristique(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
 			coup = this.AlpBeta.meilleurCoup(this.plateau);
 		} else {
-			if ( taille > 12){
-				this.prof = choisisProf(taille) - 1;
+			if (taille > 11){
+				this.prof = choisiProf(taille) - 1;
 			} else {
-				this.prof = choisisProf(taille) - 1;
+				this.prof = choisiProf(taille);
 			}
-			System.out.println("Mini avec P= " + this.prof);
+			this.prof = getProfWithtimer();
+//			System.out.println("Mini avec P= " + this.prof);
 			this.algoMiniMax = new Minimax(new Heuristique(), this.MaCouleur, this.MaCouleurEnnemie,this.prof);
 			coup = this.algoMiniMax.meilleurCoup(this.plateau);
 		}
 		plateau.play(coup, MaCouleur);
-		//timer += System.currentTimeMillis() - debut;
-		//System.out.println("TIMER : " + (timer / 1000) + " secondes");
+		timer += System.currentTimeMillis() - debut;
+//		System.out.println("TIMER : " + (timer / 1000) + " secondes");
 		return coup;
 	}
 
 	@Override
 	public void declareLeVainqueur(int colour) {
+		System.out.println("Temps écoulé : " + (this.timer / 1000) + " secondes");
 		if(colour == this.ColorServeur) {
 			System.out.println("Le binone " + binoName() + " a gagné :)");
 		}
@@ -86,7 +95,7 @@ public class MonSuperJoueur implements IJoueur {
 			this.MaCouleurEnnemie = plateau.JOUEUR_BLANC;		
 		}	
 	}
-	private int choisisProf(int taille){
+	private int choisiProf(int taille){
 		if (taille >= SEUILMAX)
 			return PROFMIN;
 		else if (taille <= SEUILMIN)
@@ -96,8 +105,72 @@ public class MonSuperJoueur implements IJoueur {
 			double seuilRange = (SEUILMAX - SEUILMIN);
 			double step = xtrmRange / seuilRange;
 			return (int) (PROFMAX - (step*taille));
+		}		
+	}
+	
+	private int getProfWithtimer() {
+		int score = 0;
+		// timer
+		if(this.timer < 60000 * 2) {
+			score += 1;
+//			System.out.println("timer <2min");
+		} else if(this.timer < 60000 * 4) {
+			score += 2;
+//			System.out.println("timer <4min");
+		} else if(this.timer < 60000 * 6) {
+			score += 3;
+//			System.out.println("timer <6min");
+		} else if(this.timer < 60000 * 8) {
+			score += 4;
+//			System.out.println("timer <8min");
+		} else if(this.timer < 60000 * 10) {
+			score += 5;
+//			System.out.println("timer <10min");
 		}
 		
+		// pions
+		int nbPions = 0;
+		if(this.plateau.JOUEUR_BLANC.equalsIgnoreCase(this.MaCouleur)) {
+			nbPions = this.plateau.nbPionBlanc();			
+		}
+		if(this.plateau.JOUEUR_NOIR.equalsIgnoreCase(this.MaCouleur)) {
+			nbPions = this.plateau.nbPionNoir();			
+		}
+		if(nbPions > 13) {
+			score += 5;
+//			System.out.println("pions > 13");
+		} else if(nbPions > 10) {
+			score += 4;
+//			System.out.println("pions > 10");
+		} else if(nbPions > 7) {
+			score += 3;
+//			System.out.println("pions > 7");
+		} else if(nbPions > 4) {
+			score += 2;
+//			System.out.println("pions > 4");
+		} else if(nbPions > 1) {
+			score += 1;
+//			System.out.println("pions > 1");
+		} 
+//		System.out.println("score="+score);
+		
+		if(score > 7) {
+			return diminueProf(3);
+		} else if(score > 5) {
+			return diminueProf(2);
+		}		
+		return this.prof;
 	}
-
+	
+	private int diminueProf(int diminution) {
+//		System.out.println("this.prof="+this.prof);
+		if(this.prof > diminution) {
+			return this.prof - diminution;
+		} else if(this.prof < diminution) {
+			return PROFMIN;
+		} else if(this.prof == diminution) {
+			return this.prof - 1;
+		}
+		return this.prof;
+	}
 }
