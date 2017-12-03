@@ -338,9 +338,9 @@ public class PlateauFousFous implements Partie1 {
 				}
 			}
 		}
-		Set set = new HashSet() ;
+		Set<String> set = new HashSet<String>() ;
         set.addAll(coupsPossibles) ;
-        ArrayList distinctList = new ArrayList(set) ;
+        ArrayList<String> distinctList = new ArrayList<String>(set) ;
 		return distinctList;
 	}
 	
